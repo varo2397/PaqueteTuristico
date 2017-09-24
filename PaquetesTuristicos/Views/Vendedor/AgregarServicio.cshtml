@@ -1,0 +1,102 @@
+﻿
+@{
+    ViewBag.Title = "AgregarServicio";
+}
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script>
+     $(document).ready(function () {
+            $('#cantidad').change( function () {
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("CantidadTarifas","Vendedor")",
+                    data: { cantidad: $("#cantidad").val() },//Tipo
+
+                    success: function (resultado) {
+                        $("#cantidadTarifasH").html(resultado)
+                    },
+                    error: function () {
+                        alert("Error");
+                    }
+
+                });
+            });
+        });
+</script>
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1>Agregar Servicio</h1>
+        </div>
+
+        <form class="col-md-3" method="post" action="">
+
+            <div>
+                <div class="form-group">
+                    <label>Nombre del servicio</label>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Distancia en kilometros</label>
+                </div>
+                <div class="form-group">
+                    <input type="number" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Latitud</label>
+                </div>
+                <div class="form-group">
+                    <input type="number" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Longitud</label>
+                </div>
+                <div class="form-group">
+                    <input type="number" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Fotografias del servicio</label>
+                </div>
+                <div class="form-group">
+                    <input type="file" class="form-control" accept="image/*" multiple required>
+                </div>
+                <div class="form-group">
+                    <label>Cantidad de tarifas</label>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-group">
+                        <select id="cantidad" class="form-control" name="cantidad">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                        </select>
+                    </div>
+                </div>
+
+
+                <div id="cantidadTarifasH"></div>
+
+
+
+
+                <div class="form-group">
+                    <input type="submit" class="btn btn-dark">
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+
+
+</div>

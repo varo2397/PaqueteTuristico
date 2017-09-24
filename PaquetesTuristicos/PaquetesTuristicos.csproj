@@ -142,12 +142,42 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\VendedorController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Boostratp\css\sb-admin.css" />
+    <Content Include="Boostratp\css\sb-admin.min.css" />
+    <Content Include="Boostratp\js\sb-admin.js" />
+    <Content Include="Boostratp\js\sb-admin.min.js" />
+    <Content Include="Boostratp\vendor\bootstrap\css\bootstrap-grid.css" />
+    <Content Include="Boostratp\vendor\bootstrap\css\bootstrap-grid.min.css" />
+    <Content Include="Boostratp\vendor\bootstrap\css\bootstrap-reboot.css" />
+    <Content Include="Boostratp\vendor\bootstrap\css\bootstrap-reboot.min.css" />
+    <Content Include="Boostratp\vendor\bootstrap\css\bootstrap.css" />
+    <Content Include="Boostratp\vendor\bootstrap\css\bootstrap.min.css" />
+    <Content Include="Boostratp\vendor\bootstrap\js\bootstrap.js" />
+    <Content Include="Boostratp\vendor\bootstrap\js\bootstrap.min.js" />
+    <Content Include="Boostratp\vendor\chart.js\Chart.bundle.js" />
+    <Content Include="Boostratp\vendor\chart.js\Chart.bundle.min.js" />
+    <Content Include="Boostratp\vendor\chart.js\Chart.js" />
+    <Content Include="Boostratp\vendor\chart.js\Chart.min.js" />
+    <Content Include="Boostratp\vendor\datatables\dataTables.bootstrap4.css" />
+    <Content Include="Boostratp\vendor\datatables\dataTables.bootstrap4.js" />
+    <Content Include="Boostratp\vendor\datatables\jquery.dataTables.js" />
+    <Content Include="Boostratp\vendor\font-awesome\css\font-awesome.css" />
+    <Content Include="Boostratp\vendor\font-awesome\css\font-awesome.min.css" />
+    <Content Include="Boostratp\vendor\font-awesome\fonts\fontawesome-webfont.svg" />
+    <Content Include="Boostratp\vendor\jquery-easing\jquery.easing.compatibility.js" />
+    <Content Include="Boostratp\vendor\jquery-easing\jquery.easing.js" />
+    <Content Include="Boostratp\vendor\jquery-easing\jquery.easing.min.js" />
+    <Content Include="Boostratp\vendor\jquery\jquery.js" />
+    <Content Include="Boostratp\vendor\jquery\jquery.min.js" />
+    <Content Include="Boostratp\vendor\popper\popper.js" />
+    <Content Include="Boostratp\vendor\popper\popper.min.js" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="favicon.ico" />
@@ -159,6 +189,51 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Boostratp\scss\sb-admin.scss" />
+    <Content Include="Boostratp\scss\_cards.scss" />
+    <Content Include="Boostratp\scss\_footer.scss" />
+    <Content Include="Boostratp\scss\_global.scss" />
+    <Content Include="Boostratp\scss\_login.scss" />
+    <Content Include="Boostratp\scss\_mixins.scss" />
+    <Content Include="Boostratp\scss\_navbar.scss" />
+    <Content Include="Boostratp\scss\_navbar_fixed.scss" />
+    <Content Include="Boostratp\scss\_navbar_static.scss" />
+    <Content Include="Boostratp\scss\_navbar_toggle.scss" />
+    <Content Include="Boostratp\scss\_utilities.scss" />
+    <Content Include="Boostratp\scss\_variables.scss" />
+    <Content Include="Boostratp\vendor\font-awesome\fonts\fontawesome-webfont.eot" />
+    <Content Include="Boostratp\vendor\font-awesome\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Boostratp\vendor\font-awesome\fonts\fontawesome-webfont.woff" />
+    <Content Include="Boostratp\vendor\font-awesome\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Boostratp\vendor\font-awesome\fonts\FontAwesome.otf" />
+    <Content Include="Boostratp\vendor\font-awesome\less\animated.less" />
+    <Content Include="Boostratp\vendor\font-awesome\less\bordered-pulled.less" />
+    <Content Include="Boostratp\vendor\font-awesome\less\core.less" />
+    <Content Include="Boostratp\vendor\font-awesome\less\fixed-width.less" />
+    <Content Include="Boostratp\vendor\font-awesome\less\font-awesome.less" />
+    <Content Include="Boostratp\vendor\font-awesome\less\icons.less" />
+    <Content Include="Boostratp\vendor\font-awesome\less\larger.less" />
+    <Content Include="Boostratp\vendor\font-awesome\less\list.less" />
+    <Content Include="Boostratp\vendor\font-awesome\less\mixins.less" />
+    <Content Include="Boostratp\vendor\font-awesome\less\path.less" />
+    <Content Include="Boostratp\vendor\font-awesome\less\rotated-flipped.less" />
+    <Content Include="Boostratp\vendor\font-awesome\less\screen-reader.less" />
+    <Content Include="Boostratp\vendor\font-awesome\less\stacked.less" />
+    <Content Include="Boostratp\vendor\font-awesome\less\variables.less" />
+    <Content Include="Boostratp\vendor\font-awesome\scss\font-awesome.scss" />
+    <Content Include="Boostratp\vendor\font-awesome\scss\_animated.scss" />
+    <Content Include="Boostratp\vendor\font-awesome\scss\_bordered-pulled.scss" />
+    <Content Include="Boostratp\vendor\font-awesome\scss\_core.scss" />
+    <Content Include="Boostratp\vendor\font-awesome\scss\_fixed-width.scss" />
+    <Content Include="Boostratp\vendor\font-awesome\scss\_icons.scss" />
+    <Content Include="Boostratp\vendor\font-awesome\scss\_larger.scss" />
+    <Content Include="Boostratp\vendor\font-awesome\scss\_list.scss" />
+    <Content Include="Boostratp\vendor\font-awesome\scss\_mixins.scss" />
+    <Content Include="Boostratp\vendor\font-awesome\scss\_path.scss" />
+    <Content Include="Boostratp\vendor\font-awesome\scss\_rotated-flipped.scss" />
+    <Content Include="Boostratp\vendor\font-awesome\scss\_screen-reader.scss" />
+    <Content Include="Boostratp\vendor\font-awesome\scss\_stacked.scss" />
+    <Content Include="Boostratp\vendor\font-awesome\scss\_variables.scss" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -178,12 +253,19 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Views\Web.config" />
-    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Vendedor\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Vendedor\AgregarServicio.cshtml" />
+    <Content Include="Views\Vendedor\InicioSesion.cshtml" />
+    <Content Include="Views\Vendedor\Login.cshtml" />
+    <Content Include="Views\Vendedor\PlantillaServicios.cshtml" />
+    <Content Include="Views\Vendedor\Registrarse.cshtml" />
+    <Content Include="Views\Vendedor\Servicios.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

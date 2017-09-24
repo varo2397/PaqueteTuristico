@@ -1,0 +1,71 @@
+﻿
+@{
+    ViewBag.Title = "Registrarse";
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>SB Admin - Start Bootstrap Template</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="~/Boostratp/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Custom fonts for this template -->
+    <link href="~/Boostratp/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+
+    <!-- Custom styles for this template -->
+    <link href="~/Boostratp/css/sb-admin.css" rel="stylesheet" />
+
+</head>
+
+<body class="bg-dark">
+
+    <div class="container">
+
+        <div class="card card-register mx-auto mt-5">
+            <div class="card-header">
+                Registrarse
+            </div>
+            <div class="card-body">
+                <form>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Direccion de correo electronico</label>
+                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Correo electronico">
+                    </div>
+                    <div class="form-group">
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <label for="exampleInputPassword1">Contraseña</label>
+                                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Contraseña">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="exampleConfirmPassword">Confirmar contraseña</label>
+                                <input type="password" class="form-control" id="exampleConfirmPassword" placeholder="Confirmar contraseña">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-dark btn-block" onclick="location.href='@Url.Action("Servicios", "Vendedor")'">Registrarse</button>
+                    <button type="button" class="btn btn-dark btn-block" onclick="location.href='@Url.Action("InicioSesion", "Vendedor")'">Inicio de sesion</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="~/Boostratp/vendor/jquery/jquery.min.js"></script>
+    <script src="~/Boostratp/vendor/popper/popper.min.js"></script>
+    <script src="~/Boostratp/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>
+

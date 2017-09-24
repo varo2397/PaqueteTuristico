@@ -26,9 +26,6 @@ namespace PaquetesTuristicos.Controllers
 
             return View();
         }
-        public string cambios()
-        {
-            return "";
-        }
+       
     }
 }
