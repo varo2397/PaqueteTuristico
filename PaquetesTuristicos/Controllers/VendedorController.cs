@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using PaquetesTuristicos.Models;
+using System.Data.Entity;
 using System.Web;
 using System.Web.Mvc;
 using System.Collections;
+using System.Web.Security;
+using System.Web.Helpers;
 
 namespace PaquetesTuristicos.Controllers
 {
@@ -74,38 +78,80 @@ namespace PaquetesTuristicos.Controllers
 
             return "error";
         }
+        
+        public ActionResult Login()
+        {
+            ViewBag.Error = "";
 
-        //public ActionResult
+            return View();
 
-        //public ActionResult Login()
-        //{
-        //    ViewBag.Error = "";
+        }
+        [HttpPost]
+        public ActionResult Login(FormCollection form)
+        {
+            var USER = form["USER"];
+            var pass = form["pass"];
+            // this action is for handle post (login)
+            if (ModelState.IsValid)
+            {
+                using (serviciosCREntities db = new serviciosCREntities())
+                {
+                    var v = db.Usuarios.Where(a => a.correo.Equals(USER)).FirstOrDefault();
+                    if (v != null)
+                    {
+                        Session["USER"] = v.idUsuario.ToString();
+                        
+                        return RedirectToAction("Home", "Index");
+                    }
+                }
+            }
+            ViewBag.Error = "Error";
+            return View(form);
+        }
 
-        //    return View();
+        public ActionResult Register()
+        {
+            ViewBag.Error = "";
 
-        //}
-        //[HttpPost]
-        //public ActionResult Login(FormCollection form)
-        //{
-        //    var USER = form["USER"];
-        //    var pass = form["pass"];
-        //    // this action is for handle post (login)
-        //    if (ModelState.IsValid)
-        //    {
-        //        using (serviciosCREntities db = new serviciosCREntities())
-        //        {
-        //            var v = db.Usuarios.Where(a => a.correo.Equals(USER)).FirstOrDefault();
-        //            if (v != null)
-        //            {
-        //                Session["LogedUserID"] = v.idUsuario.ToString();
+            return View();
 
-        //                //"Identificacion,Cuenta_bancaria,Primer_apellido,Segundo_apellido,Nombre,Nacionalidad,Genero,Fecha_de_nacimiento,Nombre_de_Usuario,Contraseña")] 
-        //                return RedirectToAction("AfterLogin", "Hikers");
-        //            }
-        //        }
-        //    }
-        //    ViewBag.Error = "Error";
-        //    return View(form);
-        //}
+        }
+        [HttpPost]
+        public ActionResult Register(FormCollection form)
+        {
+            Usuario user = new Usuario();
+            var email = form["email"];
+            var pass = form["pass"];
+            var passConfirm = form["pass2"];
+            
+            if (ModelState.IsValid)
+            {
+
+                if (emailExist(email))
+                {
+                    //ModelState.AddModelError("EmailExist", "Email already exist");
+                    return View();
+                }
+                
+                using (serviciosCREntities db = new serviciosCREntities())
+                {
+                    db.Usuarios.Add(user);
+                    db.SaveChanges();
+                }
+            }
+            ViewBag.Error = "Error";
+            return View(form);
+        }
+
+        [NonAction]
+        public bool emailExist(string email)
+        {
+            using (serviciosCREntities db = new serviciosCREntities())
+            {
+                var v = db.Usuarios.Where(a => a.correo == email).FirstOrDefault();
+                return v != null;
+            }
+        }
+
     }
 }

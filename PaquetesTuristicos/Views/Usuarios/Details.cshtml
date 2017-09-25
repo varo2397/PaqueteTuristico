@@ -1,0 +1,50 @@
+﻿@model PaquetesTuristicos.Models.Usuario
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Usuario</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.correo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.correo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.contrasena)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.contrasena)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Regular.primerNombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Regular.primerNombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.rolUsuario.nombreRol)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.rolUsuario.nombreRol)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.idUsuario }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
