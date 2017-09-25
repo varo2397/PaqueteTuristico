@@ -1,0 +1,423 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="serviciosCRModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Calificacion">
+          <Key>
+            <PropertyRef Name="idCalificacion" />
+          </Key>
+          <Property Name="idCalificacion" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="comentario" Type="varchar" MaxLength="500" />
+          <Property Name="calificacion" Type="numeric" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="idServicio" Type="int" Nullable="false" />
+          <Property Name="idUsuario" Type="int" Nullable="false" />
+          <Property Name="fechaHora" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Categoria">
+          <Key>
+            <PropertyRef Name="idCategoria" />
+          </Key>
+          <Property Name="idCategoria" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="categoria" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="activo" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Orden">
+          <Key>
+            <PropertyRef Name="idOrden" />
+          </Key>
+          <Property Name="idOrden" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idCliente" Type="int" Nullable="false" />
+          <Property Name="pagada" Type="bit" Nullable="false" />
+          <Property Name="fechaHora" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Regular">
+          <Key>
+            <PropertyRef Name="idUsuario" />
+          </Key>
+          <Property Name="idUsuario" Type="int" Nullable="false" />
+          <Property Name="primerNombre" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="apellidos" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="cuentaBancaria" Type="numeric" Precision="20" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="rolUsuario">
+          <Key>
+            <PropertyRef Name="idRolUsuario" />
+          </Key>
+          <Property Name="idRolUsuario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombreRol" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ServiciosPorOrden">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idOrden" Type="int" Nullable="false" />
+          <Property Name="idServicio" Type="int" Nullable="false" />
+          <Property Name="cantidad" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="idUsuario" />
+          </Key>
+          <Property Name="idUsuario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="correo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="contrasena" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="idRolUsuario" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Calificac__idUsu__1FCDBCEB">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="Calificacion" Type="Self.Calificacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="idUsuario" />
+            </Principal>
+            <Dependent Role="Calificacion">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Orden__idCliente__1920BF5C">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="Orden" Type="Self.Orden" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="idUsuario" />
+            </Principal>
+            <Dependent Role="Orden">
+              <PropertyRef Name="idCliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Regular__idUsuar__164452B1">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="Regular" Type="Self.Regular" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="idUsuario" />
+            </Principal>
+            <Dependent Role="Regular">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Servicios__idOrd__1BFD2C07">
+          <End Role="Orden" Type="Self.Orden" Multiplicity="1" />
+          <End Role="ServiciosPorOrden" Type="Self.ServiciosPorOrden" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orden">
+              <PropertyRef Name="idOrden" />
+            </Principal>
+            <Dependent Role="ServiciosPorOrden">
+              <PropertyRef Name="idOrden" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Usuario__idRolUs__1367E606">
+          <End Role="rolUsuario" Type="Self.rolUsuario" Multiplicity="1" />
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="rolUsuario">
+              <PropertyRef Name="idRolUsuario" />
+            </Principal>
+            <Dependent Role="Usuario">
+              <PropertyRef Name="idRolUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="serviciosCRModelStoreContainer">
+          <EntitySet Name="Calificacion" EntityType="Self.Calificacion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Categoria" EntityType="Self.Categoria" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Orden" EntityType="Self.Orden" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Regular" EntityType="Self.Regular" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="rolUsuario" EntityType="Self.rolUsuario" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ServiciosPorOrden" EntityType="Self.ServiciosPorOrden" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Calificac__idUsu__1FCDBCEB" Association="Self.FK__Calificac__idUsu__1FCDBCEB">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Calificacion" EntitySet="Calificacion" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Orden__idCliente__1920BF5C" Association="Self.FK__Orden__idCliente__1920BF5C">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Orden" EntitySet="Orden" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Regular__idUsuar__164452B1" Association="Self.FK__Regular__idUsuar__164452B1">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Regular" EntitySet="Regular" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Servicios__idOrd__1BFD2C07" Association="Self.FK__Servicios__idOrd__1BFD2C07">
+            <End Role="Orden" EntitySet="Orden" />
+            <End Role="ServiciosPorOrden" EntitySet="ServiciosPorOrden" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Usuario__idRolUs__1367E606" Association="Self.FK__Usuario__idRolUs__1367E606">
+            <End Role="rolUsuario" EntitySet="rolUsuario" />
+            <End Role="Usuario" EntitySet="Usuario" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="serviciosCRModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Calificacion">
+          <Key>
+            <PropertyRef Name="idCalificacion" />
+          </Key>
+          <Property Name="idCalificacion" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="comentario" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="calificacion1" Type="Decimal" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="idServicio" Type="Int32" Nullable="false" />
+          <Property Name="idUsuario" Type="Int32" Nullable="false" />
+          <Property Name="fechaHora" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK__Calificac__idUsu__1FCDBCEB" FromRole="Calificacion" ToRole="Usuario" />
+        </EntityType>
+        <EntityType Name="Categoria">
+          <Key>
+            <PropertyRef Name="idCategoria" />
+          </Key>
+          <Property Name="idCategoria" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="categoria1" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="activo" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Orden">
+          <Key>
+            <PropertyRef Name="idOrden" />
+          </Key>
+          <Property Name="idOrden" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idCliente" Type="Int32" Nullable="false" />
+          <Property Name="pagada" Type="Boolean" Nullable="false" />
+          <Property Name="fechaHora" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK__Orden__idCliente__1920BF5C" FromRole="Orden" ToRole="Usuario" />
+          <NavigationProperty Name="ServiciosPorOrdens" Relationship="Self.FK__Servicios__idOrd__1BFD2C07" FromRole="Orden" ToRole="ServiciosPorOrden" />
+        </EntityType>
+        <EntityType Name="Regular">
+          <Key>
+            <PropertyRef Name="idUsuario" />
+          </Key>
+          <Property Name="idUsuario" Type="Int32" Nullable="false" />
+          <Property Name="primerNombre" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="apellidos" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="cuentaBancaria" Type="Decimal" Precision="20" Scale="0" Nullable="false" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK__Regular__idUsuar__164452B1" FromRole="Regular" ToRole="Usuario" />
+        </EntityType>
+        <EntityType Name="rolUsuario">
+          <Key>
+            <PropertyRef Name="idRolUsuario" />
+          </Key>
+          <Property Name="idRolUsuario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombreRol" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Usuarios" Relationship="Self.FK__Usuario__idRolUs__1367E606" FromRole="rolUsuario" ToRole="Usuario" />
+        </EntityType>
+        <EntityType Name="ServiciosPorOrden">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idOrden" Type="Int32" Nullable="false" />
+          <Property Name="idServicio" Type="Int32" Nullable="false" />
+          <Property Name="cantidad" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Orden" Relationship="Self.FK__Servicios__idOrd__1BFD2C07" FromRole="ServiciosPorOrden" ToRole="Orden" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="idUsuario" />
+          </Key>
+          <Property Name="idUsuario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="correo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="contrasena" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="idRolUsuario" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Calificacions" Relationship="Self.FK__Calificac__idUsu__1FCDBCEB" FromRole="Usuario" ToRole="Calificacion" />
+          <NavigationProperty Name="Ordens" Relationship="Self.FK__Orden__idCliente__1920BF5C" FromRole="Usuario" ToRole="Orden" />
+          <NavigationProperty Name="Regular" Relationship="Self.FK__Regular__idUsuar__164452B1" FromRole="Usuario" ToRole="Regular" />
+          <NavigationProperty Name="rolUsuario" Relationship="Self.FK__Usuario__idRolUs__1367E606" FromRole="Usuario" ToRole="rolUsuario" />
+        </EntityType>
+        <Association Name="FK__Calificac__idUsu__1FCDBCEB">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="Calificacion" Type="Self.Calificacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="idUsuario" />
+            </Principal>
+            <Dependent Role="Calificacion">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Orden__idCliente__1920BF5C">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="Orden" Type="Self.Orden" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="idUsuario" />
+            </Principal>
+            <Dependent Role="Orden">
+              <PropertyRef Name="idCliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Servicios__idOrd__1BFD2C07">
+          <End Role="Orden" Type="Self.Orden" Multiplicity="1" />
+          <End Role="ServiciosPorOrden" Type="Self.ServiciosPorOrden" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orden">
+              <PropertyRef Name="idOrden" />
+            </Principal>
+            <Dependent Role="ServiciosPorOrden">
+              <PropertyRef Name="idOrden" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Regular__idUsuar__164452B1">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="Regular" Type="Self.Regular" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="idUsuario" />
+            </Principal>
+            <Dependent Role="Regular">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Usuario__idRolUs__1367E606">
+          <End Role="rolUsuario" Type="Self.rolUsuario" Multiplicity="1" />
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="rolUsuario">
+              <PropertyRef Name="idRolUsuario" />
+            </Principal>
+            <Dependent Role="Usuario">
+              <PropertyRef Name="idRolUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="serviciosCREntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Calificacions" EntityType="Self.Calificacion" />
+          <EntitySet Name="Categorias" EntityType="Self.Categoria" />
+          <EntitySet Name="Ordens" EntityType="Self.Orden" />
+          <EntitySet Name="Regulars" EntityType="Self.Regular" />
+          <EntitySet Name="rolUsuarios" EntityType="Self.rolUsuario" />
+          <EntitySet Name="ServiciosPorOrdens" EntityType="Self.ServiciosPorOrden" />
+          <EntitySet Name="Usuarios" EntityType="Self.Usuario" />
+          <AssociationSet Name="FK__Calificac__idUsu__1FCDBCEB" Association="Self.FK__Calificac__idUsu__1FCDBCEB">
+            <End Role="Usuario" EntitySet="Usuarios" />
+            <End Role="Calificacion" EntitySet="Calificacions" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Orden__idCliente__1920BF5C" Association="Self.FK__Orden__idCliente__1920BF5C">
+            <End Role="Usuario" EntitySet="Usuarios" />
+            <End Role="Orden" EntitySet="Ordens" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Servicios__idOrd__1BFD2C07" Association="Self.FK__Servicios__idOrd__1BFD2C07">
+            <End Role="Orden" EntitySet="Ordens" />
+            <End Role="ServiciosPorOrden" EntitySet="ServiciosPorOrdens" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Regular__idUsuar__164452B1" Association="Self.FK__Regular__idUsuar__164452B1">
+            <End Role="Usuario" EntitySet="Usuarios" />
+            <End Role="Regular" EntitySet="Regulars" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Usuario__idRolUs__1367E606" Association="Self.FK__Usuario__idRolUs__1367E606">
+            <End Role="rolUsuario" EntitySet="rolUsuarios" />
+            <End Role="Usuario" EntitySet="Usuarios" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="serviciosCRModelStoreContainer" CdmEntityContainer="serviciosCREntities">
+          <EntitySetMapping Name="Calificacions">
+            <EntityTypeMapping TypeName="serviciosCRModel.Calificacion">
+              <MappingFragment StoreEntitySet="Calificacion">
+                <ScalarProperty Name="idCalificacion" ColumnName="idCalificacion" />
+                <ScalarProperty Name="comentario" ColumnName="comentario" />
+                <ScalarProperty Name="calificacion1" ColumnName="calificacion" />
+                <ScalarProperty Name="idServicio" ColumnName="idServicio" />
+                <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+                <ScalarProperty Name="fechaHora" ColumnName="fechaHora" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Categorias">
+            <EntityTypeMapping TypeName="serviciosCRModel.Categoria">
+              <MappingFragment StoreEntitySet="Categoria">
+                <ScalarProperty Name="idCategoria" ColumnName="idCategoria" />
+                <ScalarProperty Name="categoria1" ColumnName="categoria" />
+                <ScalarProperty Name="activo" ColumnName="activo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ordens">
+            <EntityTypeMapping TypeName="serviciosCRModel.Orden">
+              <MappingFragment StoreEntitySet="Orden">
+                <ScalarProperty Name="idOrden" ColumnName="idOrden" />
+                <ScalarProperty Name="idCliente" ColumnName="idCliente" />
+                <ScalarProperty Name="pagada" ColumnName="pagada" />
+                <ScalarProperty Name="fechaHora" ColumnName="fechaHora" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Regulars">
+            <EntityTypeMapping TypeName="serviciosCRModel.Regular">
+              <MappingFragment StoreEntitySet="Regular">
+                <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+                <ScalarProperty Name="primerNombre" ColumnName="primerNombre" />
+                <ScalarProperty Name="apellidos" ColumnName="apellidos" />
+                <ScalarProperty Name="cuentaBancaria" ColumnName="cuentaBancaria" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="rolUsuarios">
+            <EntityTypeMapping TypeName="serviciosCRModel.rolUsuario">
+              <MappingFragment StoreEntitySet="rolUsuario">
+                <ScalarProperty Name="idRolUsuario" ColumnName="idRolUsuario" />
+                <ScalarProperty Name="nombreRol" ColumnName="nombreRol" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ServiciosPorOrdens">
+            <EntityTypeMapping TypeName="serviciosCRModel.ServiciosPorOrden">
+              <MappingFragment StoreEntitySet="ServiciosPorOrden">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="idOrden" ColumnName="idOrden" />
+                <ScalarProperty Name="idServicio" ColumnName="idServicio" />
+                <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usuarios">
+            <EntityTypeMapping TypeName="serviciosCRModel.Usuario">
+              <MappingFragment StoreEntitySet="Usuario">
+                <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+                <ScalarProperty Name="correo" ColumnName="correo" />
+                <ScalarProperty Name="contrasena" ColumnName="contrasena" />
+                <ScalarProperty Name="idRolUsuario" ColumnName="idRolUsuario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
