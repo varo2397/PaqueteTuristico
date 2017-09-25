@@ -157,6 +157,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\ClienteController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UsuariosController.cs" />
     <Compile Include="Controllers\VendedorController.cs" />
@@ -333,7 +334,7 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Cliente\_ViewStart.cshtml" />
     <Content Include="Views\Vendedor\AgregarServicio.cshtml" />
     <Content Include="Views\Vendedor\InicioSesion.cshtml" />
     <Content Include="Views\Vendedor\Login.cshtml" />
@@ -345,6 +346,11 @@
     <Content Include="Views\Usuarios\Details.cshtml" />
     <Content Include="Views\Usuarios\Edit.cshtml" />
     <Content Include="Views\Usuarios\Index.cshtml" />
+    <Content Include="Views\Cliente\InicioSesion.cshtml" />
+    <Content Include="Views\Cliente\Ordenes.cshtml" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Cliente\PlantillaCliente.cshtml" />
+    <Content Include="Views\Cliente\Registrarse.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -14,6 +14,12 @@ namespace PaquetesTuristicos
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+               name: "Cliente",
+               url: "{controller}/{action}/{id}",
+               defaults: new { controller = "Cliente", action = "InicioSesion", id = UrlParameter.Optional }
+           );
+
+            routes.MapRoute(
                name: "Vendedor",
                url: "{controller}/{action}/{id}",
                defaults: new { controller = "Vendedor", action = "InicioSesion", id = UrlParameter.Optional }

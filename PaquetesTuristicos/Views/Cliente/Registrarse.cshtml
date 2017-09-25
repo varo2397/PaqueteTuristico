@@ -2,6 +2,7 @@
 @{
     ViewBag.Title = "Registrarse";
 }
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -22,11 +23,11 @@
     <link href="~/Boostratp/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
 
     <!-- Custom styles for this template -->
-    <link href="~/Boostratp/css/sb-admin.css" rel="stylesheet" />
+    <link href="~/Boostratp/css/sb-admin.css" rel="stylesheet"/>
 
 </head>
 
-<body class="bg-dark">
+<body class="bg-info">
 
     <div class="container">
 
@@ -37,25 +38,41 @@
             <div class="card-body">
                 <form method="post" action="">
                     <div class="form-group">
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <label for="exampleInputName">Nombre</label>
+                                <input type="text" class="form-control" id="exampleInputName" name="nombre" aria-describedby="nameHelp" placeholder="Nombre">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="exampleInputLastName">Apellidos</label>
+                                <input type="text" class="form-control" id="exampleInputLastName" name="apellidos" aria-describedby="nameHelp" placeholder="Apellidos">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label for="exampleInputEmail1">Direccion de correo electronico</label>
-                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Correo electronico">
+                        <input type="email" class="form-control" id="exampleInputEmail1" name="correoElectronico" aria-describedby="emailHelp" placeholder="Correo electronico">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Numero de cuenta</label>
+                        <input type="number" class="form-control" id="accountNumber" name="numeroCuenta" min="0" max="9999999999999" aria-describedby="emailHelp" placeholder="Numero de cuenta">
                     </div>
                     <div class="form-group">
                         <div class="form-row">
                             <div class="col-md-6">
                                 <label for="exampleInputPassword1">Contraseña</label>
-                                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Contraseña">
+                                <input type="password" class="form-control" id="exampleInputPassword1" name="contraseña" placeholder="Contraseña">
                             </div>
                             <div class="col-md-6">
                                 <label for="exampleConfirmPassword">Confirmar contraseña</label>
-                                <input type="password" class="form-control" id="exampleConfirmPassword" placeholder="Confirmar contraseña">
+                                <input type="password" class="form-control" id="exampleConfirmPassword" name="confirmarContraseña" placeholder="Confirmar contraseña">
                             </div>
                         </div>
                     </div>
                     @* Para cuando se tenga el login funcionando *@
                     @*<button type="submit" class="btn btn-dark btn-block">Iniciar Sesion</button>*@
-                    <button type="button" class="btn btn-dark btn-block" onclick="location.href='@Url.Action("Servicios", "Vendedor")'">Registrarse</button>
-                    <button type="button" class="btn btn-dark btn-block" onclick="location.href='@Url.Action("InicioSesion", "Vendedor")'">Inicio de sesion</button>
+                    <button type="button" class="btn btn-info btn-block" onclick="location.href='@Url.Action("Ordenes", "Cliente")'">Registrarse</button>
+                    <button type="button" class="btn btn-info btn-block" onclick="location.href='@Url.Action("InicioSesion", "Cliente")'">Inicio de sesion</button>
                 </form>
 
             </div>
@@ -70,4 +87,5 @@
 </body>
 
 </html>
+
 

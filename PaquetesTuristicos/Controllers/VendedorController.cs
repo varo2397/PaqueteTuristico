@@ -70,7 +70,7 @@ namespace PaquetesTuristicos.Controllers
                         "<div class=\"form-group\"><label>Precio de la tarifa " + (i + 1) + "</label></div>" +
                         "<div class=\"form-group\"><input type = \"number\" class=\"form-control\" min=\"1\" max =\"10000\" id\"=tarifaPrecio" + (i + 1) + "\" required ></div>" +
                         "<div class=\"form-group\"><label>Descripcion de la tarifa " + (i + 1) + "</label></div>" +
-                        "<div class=\"form-group\"><textarea></textarea>";
+                        "<div class=\"form-group\"><textarea class=\"form-control\" ></textarea>";
                     htmltarifas += tarifa;
                 }
                 return htmltarifas;
