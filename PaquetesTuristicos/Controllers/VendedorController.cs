@@ -18,6 +18,28 @@ namespace PaquetesTuristicos.Controllers
             return PartialView();
         }
 
+        [HttpPost]
+        public ActionResult InicioSesion(FormCollection form)
+        {
+            var USER = form["USER"];
+            var pass = form["pass"];
+            if (ModelState.IsValid)
+            {
+                using (serviciosCREntities db = new serviciosCREntities())
+                {
+                    var v = db.Usuarios.Where(a => a.correo.Equals(USER)).FirstOrDefault();
+                    if ((v != null) && (v.idRolUsuario == 2))   // existe el usuario y es vendedor
+                    {
+                        Session["USER"] = v.idUsuario.ToString();
+
+                        return RedirectToAction("Home", "Index");
+                    }
+                }
+            }
+            ViewBag.Error = "Error";
+            return View(form);
+        }
+
         public ActionResult Servicios()
         {
             return View();
@@ -26,6 +48,52 @@ namespace PaquetesTuristicos.Controllers
         public ActionResult Registrarse()
         {
             return PartialView();
+        }
+
+        [HttpPost]
+        public ActionResult Registrarse(FormCollection form)
+        {
+            Usuario user = new Usuario();
+            var email = form["email"];
+            var pass = form["pass"];
+            var passConfirm = form["pass2"];
+
+            if (pass != passConfirm)
+            {
+                //contraseñas no son iguales
+            }
+
+            user.correo = email;
+            user.contrasena = pass;
+            user.idRolUsuario = 2;          // 2 = vendedor
+
+            if (ModelState.IsValid)
+            {
+
+                if (emailExist(email))
+                {
+                    //ModelState.AddModelError("EmailExist", "Email already exist");
+                    return View();
+                }
+
+                using (serviciosCREntities db = new serviciosCREntities())
+                {
+                    db.Usuarios.Add(user);
+                    db.SaveChanges();
+                }
+            }
+            ViewBag.Error = "Error";
+            return View(form);
+        }
+
+        [NonAction]
+        public bool emailExist(string email)
+        {
+            using (serviciosCREntities db = new serviciosCREntities())
+            {
+                var v = db.Usuarios.Where(a => a.correo == email).FirstOrDefault();
+                return v != null;
+            }
         }
 
         public ActionResult AgregarServicio()
@@ -78,80 +146,5 @@ namespace PaquetesTuristicos.Controllers
 
             return "error";
         }
-        
-        public ActionResult Login()
-        {
-            ViewBag.Error = "";
-
-            return View();
-
-        }
-        [HttpPost]
-        public ActionResult Login(FormCollection form)
-        {
-            var USER = form["USER"];
-            var pass = form["pass"];
-            // this action is for handle post (login)
-            if (ModelState.IsValid)
-            {
-                using (serviciosCREntities db = new serviciosCREntities())
-                {
-                    var v = db.Usuarios.Where(a => a.correo.Equals(USER)).FirstOrDefault();
-                    if (v != null)
-                    {
-                        Session["USER"] = v.idUsuario.ToString();
-                        
-                        return RedirectToAction("Home", "Index");
-                    }
-                }
-            }
-            ViewBag.Error = "Error";
-            return View(form);
-        }
-
-        public ActionResult Register()
-        {
-            ViewBag.Error = "";
-
-            return View();
-
-        }
-        [HttpPost]
-        public ActionResult Register(FormCollection form)
-        {
-            Usuario user = new Usuario();
-            var email = form["email"];
-            var pass = form["pass"];
-            var passConfirm = form["pass2"];
-            
-            if (ModelState.IsValid)
-            {
-
-                if (emailExist(email))
-                {
-                    //ModelState.AddModelError("EmailExist", "Email already exist");
-                    return View();
-                }
-                
-                using (serviciosCREntities db = new serviciosCREntities())
-                {
-                    db.Usuarios.Add(user);
-                    db.SaveChanges();
-                }
-            }
-            ViewBag.Error = "Error";
-            return View(form);
-        }
-
-        [NonAction]
-        public bool emailExist(string email)
-        {
-            using (serviciosCREntities db = new serviciosCREntities())
-            {
-                var v = db.Usuarios.Where(a => a.correo == email).FirstOrDefault();
-                return v != null;
-            }
-        }
-
     }
 }
