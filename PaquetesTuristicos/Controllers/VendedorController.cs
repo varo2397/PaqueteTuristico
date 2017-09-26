@@ -21,18 +21,30 @@ namespace PaquetesTuristicos.Controllers
         [HttpPost]
         public ActionResult InicioSesion(FormCollection form)
         {
-            var USER = form["USER"];
-            var pass = form["pass"];
+            var email = form["correoElectronico"];
+            var pass = form["contraseña"];
             if (ModelState.IsValid)
             {
                 using (serviciosCREntities db = new serviciosCREntities())
                 {
-                    var v = db.Usuarios.Where(a => a.correo.Equals(USER)).FirstOrDefault();
-                    if ((v != null) && (v.idRolUsuario == 2))   // existe el usuario y es vendedor
+                    var v = db.Usuarios.Where(a => a.correo.Equals(email)).FirstOrDefault();
+                    if ((v != null) && (v.idRolUsuario == 2))   // existe el usuario y es tipo regular
                     {
-                        Session["USER"] = v.idUsuario.ToString();
+                        if (string.Compare(Crypto.Hash(pass), v.contrasena) == 0)
+                        {
+                            Session["USER"] = v;
 
-                        return RedirectToAction("Home", "Index");
+                            return RedirectToAction("Home", "Index");
+                        }
+                        else
+                        {
+                            System.Diagnostics.Debug.WriteLine("contraseña invalida");
+                            //contraseña invalida
+                        }
+                    }
+                    else
+                    {
+                        System.Diagnostics.Debug.WriteLine("Usuario no existe/ cuenta no es un usuario regular");
                     }
                 }
             }
