@@ -34,10 +34,10 @@
 
         <div class="card card-login mx-auto mt-5">
             <div class="card-header">
-                Inicio de sesion
+                Inicio de sesion @ViewBag.Error
             </div>
             <div class="card-body">
-                <form method="post" action="">
+                <form method="post" action="~/Cliente/InicioSesion">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Direccion correo electronico</label>
                         <input class="form-control" id="exampleInputEmail1" name="correoElectronico" aria-describedby="emailHelp" placeholder="Correo electronico">
@@ -55,8 +55,8 @@
                         </div>
                     </div>
                     @* Para cuando se tenga el login funcionando *@
-                    @*<button type="submit" class="btn btn-dark btn-block">Iniciar Sesion</button>*@
-                    <button type="button" class="btn btn-info btn-block" onclick="location.href='@Url.Action("Ordenes", "Cliente")'">Iniciar Sesion</button>
+                    <button type="submit" class="btn btn-dark btn-block">Iniciar Sesion</button>
+                    @*<button type="button" class="btn btn-info btn-block" onclick="location.href='@Url.Action("Ordenes", "Cliente")'">Iniciar Sesion</button>*@
                     <button type="button" class="btn btn-info btn-block" onclick="location.href='@Url.Action("Registrarse", "Cliente")'">Registrarse</button>
                 </form>
 

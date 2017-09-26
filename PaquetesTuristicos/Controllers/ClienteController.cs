@@ -27,28 +27,31 @@ namespace PaquetesTuristicos.Controllers
             {
                 using (serviciosCREntities db = new serviciosCREntities())
                 {
-                    var v = db.Usuarios.Where(a => a.correo.Equals(email)).FirstOrDefault();
-                    if ((v != null) && (v.idRolUsuario == 3))   // existe el usuario y es tipo regular
+                    var u = db.Usuarios.Where(a => a.correo.Equals(email)).FirstOrDefault();
+                    if ((u != null) && (u.idRolUsuario == 3))   // existe el usuario y es tipo regular
                     {
-                        if (string.Compare(Crypto.Hash(pass), v.contrasena) == 0)
+                        if (string.Compare(Crypto.Hash(pass), u.contrasena) == 0)
                         {
-                            var v2 = db.Regulars.Where(a => a.idUsuario.Equals(v.idUsuario)).FirstOrDefault();
-                            Session["USER"] = v2;
+                            Usuario user = new Usuario();
+                            user.idUsuario = u.idUsuario;
+                            user.correo = u.correo;
 
-                            return RedirectToAction("Home", "Index");
+                            //Conseguir informacion del usuario?
+                            //var u2 = db.Regulars.Where(a => a.idUsuario.Equals(u.idUsuario)).FirstOrDefault();
+                            Session["USER"] = user;
+
+                            return RedirectToAction("Cliente", "Ordenes");
                         }else
                         {
-                            System.Diagnostics.Debug.WriteLine("contraseña invalida");
-                            //contraseña invalida
+                            ViewBag.Error = "Contraseña incorrecta";
                         }
                     }else
                     {
-                        System.Diagnostics.Debug.WriteLine("Usuario no existe/ cuenta no es un usuario regular");
+                        ViewBag.Error = "Este correo no esta registrado en nuestro sistema.";
                     }
                 }
             }
-            ViewBag.Error = "Error";
-            return View(form);
+            return PartialView(form);
         }
 
         public ActionResult Ordenes()
@@ -74,41 +77,40 @@ namespace PaquetesTuristicos.Controllers
             var pass = form["contraseña"];
             var passConfirm = form["confirmarContraseña"];
 
-            if (pass != passConfirm)
+            if (string.Compare(pass, passConfirm) == 0)
             {
-                //contraseñas no son iguales
-                System.Diagnostics.Debug.WriteLine("contraseñas no son iguales");
-            }
+                user.correo = email;
+                user.contrasena = Crypto.Hash(pass);
+                user.idRolUsuario = 3;          // 3 = regular
 
-            user.correo = email;
-            user.contrasena = Crypto.Hash(pass);
-            user.idRolUsuario = 2;          // 2 = vendedor
+                regular.primerNombre = name;
+                regular.apellidos = lastName;
+                regular.cuentaBancaria = Convert.ToDecimal(bankAccount);
 
-            regular.primerNombre = name;
-            regular.apellidos = lastName;
-            regular.cuentaBancaria = Convert.ToDecimal(bankAccount);
-
-            if (ModelState.IsValid)
-            {
-
-                if (emailExist(email))
+                if (ModelState.IsValid)
                 {
-                    //ModelState.AddModelError("EmailExist", "Email already exist");
-                    System.Diagnostics.Debug.WriteLine("Email already exist");
-                    return View();
-                }
-
-                using (serviciosCREntities db = new serviciosCREntities())
-                {
-                    db.Usuarios.Add(user);
-                    var v = db.Usuarios.Where(a => a.correo == user.correo).FirstOrDefault();
-                    regular.idUsuario = v.idUsuario;
-                    db.Regulars.Add(regular);
-                    db.SaveChanges();
+                    if (emailExist(email))
+                    {
+                        ViewBag.Error = "El correo ya esta registrado en el sistema.";
+                    }else
+                    {
+                        using (serviciosCREntities db = new serviciosCREntities())
+                        {
+                            db.Usuarios.Add(user);
+                            var v = db.Usuarios.Where(a => a.correo == user.correo).FirstOrDefault();
+                            regular.idUsuario = v.idUsuario;
+                            db.Regulars.Add(regular);
+                            db.SaveChanges();
+                            return RedirectToAction("Cliente", "InicioSesion");
+                        }
+                    }
                 }
             }
-            ViewBag.Error = "Error";
-            return View(form);
+            else
+            {
+                ViewBag.Error = "Contraseñas no coiciden";
+            }
+            return PartialView(form);
         }
 
         [NonAction]

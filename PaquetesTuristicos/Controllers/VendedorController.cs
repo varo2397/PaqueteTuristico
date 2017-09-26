@@ -27,29 +27,31 @@ namespace PaquetesTuristicos.Controllers
             {
                 using (serviciosCREntities db = new serviciosCREntities())
                 {
-                    var v = db.Usuarios.Where(a => a.correo.Equals(email)).FirstOrDefault();
-                    if ((v != null) && (v.idRolUsuario == 2))   // existe el usuario y es tipo regular
+                    var u = db.Usuarios.Where(a => a.correo.Equals(email)).FirstOrDefault();
+                    if ((u != null) && (u.idRolUsuario == 2))   // existe el usuario y es tipo vendedor
                     {
-                        if (string.Compare(Crypto.Hash(pass), v.contrasena) == 0)
+                        if (string.Compare(Crypto.Hash(pass), u.contrasena) == 0)
                         {
-                            Session["USER"] = v;
+                            Usuario user = new Usuario();
+                            user.idUsuario = u.idUsuario;
+                            user.correo = u.correo;
+                            
+                            Session["USER"] = user;
 
-                            return RedirectToAction("Home", "Index");
+                            return RedirectToAction("Vendedor", "Servicios");
                         }
                         else
                         {
-                            System.Diagnostics.Debug.WriteLine("contraseña invalida");
-                            //contraseña invalida
+                            ViewBag.Error = "Contraseña incorrecta";
                         }
                     }
                     else
                     {
-                        System.Diagnostics.Debug.WriteLine("Usuario no existe/ cuenta no es un usuario regular");
+                        ViewBag.Error = "Este correo no esta registrado en nuestro sistema.";
                     }
                 }
             }
-            ViewBag.Error = "Error";
-            return View(form);
+            return PartialView(form);
         }
 
         public ActionResult Servicios()
@@ -66,36 +68,39 @@ namespace PaquetesTuristicos.Controllers
         public ActionResult Registrarse(FormCollection form)
         {
             Usuario user = new Usuario();
-            var email = form["email"];
-            var pass = form["pass"];
-            var passConfirm = form["pass2"];
 
-            if (pass != passConfirm)
+            var email = form["correoElectronico"];
+            var pass = form["contraseña"];
+            var passConfirm = form["confirmarContraseña"];
+
+            if (string.Compare(pass, passConfirm) == 0)
             {
-                //contraseñas no son iguales
+                user.correo = email;
+                user.contrasena = Crypto.Hash(pass);
+                user.idRolUsuario = 2;          // 2 = vendedor
+
+                if (ModelState.IsValid)
+                {
+                    if (emailExist(email))
+                    {
+                        ViewBag.Error = "El correo ya esta registrado en el sistema.";
+                    }
+                    else
+                    {
+                        using (serviciosCREntities db = new serviciosCREntities())
+                        {
+                            db.Usuarios.Add(user);
+                            db.SaveChanges();
+                            return RedirectToAction("Vendedor", "InicioSesion");
+                        }
+                    }
+                }
             }
-
-            user.correo = email;
-            user.contrasena = pass;
-            user.idRolUsuario = 2;          // 2 = vendedor
-
-            if (ModelState.IsValid)
+            else
             {
-
-                if (emailExist(email))
-                {
-                    //ModelState.AddModelError("EmailExist", "Email already exist");
-                    return View();
-                }
-
-                using (serviciosCREntities db = new serviciosCREntities())
-                {
-                    db.Usuarios.Add(user);
-                    db.SaveChanges();
-                }
+                ViewBag.Error = "Contraseñas no coiciden";
             }
-            ViewBag.Error = "Error";
-            return View(form);
+            return PartialView(form);
         }
 
         [NonAction]
