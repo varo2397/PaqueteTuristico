@@ -35,7 +35,7 @@
                 Registrarse
             </div>
             <div class="card-body">
-                <form method="post" action="">
+                <form method="post" action="~/Vendedor/Registrarse">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Direccion de correo electronico</label>
                         <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Correo electronico">
@@ -53,8 +53,8 @@
                         </div>
                     </div>
                     @* Para cuando se tenga el login funcionando *@
-                    @*<button type="submit" class="btn btn-dark btn-block">Iniciar Sesion</button>*@
-                    <button type="button" class="btn btn-dark btn-block" onclick="location.href='@Url.Action("Servicios", "Vendedor")'">Registrarse</button>
+                    <button type="submit" class="btn btn-dark btn-block">Iniciar Sesion</button>
+                    @*<button type="button" class="btn btn-dark btn-block" onclick="location.href='@Url.Action("Servicios", "Vendedor")'">Registrarse</button>*@
                     <button type="button" class="btn btn-dark btn-block" onclick="location.href='@Url.Action("InicioSesion", "Vendedor")'">Inicio de sesion</button>
                 </form>
 
