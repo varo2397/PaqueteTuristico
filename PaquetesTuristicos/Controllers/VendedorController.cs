@@ -68,10 +68,10 @@ namespace PaquetesTuristicos.Controllers
         public ActionResult Registrarse(FormCollection form)
         {
             Usuario user = new Usuario();
-
             var email = form["correoElectronico"];
             var pass = form["contraseña"];
             var passConfirm = form["confirmarContraseña"];
+
 
             if (string.Compare(pass, passConfirm) == 0)
             {

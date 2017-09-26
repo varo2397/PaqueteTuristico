@@ -36,7 +36,7 @@
                 Inicio de sesion
             </div>
             <div class="card-body">
-                <form method="post" action="~/Cliente/InicioSesion">
+                <form method="post" action="~/Vendedor/InicioSesion">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Correo electronico</label>
                         <input class="form-control" id="exampleInputEmail1" name="correoElectronico" aria-describedby="emailHelp" placeholder="Enter email" required>
@@ -54,8 +54,8 @@
                         </div>
                     </div>
                     @* Para cuando se tenga el login funcionando *@
-                    @*<button type="submit" class="btn btn-dark btn-block">Iniciar Sesion</button>*@
-                    <button type="button" class="btn btn-dark btn-block" onclick="location.href='@Url.Action("Servicios", "Vendedor")'">Iniciar Sesion</button>
+                    <button type="submit" class="btn btn-dark btn-block">Iniciar Sesion</button>
+                    @*<button type="button" class="btn btn-dark btn-block" onclick="location.href='@Url.Action("Servicios", "Vendedor")'">Iniciar Sesion</button>*@
                     <button type="button" class="btn btn-dark btn-block" onclick="location.href='@Url.Action("Registrarse", "Vendedor")'">Registrarse</button>
                 </form>
 

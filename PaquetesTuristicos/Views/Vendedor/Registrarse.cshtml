@@ -32,28 +32,28 @@
 
         <div class="card card-register mx-auto mt-5">
             <div class="card-header">
-                Registrarse
+                Registrarse @ViewBag.Error
             </div>
             <div class="card-body">
                 <form method="post" action="~/Vendedor/Registrarse">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Direccion de correo electronico</label>
-                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Correo electronico">
+                        <input type="email" class="form-control" id="exampleInputEmail1" name="correoElectronico" aria-describedby="emailHelp" placeholder="Correo electronico" required>
                     </div>
                     <div class="form-group">
                         <div class="form-row">
                             <div class="col-md-6">
                                 <label for="exampleInputPassword1">Contraseña</label>
-                                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Contraseña">
+                                <input type="password" class="form-control" id="exampleInputPassword1" name="contraseña" placeholder="Contraseña" required>
                             </div>
                             <div class="col-md-6">
                                 <label for="exampleConfirmPassword">Confirmar contraseña</label>
-                                <input type="password" class="form-control" id="exampleConfirmPassword" placeholder="Confirmar contraseña">
+                                <input type="password" class="form-control" id="exampleConfirmPassword" name="confirmarContraseña" placeholder="Confirmar contraseña" required>
                             </div>
                         </div>
                     </div>
                     @* Para cuando se tenga el login funcionando *@
-                    <button type="submit" class="btn btn-dark btn-block">Iniciar Sesion</button>
+                    <button type="submit" class="btn btn-dark btn-block">Registrarse</button>
                     @*<button type="button" class="btn btn-dark btn-block" onclick="location.href='@Url.Action("Servicios", "Vendedor")'">Registrarse</button>*@
                     <button type="button" class="btn btn-dark btn-block" onclick="location.href='@Url.Action("InicioSesion", "Vendedor")'">Inicio de sesion</button>
                 </form>
