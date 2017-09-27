@@ -54,6 +54,13 @@
                             </label>
                         </div>
                     </div>
+
+                    @if (ViewBag.Error != "")
+                    {
+                        <div class="text-danger form-group">
+                            @ViewBag.Error
+                        </div>
+                    }
                     @* Para cuando se tenga el login funcionando *@
                     <button type="submit" class="btn btn-info btn-block">Iniciar Sesion</button>
                     @*<button type="button" class="btn btn-info btn-block" onclick="location.href='@Url.Action("Ordenes", "Cliente")'">Iniciar Sesion</button>*@
@@ -72,4 +79,3 @@
 </body>
 
 </html>
-

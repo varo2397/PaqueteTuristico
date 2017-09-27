@@ -127,5 +127,11 @@ namespace PaquetesTuristicos.Controllers
                 return v != null;
             }
         }
+
+        public ActionResult CerrarSesion()
+        {
+            Session.Clear();
+            return RedirectToAction("InicioSesion", "Cliente");
+        }
     }
 }

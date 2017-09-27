@@ -37,7 +37,7 @@
                 <button data-dismiss="alert" class="close close-sm" type="button">
                     <i class="icon-remove"></i>
                 </button>
-                <strong>Ocurrio un error.</strong> Tu usuario o contraseña no son correctos.
+                <strong>@ViewBag.Error</strong> 
             </div>
         }
 
@@ -50,7 +50,7 @@
                     
                     <div class="form-group">
                         <label for="exampleInputEmail1">Correo electronico</label>
-                        <input class="form-control" id="exampleInputEmail1" name="correoElectronico" aria-describedby="emailHelp" placeholder="Enter email" required>
+                        <input class="form-control" id="exampleInputEmail1" name="correoElectronico" aria-describedby="emailHelp" placeholder="Correo electronico" required>
                     </div>
                     <div class="form-group">
                         <label for="exampleInputPassword1">Contraseña</label>
@@ -64,6 +64,14 @@
                             </label>
                         </div>
                     </div>
+                    @if (ViewBag.Error != "")
+                    {
+                        <div class="text-danger form-group">
+                            @ViewBag.Error
+                        </div>
+                    }
+
+
                     @* Para cuando se tenga el login funcionando *@
                     <button type="submit" class="btn btn-dark btn-block">Iniciar Sesion</button>
                     @*<button type="button" class="btn btn-dark btn-block" onclick="location.href='@Url.Action("Servicios", "Vendedor")'">Iniciar Sesion</button>*@

@@ -23,7 +23,7 @@
     <link href="~/Boostratp/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
 
     <!-- Custom styles for this template -->
-    <link href="~/Boostratp/css/sb-admin.css" rel="stylesheet"/>
+    <link href="~/Boostratp/css/sb-admin.css" rel="stylesheet" />
 
 </head>
 
@@ -69,6 +69,12 @@
                             </div>
                         </div>
                     </div>
+                    @if (ViewBag.Error != "")
+                    {
+                        <div class="text-danger form-group">
+                            @ViewBag.Error
+                        </div>
+                    }
                     @* Para cuando se tenga el login funcionando *@
                     <button type="submit" class="btn btn-info btn-block">Registrarse</button>
                     @*<button type="button" class="btn btn-info btn-block" onclick="location.href='@Url.Action("Ordenes", "Cliente")'">Registrarse</button>*@
@@ -87,5 +93,3 @@
 </body>
 
 </html>
-
-

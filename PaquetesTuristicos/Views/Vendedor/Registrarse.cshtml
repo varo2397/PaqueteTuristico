@@ -29,19 +29,11 @@
 <body class="bg-dark">
 
     <div class="container">
-        @if (ViewBag.Error != "")
-        {
-            <div class="alert alert-block alert-danger fade in">
-                <button data-dismiss="alert" class="close close-sm" type="button">
-                    <i class="icon-remove"></i>
-                </button>
-                <strong>Ocurrio un error.</strong> Tu usuario o contraseña no son correctos.
-            </div>
-        }
+   
 
         <div class="card card-register mx-auto mt-5">
             <div class="card-header">
-                Registrarse @ViewBag.Error
+                Registrarse 
             </div>
             <div class="card-body">
                 <form method="post" action="~/Vendedor/Registrarse">
@@ -61,6 +53,12 @@
                                 <input type="password" class="form-control" id="exampleConfirmPassword" name="confirmarContraseña" placeholder="Confirmar contraseña" required>
                             </div>
                         </div>
+                        @if (ViewBag.Error != "")
+                        {
+                            <div class="text-danger form-group">
+                                @ViewBag.Error
+                            </div>
+                        }
                     </div>
                     @* Para cuando se tenga el login funcionando *@
                     <button type="submit" class="btn btn-dark btn-block">Registrarse</button>

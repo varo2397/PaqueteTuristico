@@ -37,6 +37,7 @@ namespace PaquetesTuristicos.Controllers
                             user.correo = u.correo;
                             
                             Session["USER"] = user;
+                            ViewBag.email = email;
 
                             return RedirectToAction("Servicios", "Vendedor");
                         }
@@ -166,6 +167,12 @@ namespace PaquetesTuristicos.Controllers
             }
 
             return "error";
+        }
+
+        public ActionResult CerrarSesion()
+        {
+            Session.Clear();
+            return RedirectToAction("InicioSesion", "Vendedor");
         }
     }
 }
