@@ -38,7 +38,7 @@ namespace PaquetesTuristicos.Controllers
                             
                             Session["USER"] = user;
 
-                            return RedirectToAction("Vendedor", "Servicios");
+                            return RedirectToAction("Servicios", "Vendedor");
                         }
                         else
                         {
@@ -95,7 +95,7 @@ namespace PaquetesTuristicos.Controllers
                             db.Usuarios.Add(user);
                             db.SaveChanges();
                             ViewBag.Error = "Usuario creado correctamente";
-                            return RedirectToAction("Vendedor", "InicioSesion");
+                            return RedirectToAction("InicioSesion", "Vendedor");
                         }
                     }
                 }

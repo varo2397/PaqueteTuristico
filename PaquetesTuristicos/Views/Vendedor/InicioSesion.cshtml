@@ -31,12 +31,23 @@
 
     <div class="container">
 
+        @if (ViewBag.Error != "")
+        {
+            <div class="alert alert-block alert-danger fade in">
+                <button data-dismiss="alert" class="close close-sm" type="button">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong>Ocurrio un error.</strong> Tu usuario o contraseña no son correctos.
+            </div>
+        }
+
         <div class="card card-login mx-auto mt-5">
             <div class="card-header">
                 Inicio de sesion
             </div>
             <div class="card-body">
                 <form method="post" action="~/Vendedor/InicioSesion">
+                    
                     <div class="form-group">
                         <label for="exampleInputEmail1">Correo electronico</label>
                         <input class="form-control" id="exampleInputEmail1" name="correoElectronico" aria-describedby="emailHelp" placeholder="Enter email" required>

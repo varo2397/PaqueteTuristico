@@ -29,6 +29,15 @@
 <body class="bg-dark">
 
     <div class="container">
+        @if (ViewBag.Error != "")
+        {
+            <div class="alert alert-block alert-danger fade in">
+                <button data-dismiss="alert" class="close close-sm" type="button">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong>Ocurrio un error.</strong> Tu usuario o contraseña no son correctos.
+            </div>
+        }
 
         <div class="card card-register mx-auto mt-5">
             <div class="card-header">
@@ -36,6 +45,7 @@
             </div>
             <div class="card-body">
                 <form method="post" action="~/Vendedor/Registrarse">
+                    
                     <div class="form-group">
                         <label for="exampleInputEmail1">Direccion de correo electronico</label>
                         <input type="email" class="form-control" id="exampleInputEmail1" name="correoElectronico" aria-describedby="emailHelp" placeholder="Correo electronico" required>
