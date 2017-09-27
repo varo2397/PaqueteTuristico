@@ -1,4 +1,6 @@
-﻿using StackExchange.Redis;
+﻿/* https://github.com/taswar/RedisForNetDevelopers */
+
+using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MongoDB.Bson;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -7,15 +8,16 @@ namespace PaquetesTuristicos.Models
 {
     public class Service
     {
-        // editar attributos a los que se van a utilizar..
-        public int ServiceId { get; set; }
-        public string Description { get; set; }
-        public double Fare { get; set; }
+        public ObjectId ServiceId { get; set; }
+        public string name { get; set; }
+        public string owner { get; set; }
         public byte[] Image { get; set; }
         public string province { get; set; }
         public string canton { get; set; }
         public string district { get; set; }
-        public string details { get; set; }
-        public Category category { get; set; }
+        public int idCategory { get; set; }
+        public string imagenID { get; set; }
+        public Categoria categoria { get; set; }
+        public List<Fare> fare { get; set; }
     }
 }
