@@ -30,7 +30,7 @@ namespace PaquetesTuristicos.Controllers
                     var u = db.Usuarios.Where(a => a.correo.Equals(email)).FirstOrDefault();
                     if ((u != null) && (u.idRolUsuario == 3))   // existe el usuario y es tipo regular
                     {
-                        if (string.Compare(Crypto.Hash(pass), u.contrasena) == 0)
+                        if (string.Compare(Crypto.Hash(pass).Substring(0, 50), u.contrasena) == 0)
                         {
                             Usuario user = new Usuario();
                             user.idUsuario = u.idUsuario;
@@ -40,7 +40,7 @@ namespace PaquetesTuristicos.Controllers
                             //var u2 = db.Regulars.Where(a => a.idUsuario.Equals(u.idUsuario)).FirstOrDefault();
                             Session["USER"] = user;
 
-                            return RedirectToAction("Cliente", "Ordenes");
+                            return RedirectToAction("Ordenes", "Cliente");
                         }else
                         {
                             ViewBag.Error = "Contraseña incorrecta";
@@ -81,6 +81,9 @@ namespace PaquetesTuristicos.Controllers
             {
                 user.correo = email;
                 user.contrasena = Crypto.Hash(pass);
+
+                user.contrasena = user.contrasena.Substring(0, 50);
+
                 user.idRolUsuario = 3;          // 3 = regular
 
                 regular.primerNombre = name;
@@ -97,11 +100,13 @@ namespace PaquetesTuristicos.Controllers
                         using (serviciosCREntities db = new serviciosCREntities())
                         {
                             db.Usuarios.Add(user);
+                            db.SaveChanges();
                             var v = db.Usuarios.Where(a => a.correo == user.correo).FirstOrDefault();
                             regular.idUsuario = v.idUsuario;
                             db.Regulars.Add(regular);
                             db.SaveChanges();
-                            return RedirectToAction("Cliente", "InicioSesion");
+                            ViewBag.Error = "Usuario creado correctamente";
+                            return RedirectToAction("InicioSesion", "Cliente");
                         }
                     }
                 }
