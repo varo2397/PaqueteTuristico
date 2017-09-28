@@ -58,7 +58,10 @@ namespace PaquetesTuristicos.Controllers
 
         public ActionResult Servicios()
         {
-            return View();
+            Usuario u = (Usuario)Session["USER"];
+            MongoConnect mongo = new MongoConnect();
+            var Model = mongo.getServiceByCreatorId(u.correo);
+            return View(Model);
         }
 
         public ActionResult Registrarse()
@@ -139,9 +142,10 @@ namespace PaquetesTuristicos.Controllers
             string distanciaKM = form["distancia"];
             string latitud = form["latitud"];
             string longuitud = form["longuitud"];
+            Usuario creador = (Usuario)Session["USER"];
             int cantidadTarifas = Convert.ToInt32(cantidad);
 
-
+            servicio.idCreador = creador.correo;
             servicio.name = nombreServicio;
             servicio.owner = nombrePropietario;
             servicio.province = provincia;
