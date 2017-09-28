@@ -147,10 +147,10 @@ namespace PaquetesTuristicos.Controllers
             servicio.province = provincia;
             servicio.canton = canton;
             servicio.district = distrito;
-            servicio.province = pueblo;
+            servicio.town = pueblo;
             servicio.KmDistance = distanciaKM;
             servicio.latitude = latitud;
-            servicio.longitude = longuitud;
+            servicio.longitude = longuitud;            
 
             //if(foto != null)
             //{
@@ -165,7 +165,7 @@ namespace PaquetesTuristicos.Controllers
 
 
 
-            ArrayList fotos = new ArrayList();
+            List<string> fotos = new List<string>();
             foreach (var file in foto)
             {
                 file.SaveAs(Server.MapPath("~/App_Data/Upload/" + file.FileName));
@@ -178,16 +178,21 @@ namespace PaquetesTuristicos.Controllers
             for (int i = 0; i < cantidadTarifas; i++)
             {
                 Fare tarifa = new Fare();
-                string nombre = "tarifaNombre" + (i + 1);
+                string nombreT = "tarifaNombre" + (i + 1);
                 string precio = "tarifaPrecio" + (i + 1);
                 string descripcion = "tarifaDescripcion" + (i + 1);
 
-                tarifa.name = form[nombre];
+                tarifa.name = form[nombreT];
                 tarifa.description = form[descripcion];
+                tarifa.precio = Convert.ToInt32(form[precio]);
                 tarifas.Add(tarifa);
             }
 
             servicio.fare = tarifas;
+
+            MongoConnect nombre = new MongoConnect();
+            nombre.addService(servicio,fotos);
+
 
             System.IO.DirectoryInfo di = new DirectoryInfo(Server.MapPath("~/App_Data/Upload/"));
 
@@ -196,9 +201,7 @@ namespace PaquetesTuristicos.Controllers
                 file.Delete();
             }
 
-            //MongoConnect nombre = new MongoConnect();
-            //nombre.addService()
-
+          
 
 
 

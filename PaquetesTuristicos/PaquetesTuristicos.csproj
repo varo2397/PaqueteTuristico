@@ -197,6 +197,7 @@
     </Compile>
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\Fare.cs" />
+    <Compile Include="Models\Imagen.cs" />
     <Compile Include="Models\Model1.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

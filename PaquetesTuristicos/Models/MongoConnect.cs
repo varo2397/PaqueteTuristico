@@ -47,7 +47,12 @@ namespace PaquetesTuristicos.Models
                 for (int i = 0; i < services.Count(); i++)
                 {
                     services[i].fare = getFares(services[i].ServiceId.ToString());
-                    services[i].Image = getImagen(services[i].ServiceId.ToString());
+                    services[i].ImagList = getImages(services[i].ServiceId.ToString());
+                    for (int j = 0; j < services[i].ImagList.Count(); j++)
+                    {
+                        services[j].ImagList[j].Image = getImagen(services[j].ImagList[j].imageGridFS);
+                    }
+
                 }
 
             }
@@ -59,25 +64,14 @@ namespace PaquetesTuristicos.Models
         }
 
 
-        public void addService(Service service, string url)
+        public void addService(Service service, List<string> rutaImags)
         {
-
-            /*var tempService = new Service
-            {
-                name = service.name,
-                owner = service.owner,
-                province = service.province,
-                canton = service.canton,
-                district = service.district,
-                idCategory = service.idCategory
-            };*/
-
-            string idImagen = saveImagen(url);
 
             var tempService = new BsonDocument
                 {
                     {"name",service.name },
                     {"owner" , service.owner},
+                    {"idCreador" , service.idCreador},
                     {"province" , service.province},
                     {"canton" , service.canton},
                     {"district" , service.district},
@@ -85,13 +79,27 @@ namespace PaquetesTuristicos.Models
                     {"KmDistance",service.KmDistance},
                     {"latitude",service.latitude},
                     {"longitude",service.longitude},
-                    {"idCategory" , service.idCategory},
-                    {"imagenID",idImagen}
+                    {"idCategory" , service.idCategory}
                 };
 
             dataBase.GetCollection<Service>("Services").Insert(tempService);
 
             string idSTring = tempService["_id"].ToString();
+
+            for (int i = 0; i < rutaImags.Count(); i++)
+            {
+
+                string idImagen = saveImagen(rutaImags[i]);
+
+                var tempImage = new BsonDocument
+                {
+                    { "imageGridFS",idImagen},
+                    { "serviceId",idSTring }
+
+                };
+                addImage(tempImage);
+
+            }
 
             for (int i = 0; i < service.fare.Count(); i++)
             {
@@ -100,7 +108,8 @@ namespace PaquetesTuristicos.Models
                     {
                         {"serviceId",idSTring },
                         {"name",service.fare[i].name},
-                        {"description",service.fare[i].description}
+                        {"description",service.fare[i].description},
+                        {"precio",service.fare[i].precio}
 
                     };
 
@@ -124,6 +133,43 @@ namespace PaquetesTuristicos.Models
             dataBase.GetCollection<Fare>("Fares").Insert(fare);
         }
 
+        public void addImage(BsonDocument imag)
+        {
+            dataBase.GetCollection<Fare>("Imagenes").Insert(imag);
+        }
+
+        public List<Imagen> getImages(string idServicio)
+        {
+            MongoCollection<Imagen> collection = dataBase.GetCollection<Imagen>("Imagenes");
+            var query = Query.EQ("serviceId", idServicio);
+            List<Imagen> images = collection.Find(query).ToList();
+            return images;
+        }
+
+        public List<Service> getServiceByCreatorId(string idCreador)
+        {
+
+            MongoCollection<Service> collection = dataBase.GetCollection<Service>("Services");
+            var query = Query.EQ("idCreador", idCreador);
+
+            List<Service> services = collection.Find(query).ToList();
+
+            for (int i = 0; i < services.Count(); i++)
+            {
+                services[i].fare = getFares(services[i].ServiceId.ToString());
+                services[i].ImagList = getImages(services[i].ServiceId.ToString());
+
+                for (int j = 0; j < services[i].ImagList.Count(); j++)
+                {
+                    services[j].ImagList[j].Image = getImagen(services[j].ImagList[j].imageGridFS);
+                }
+
+            }
+
+            return services;
+
+
+        }
 
         public List<Service> getService(string nombre)
         {
@@ -135,7 +181,13 @@ namespace PaquetesTuristicos.Models
             for (int i = 0; i < services.Count(); i++)
             {
                 services[i].fare = getFares(services[i].ServiceId.ToString());
-                services[i].Image = getImagen(services[i].ServiceId.ToString());
+                services[i].ImagList = getImages(services[i].ServiceId.ToString());
+
+                for (int j = 0; j < services[i].ImagList.Count(); j++)
+                {
+                    services[j].ImagList[j].Image = getImagen(services[j].ImagList[j].imageGridFS);
+                }
+
             }
 
 
@@ -153,7 +205,12 @@ namespace PaquetesTuristicos.Models
             Service tempService = collection.FindOne(query);
             tempService.fare = getFares(tempService.ServiceId.ToString());
 
-            tempService.Image = getImagen(tempService.ServiceId.ToString());
+            tempService.ImagList = getImages(tempService.ServiceId.ToString());
+
+            for (int i = 0; i < tempService.ImagList.Count(); i++)
+            {
+                tempService.ImagList[i].Image = getImagen(tempService.ImagList[i].imageGridFS);
+            }
 
             return tempService;
         }

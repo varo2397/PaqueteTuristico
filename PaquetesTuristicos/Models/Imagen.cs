@@ -6,12 +6,13 @@ using System.Web;
 
 namespace PaquetesTuristicos.Models
 {
-    public class Fare
+    public class Imagen
     {
-        public ObjectId fareId { get; set; }
+        public ObjectId imagId { get; set; }
+        public string imageGridFS { get; set; }
         public string serviceId { get; set; }
-        public string name { get; set; }
-        public string description { get; set; }
-        public int precio { get; set; }
+        public byte[] Image { get; set; }
+
+
     }
 }

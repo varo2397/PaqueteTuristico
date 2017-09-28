@@ -11,10 +11,15 @@ namespace PaquetesTuristicos.Models
         public ObjectId ServiceId { get; set; }
         public string name { get; set; }
         public string owner { get; set; }
-        public byte[] Image { get; set; }
+
+        public string idCreador { get; set; }
+
+
         public string province { get; set; }
         public string canton { get; set; }
         public string district { get; set; }
+
+        public List<Imagen> ImagList { get; set; }
 
         public string town { get; set; }
         public string KmDistance { get; set; }
@@ -23,7 +28,7 @@ namespace PaquetesTuristicos.Models
 
         public int idCategory { get; set; }
 
-        public string imagenID { get; set; }
+
         public Categoria categoria { get; set; }
         public List<Fare> fare { get; set; }
 
@@ -33,11 +38,10 @@ namespace PaquetesTuristicos.Models
 
             MongoConnect mc = new MongoConnect();
             Service tempService = mc.getServiceId(new ObjectId(id));
-
             ServiceId = tempService.ServiceId;
             name = tempService.name;
             owner = tempService.owner;
-            Image = tempService.Image;
+            ImagList = tempService.ImagList;
             province = tempService.province;
             canton = tempService.canton;
             district = tempService.district;
@@ -45,10 +49,12 @@ namespace PaquetesTuristicos.Models
             KmDistance = tempService.KmDistance;
             latitude = tempService.latitude;
             longitude = tempService.longitude;
-            imagenID = tempService.imagenID;
             fare = tempService.fare;
 
         }
 
     }
+
+
+
 }
