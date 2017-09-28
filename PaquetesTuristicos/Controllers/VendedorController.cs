@@ -126,19 +126,31 @@ namespace PaquetesTuristicos.Controllers
 
 
         [HttpPost]
-        public ActionResult AgregarServicio(FormCollection form,List<HttpPostedFileBase> foto)
+        public ActionResult AgregarServicio(FormCollection form,List<HttpPostedFileBase> foto, string cantidad)
         {
             Service servicio = new Service();
             
-            var nombreServicio = form["nombreServicio"];
-            var nombrePropietario = form["nombrePropietario"];
-            var provincia = form["provincia"];
-            var canton = form["canton"];
-            var distrito = form["distrito"];
-            var pueblo = form["pueblo"];
-            var distanciaKM = form["distancia"];
-            var latitud = form["latitud"];
-            var longuitud = form["longuitud"];
+            string nombreServicio = form["nombreServicio"];
+            string nombrePropietario = form["nombrePropietario"];
+            string provincia = form["provincia"];
+            string canton = form["canton"];
+            string distrito = form["distrito"];
+            string pueblo = form["pueblo"];
+            string distanciaKM = form["distancia"];
+            string latitud = form["latitud"];
+            string longuitud = form["longuitud"];
+            int cantidadTarifas = Convert.ToInt32(cantidad);
+
+
+            servicio.name = nombreServicio;
+            servicio.owner = nombrePropietario;
+            servicio.province = provincia;
+            servicio.canton = canton;
+            servicio.district = distrito;
+            servicio.province = pueblo;
+            servicio.KmDistance = distanciaKM;
+            servicio.latitude = latitud;
+            servicio.longitude = longuitud;
 
             //if(foto != null)
             //{
@@ -160,8 +172,22 @@ namespace PaquetesTuristicos.Controllers
                 string direccion = Server.MapPath("~/App_Data/Upload/" + file.FileName);
                 fotos.Add(direccion);
             }
+            
 
+            List<Fare> tarifas = new List<Fare>();
+            for (int i = 0; i < cantidadTarifas; i++)
+            {
+                Fare tarifa = new Fare();
+                string nombre = "tarifaNombre" + (i + 1);
+                string precio = "tarifaPrecio" + (i + 1);
+                string descripcion = "tarifaDescripcion" + (i + 1);
 
+                tarifa.name = form[nombre];
+                tarifa.description = form[descripcion];
+                tarifas.Add(tarifa);
+            }
+
+            servicio.fare = tarifas;
 
             System.IO.DirectoryInfo di = new DirectoryInfo(Server.MapPath("~/App_Data/Upload/"));
 
@@ -183,7 +209,6 @@ namespace PaquetesTuristicos.Controllers
         public string CantidadTarifas(string cantidad)
         {
             int cant = Int32.Parse(cantidad);
-            Session["tarifas"] = cant;
 
             ArrayList valores = new ArrayList();
             valores.Add("1");
@@ -208,11 +233,11 @@ namespace PaquetesTuristicos.Controllers
                 {
                     string tarifa = "<div class=\"form - group\"> <h2> Tarifa " + (i + 1) + "</h2></div>" +
                         "<div class=\"form-group\"><label>Nombre tarifa " + (i + 1) + "</label></div>" +
-                        "<div class=\"form-group\"><input type = \"text\" class=\"form-control\" id\"=tarifaNombre" + (i + 1) + "\" required></div>" +
+                        "<div class=\"form-group\"><input type = \"text\" class=\"form-control\" name=\"tarifaNombre" + (i + 1) + "\" required></div>" +
                         "<div class=\"form-group\"><label>Precio de la tarifa " + (i + 1) + "</label></div>" +
-                        "<div class=\"form-group\"><input type = \"number\" class=\"form-control\" min=\"1\" max =\"10000\" id\"=tarifaPrecio" + (i + 1) + "\" required ></div>" +
+                        "<div class=\"form-group\"><input type = \"number\" class=\"form-control\" min=\"1\" max =\"10000\" name\"=tarifaPrecio" + (i + 1) + "\" required ></div>" +
                         "<div class=\"form-group\"><label>Descripcion de la tarifa " + (i + 1) + "</label></div>" +
-                        "<div class=\"form-group\"><textarea class=\"form-control\" ></textarea>";
+                        "<div class=\"form-group\"><textarea class=\"form-control\" name=\"tarifaDescripcion" + (i+1) + "\" ></textarea>";
                     htmltarifas += tarifa;
                 }
                 return htmltarifas;
