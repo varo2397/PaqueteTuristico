@@ -36,13 +36,20 @@ namespace PaquetesTuristicos.Models
             }
         }
 
-        //modificar
+
         public List<Service> getALLServices()
         {
             List<Service> services;
             try
             {
                 services = dataBase.GetCollection<Service>("Services").FindAll().ToList();
+
+                for (int i = 0; i < services.Count(); i++)
+                {
+                    services[i].fare = getFares(services[i].ServiceId.ToString());
+                    services[i].Image = getImagen(services[i].ServiceId.ToString());
+                }
+
             }
             catch (Exception e)
             {
@@ -128,20 +135,25 @@ namespace PaquetesTuristicos.Models
             for (int i = 0; i < services.Count(); i++)
             {
                 services[i].fare = getFares(services[i].ServiceId.ToString());
+                services[i].Image = getImagen(services[i].ServiceId.ToString());
             }
+
+
 
             return services;
 
         }
 
 
-        Service getServiceId(ObjectId id)
+        public Service getServiceId(ObjectId id)
         {
             var query = Query.EQ("_id", id);
             MongoCollection<Service> collection = dataBase.GetCollection<Service>("Services");
 
             Service tempService = collection.FindOne(query);
             tempService.fare = getFares(tempService.ServiceId.ToString());
+
+            tempService.Image = getImagen(tempService.ServiceId.ToString());
 
             return tempService;
         }
