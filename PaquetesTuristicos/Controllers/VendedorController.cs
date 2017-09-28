@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using System.Collections;
 using System.Web.Security;
 using System.Web.Helpers;
+using System.IO;
 
 namespace PaquetesTuristicos.Controllers
 {
@@ -123,15 +124,66 @@ namespace PaquetesTuristicos.Controllers
             return View();
         }
 
-        //public ActionResult AgregarServicio(FormCollection form)
-        //{
 
-        //}
+        [HttpPost]
+        public ActionResult AgregarServicio(FormCollection form,List<HttpPostedFileBase> foto)
+        {
+            Service servicio = new Service();
+            
+            var nombreServicio = form["nombreServicio"];
+            var nombrePropietario = form["nombrePropietario"];
+            var provincia = form["provincia"];
+            var canton = form["canton"];
+            var distrito = form["distrito"];
+            var pueblo = form["pueblo"];
+            var distanciaKM = form["distancia"];
+            var latitud = form["latitud"];
+            var longuitud = form["longuitud"];
+
+            //if(foto != null)
+            //{
+            //    if (foto.ContentLength > 0)
+            //    {
+            //        string _FileName = Path.GetFileName(foto.FileName);
+            //        string _path = Path.Combine(Server.MapPath("~/App_Data/Upload"), _FileName);
+            //        foto.SaveAs(_path);
+            //    }
+            //    ViewBag.Message = "File Uploaded Successfully!!";
+            //}
+
+
+
+            ArrayList fotos = new ArrayList();
+            foreach (var file in foto)
+            {
+                file.SaveAs(Server.MapPath("~/App_Data/Upload/" + file.FileName));
+                string direccion = Server.MapPath("~/App_Data/Upload/" + file.FileName);
+                fotos.Add(direccion);
+            }
+
+
+
+            System.IO.DirectoryInfo di = new DirectoryInfo(Server.MapPath("~/App_Data/Upload/"));
+
+            foreach (FileInfo file in di.GetFiles())
+            {
+                file.Delete();
+            }
+
+            //MongoConnect nombre = new MongoConnect();
+            //nombre.addService()
+
+
+
+
+            return RedirectToAction("Servicios", "Vendedor");
+        }
 
 
         public string CantidadTarifas(string cantidad)
         {
             int cant = Int32.Parse(cantidad);
+            Session["tarifas"] = cant;
 
             ArrayList valores = new ArrayList();
             valores.Add("1");
