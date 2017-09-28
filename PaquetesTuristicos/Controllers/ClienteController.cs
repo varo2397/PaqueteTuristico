@@ -117,15 +117,28 @@ namespace PaquetesTuristicos.Controllers
         /*
         public ActionResult Carrito()
         {
-            return PartialView();
-        }
-        [HttpPost]
-        public ActionResult Carrito(FormCollection form)
-        {
             Usuario user = (Usuario)Session["USER"];
             Cart cart = new Cart(user.idUsuario);
             cart.loadCartItems();
-            return View(cart.ShoppingCart); // Partial View?
+            return PartialView(cart.ShoppingCart);
+        }
+        
+        public ActionResult Agregar(int id, int qty)
+        {
+            Usuario user = (Usuario)Session["USER"];
+            Cart cart = new Cart(user.idUsuario);
+            cart.addToCart(id, qty);
+            ViewBag.Error = "Servicio agregado";
+            return RedirectToAction("Carrito", "Cliente");
+        }
+
+        public ActionResult Borrar(int id)
+        {
+            Usuario user = (Usuario)Session["USER"];
+            Cart cart = new Cart(user.idUsuario);
+            cart.remove(id);
+            ViewBag.Error = "Servicio eliminado";
+            return RedirectToAction("Carrito", "Cliente");
         }
 
         //Crea una orden con todos los items del carrito si existe almenos un item
