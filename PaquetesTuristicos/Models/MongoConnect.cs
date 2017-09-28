@@ -52,7 +52,7 @@ namespace PaquetesTuristicos.Models
         }
 
 
-        public void addService(Service service)
+        public void addService(Service service, string url)
         {
 
             /*var tempService = new Service
@@ -65,6 +65,7 @@ namespace PaquetesTuristicos.Models
                 idCategory = service.idCategory
             };*/
 
+            string idImagen = saveImagen(url);
 
             var tempService = new BsonDocument
                 {
@@ -73,7 +74,12 @@ namespace PaquetesTuristicos.Models
                     {"province" , service.province},
                     {"canton" , service.canton},
                     {"district" , service.district},
-                    {"idCategory" , service.idCategory}
+                    {"town",service.town},
+                    {"KmDistance",service.KmDistance},
+                    {"latitude",service.latitude},
+                    {"longitude",service.longitude},
+                    {"idCategory" , service.idCategory},
+                    {"imagenID",idImagen}
                 };
 
             dataBase.GetCollection<Service>("Services").Insert(tempService);
@@ -160,5 +166,23 @@ namespace PaquetesTuristicos.Models
             return temp;
 
         }
+
+        public string saveImagen(string rutaImagen)
+        {
+
+            var fileName = rutaImagen;
+            string idImagen;
+
+            using (var fs = new FileStream(fileName, FileMode.Open))
+            {
+                var gridFsInfo = dataBase.GridFS.Upload(fs, fileName);
+                var fileId = gridFsInfo.Id;
+                idImagen = fileId.ToString();
+            }
+
+            return idImagen;
+
+        }
+
     }
 }

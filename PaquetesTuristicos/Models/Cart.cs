@@ -55,6 +55,12 @@ namespace PaquetesTuristicos.Models
                 redis.HashDelete(HashKey, productId);
             }
         }
+        
+        public void clearCart()
+        {
+            var redis = RedisStore.RedisCache;
+            redis.KeyDelete(HashKey, CommandFlags.FireAndForget);
+        }
 
         public void changeQty(int productId, int qty)
         {
@@ -94,6 +100,7 @@ namespace PaquetesTuristicos.Models
                 foreach (var Item in idQtyHash)
                 {
                     Service service = new Service();
+                    //Item.
                     //get service details, Item.Name
                     Tuple<Service, int> item = new Tuple<Service, int>(service, Int32.Parse(Item.Value.ToString()));
                     ShoppingCart.Add(item);

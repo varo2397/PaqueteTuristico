@@ -15,6 +15,12 @@ namespace PaquetesTuristicos.Models
         public string province { get; set; }
         public string canton { get; set; }
         public string district { get; set; }
+
+        public string town { get; set; }
+        public string KmDistance { get; set; }
+        public string latitude { get; set; }
+        public string longitude { get; set; }
+
         public int idCategory { get; set; }
         public string imagenID { get; set; }
         public Categoria categoria { get; set; }

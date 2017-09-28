@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using System.Collections;
 using System.Web.Security;
 using System.Web.Helpers;
+using System.Globalization;
 
 namespace PaquetesTuristicos.Controllers
 {
@@ -56,8 +57,128 @@ namespace PaquetesTuristicos.Controllers
 
         public ActionResult Ordenes()
         {
-            return View();
+            Usuario user = (Usuario)Session["USER"];
+            var orderList = new List<Orden>();
+            if (ModelState.IsValid)
+            {
+                using (serviciosCREntities db = new serviciosCREntities())
+                {
+                    //var o = db.Ordens.Where(a => a.idCliente.Equals(user.idUsuario)).FirstOrDefault();
+                    
+                    orderList = db.Ordens.Where(a => a.idCliente.Equals(user.idUsuario)).ToList();
+                    if (orderList != null)
+                    {
+                        foreach (Orden o in orderList)
+                        {
+                            o.ServiciosPorOrdens = db.ServiciosPorOrdens.Where(a => a.idOrden.Equals(o.idOrden)).ToList();
+                        }
+                    }
+                }
+            }
+
+            //Retorna una lista de ordenes (puede ser null). Donde cada orden contiene una lista de Servicios
+            return View(orderList); // <- partial view?
         }
+
+        /* 
+        public ActionResult Calificar(int id)
+        {
+            return PartialView();
+        }
+        [HttpPost]
+        public ActionResult Calificar(int id, FormCollection form)
+        {
+            Usuario user = (Usuario)Session["USER"];
+            Calificacion calificacion = new Calificacion();
+            
+
+            calificacion.comentario = form["comentario"];
+            calificacion.calificacion1 = Convert.ToDecimal(form["calificacion"], CultureInfo.InvariantCulture);
+            calificacion.fechaHora = DateTime.Now;
+            //Como conseguir el id del servicio?
+            //calificacion.idServicio = id;
+            calificacion.idUsuario = user.idUsuario;
+
+            if (ModelState.IsValid)
+            {
+                using (serviciosCREntities db = new serviciosCREntities())
+                {
+                    db.Calificacions.Add(calificacion);
+                    db.SaveChanges();
+                    ViewBag.Error = "Servicio calificado!";
+                    return RedirectToAction("Ordenes", "Cliente");
+                }
+            }
+
+                return PartialView(form);
+        }
+        */
+
+        /*
+        public ActionResult Carrito()
+        {
+            return PartialView();
+        }
+        [HttpPost]
+        public ActionResult Carrito(FormCollection form)
+        {
+            Usuario user = (Usuario)Session["USER"];
+            Cart cart = new Cart(user.idUsuario);
+            cart.loadCartItems();
+            return View(cart.ShoppingCart); // Partial View?
+        }
+
+        //Crea una orden con todos los items del carrito si existe almenos un item
+        public ActionResult Pagar()
+        {
+            Usuario user = (Usuario)Session["USER"];
+            Cart cart = new Cart(user.idUsuario);
+            Orden orden = new Orden();
+            
+            if (cart.getCartSize() != 0)
+            {
+                cart.loadCartItems();
+
+                orden.pagada = true;
+                orden.idCliente = user.idUsuario;
+                orden.fechaHora = DateTime.Now;
+
+                if (ModelState.IsValid)
+                {
+                    
+                    using (serviciosCREntities db = new serviciosCREntities())
+                    {
+                        db.Ordens.Add(orden);
+                        db.SaveChanges();
+                        var o = db.Ordens.Where(a => a.fechaHora == orden.fechaHora).FirstOrDefault();
+                        orden.idOrden = o.idOrden;
+
+                        foreach(Tuple<Service, int> e in cart.ShoppingCart)
+                        {
+                            ServiciosPorOrden spo = new ServiciosPorOrden();
+                            spo.cantidad = e.Item2;
+                            spo.idOrden = orden.idOrden;
+                            spo.idServicio = Convert.ToInt32(e.Item1.ServiceId);
+                            orden.ServiciosPorOrdens.Add(spo);
+                        }
+
+                        foreach(ServiciosPorOrden spo in orden.ServiciosPorOrdens)
+                        {
+                            db.ServiciosPorOrdens.Add(spo);
+                        }
+                        db.SaveChanges();
+                        cart.clearCart();
+                        ViewBag.Error = "Orden creada correctamente";
+                        return RedirectToAction("Ordenes", "Cliente");
+                    }
+                }
+            }else
+            {
+                ViewBag.Error = "No hay servicios en el carrito";
+            }
+            return PartialView();
+        }
+         */
 
         public ActionResult Registrarse()
         {
