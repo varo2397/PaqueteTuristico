@@ -66,33 +66,62 @@ namespace PaquetesTuristicos.Controllers
         public ActionResult Ordenes()
         {
             Usuario user = (Usuario)Session["USER"];
-            var orderList = new List<Orden>();
+            var listaSqlOrden = new List<Orden>();
+            var listaOrden = new List<Order>();
             if (ModelState.IsValid)
             {
                 using (serviciosCREntities db = new serviciosCREntities())
                 {
                     //var o = db.Ordens.Where(a => a.idCliente.Equals(user.idUsuario)).FirstOrDefault();
+
+                    // Saca la lista de ordenes
+                    listaSqlOrden = db.Ordens.Where(a => a.idCliente.Equals(user.idUsuario)).ToList();
                     
-                    orderList = db.Ordens.Where(a => a.idCliente.Equals(user.idUsuario)).ToList();
-                    if (orderList != null)
+                    if (listaSqlOrden != null)
                     {
-                        foreach (Orden o in orderList)
+                        // Llenar lista de Order
+                        foreach (Orden o in listaSqlOrden)
                         {
-                            o.ServiciosPorOrdens = db.ServiciosPorOrdens.Where(a => a.idOrden.Equals(o.idOrden)).ToList();
+                            Order order = new Order();
+                            order.fechaHora = o.fechaHora;
+                            order.idCliente = o.idCliente;
+                            order.idOrden = o.idOrden;
+                            listaOrden.Add(order);
                         }
+
+                        int idOrden;
+                        List<ServiciosPorOrden> sopList;
+                        int i, j;
+                        for (i = 0; i < listaOrden.Count(); ++i)
+                        {
+                            idOrden = listaOrden[0].idOrden;
+                            sopList = db.ServiciosPorOrdens.Where(a => a.idOrden.Equals(idOrden)).ToList();
+                            for (j = 0; j < sopList.Count(); ++j)
+                            {
+                                MongoConnect mongo = new MongoConnect();
+                                Service service = mongo.getid((sopList[j].idServicio).ToString());
+                                Tuple<Service, int> item = new Tuple<Service, int>(service, sopList[j].cantidad);
+                                listaOrden[i].orderList.Add(item);
+                            }
+                            
+                        }
+                    } else
+                    {
+                        listaOrden = null;
+                        ViewBag.Error = "Usted no tiene ninguna orden registrada";
                     }
                 }
             }
-
-            //Retorna una lista de ordenes (puede ser null). Donde cada orden contiene una lista de Servicios
-            return View(orderList); // 
+            //Si no hay ordenes retorna null
+            return View(listaOrden);
         }
 
-        /* 
+        
         public ActionResult Calificar(int id)
         {
-            return PartialView();
+            return View();
         }
+
         [HttpPost]
         public ActionResult Calificar(int id, FormCollection form)
         {
@@ -103,8 +132,7 @@ namespace PaquetesTuristicos.Controllers
             calificacion.comentario = form["comentario"];
             calificacion.calificacion1 = Convert.ToDecimal(form["calificacion"], CultureInfo.InvariantCulture);
             calificacion.fechaHora = DateTime.Now;
-            //Como conseguir el id del servicio?
-            //calificacion.idServicio = id;
+            calificacion.idServicio = id;
             calificacion.idUsuario = user.idUsuario;
 
             if (ModelState.IsValid)
@@ -117,11 +145,8 @@ namespace PaquetesTuristicos.Controllers
                     return RedirectToAction("Ordenes", "Cliente");
                 }
             }
-
-                return PartialView(form);
+            return PartialView(form);
         }
-        */
-
         
         public ActionResult Carrito()
         {
@@ -130,8 +155,7 @@ namespace PaquetesTuristicos.Controllers
             cart.loadCartItems();
             return View(cart.ShoppingCart);
         }
-        /*
-        public ActionResult Agregar(int id, int qty)
+        public ActionResult AgregarItemAlCarrito(int id, int qty)
         {
             Usuario user = (Usuario)Session["USER"];
             Cart cart = new Cart(user.idUsuario);
@@ -140,7 +164,7 @@ namespace PaquetesTuristicos.Controllers
             return RedirectToAction("Carrito", "Cliente");
         }
 
-        public ActionResult Borrar(int id)
+        public ActionResult BorrarItemDelCarrito(int id)
         {
             Usuario user = (Usuario)Session["USER"];
             Cart cart = new Cart(user.idUsuario);
@@ -156,7 +180,7 @@ namespace PaquetesTuristicos.Controllers
             Cart cart = new Cart(user.idUsuario);
             Orden orden = new Orden();
             
-            if (cart.getCartSize() != 0)
+            if (cart.getCartSize() > 0)
             {
                 cart.loadCartItems();
 
@@ -199,7 +223,6 @@ namespace PaquetesTuristicos.Controllers
             }
             return PartialView();
         }
-         */
 
         public ActionResult Registrarse()
         {
