@@ -203,7 +203,7 @@ namespace PaquetesTuristicos.Controllers
                             ServiciosPorOrden spo = new ServiciosPorOrden();
                             spo.cantidad = e.Item2;
                             spo.idOrden = orden.idOrden;
-                            spo.idServicio = Convert.ToInt32(e.Item1.ServiceId);
+                            spo.idServicio = Convert.ToInt32(e.Item1.id);
                             orden.ServiciosPorOrdens.Add(spo);
                         }
 
