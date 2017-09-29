@@ -3,8 +3,44 @@
     ViewBag.Title = "Servicios";
 }
 
+<div class="row">
+    <div class="col-md-2 offset-md-6">
+
+        <button type="button" class="btn btn-dark btn-block" onclick="location.href='@Url.Action("AgregarServicio", "Vendedor")'">Agregar Servicio</button>
+        <br>
+    </div>
+</div>
 
 <div class="row">
+    <div class="col-md-5">
+        @foreach (var item in Model)
+        {
+            <div class="card">
+                <div class="card-header">
+                    @item.name
+                </div>
+                <div class="card-block">
+                    <br>
+                    <div class="col-md-10">
+
+                        <h6 class="card-title">Caracteristicas</h6>
+                        <ul>
+                            <li>Dueño : @item.owner</li>
+                            <li>Ubicacion: @item.province, @item.canton, @item.district</li>
+                        </ul>
+                        @Html.ActionLink("Eliminar", "Eliminar", "Vendedor", new {id = @item.name}, new { @class = "btn btn-dark" })
+                    </div>
+                    <br>
+                </div>
+            </div>
+            <br>
+        }
+        
+    </div>
+</div>
+
+
+@*<div class="row">
     <div class="col-md-5"></div>
     <div class="col-md-2 col-md-offset-5">
         <button type="button" class="btn btn-dark btn-block" onclick="location.href='@Url.Action("AgregarServicio", "Vendedor")'">Agregar Servicio</button>
@@ -33,4 +69,4 @@
         </div>
     }
 
-</div>
+</div>*@

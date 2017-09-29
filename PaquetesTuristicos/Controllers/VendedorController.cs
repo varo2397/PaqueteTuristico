@@ -19,6 +19,10 @@ namespace PaquetesTuristicos.Controllers
             return PartialView();
         }
 
+        public ActionResult Eliminar(string id)
+        {
+            return RedirectToAction("Servicios", "Vendedor");
+        }
         [HttpPost]
         public ActionResult InicioSesion(FormCollection form)
         {

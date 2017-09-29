@@ -55,6 +55,14 @@ namespace PaquetesTuristicos.Controllers
             return PartialView(form);
         }
 
+        public ActionResult BuscarServicios(FormCollection form)
+        {
+            string buscar = form["buscar"];
+            MongoConnect mongo = new MongoConnect();
+            //List<Service> model = mongo.
+            return RedirectToAction("Ordenar", "Cliente");
+        }
+
         public ActionResult Ordenes()
         {
             Usuario user = (Usuario)Session["USER"];
@@ -77,7 +85,7 @@ namespace PaquetesTuristicos.Controllers
             }
 
             //Retorna una lista de ordenes (puede ser null). Donde cada orden contiene una lista de Servicios
-            return View(orderList); // <- partial view?
+            return View(orderList); // 
         }
 
         /* 
@@ -114,15 +122,15 @@ namespace PaquetesTuristicos.Controllers
         }
         */
 
-        /*
+        
         public ActionResult Carrito()
         {
             Usuario user = (Usuario)Session["USER"];
             Cart cart = new Cart(user.idUsuario);
             cart.loadCartItems();
-            return PartialView(cart.ShoppingCart);
+            return View(cart.ShoppingCart);
         }
-        
+        /*
         public ActionResult Agregar(int id, int qty)
         {
             Usuario user = (Usuario)Session["USER"];
