@@ -27,6 +27,7 @@
                         <ul>
                             <li>Dueño : @item.owner</li>
                             <li>Ubicacion: @item.province, @item.canton, @item.district</li>
+                            <li>Categoria : @item.categoria.categoria1</li>
                         </ul>
                         @Html.ActionLink("Eliminar", "Eliminar", "Vendedor", new {id = @item.id}, new { @class = "btn btn-dark" })
                     </div>

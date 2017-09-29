@@ -153,18 +153,26 @@ namespace PaquetesTuristicos.Models
             var query = Query.EQ("idCreador", idCreador);
 
             List<Service> services = collection.Find(query).ToList();
-
-            for (int i = 0; i < services.Count(); i++)
+            if(services.Count() > 0)
             {
-                services[i].fare = getFares(services[i].id.ToString());
-                services[i].ImagList = getImages(services[i].id.ToString());
-
-                for (int j = 0; j < services[i].ImagList.Count(); j++)
+                for (int i = 0; i < services.Count(); i++)
                 {
-                    services[j].ImagList[j].Image = getImagen(services[j].ImagList[j].imageGridFS);
-                }
+                    services[i].fare = getFares(services[i].id.ToString());
+                    services[i].ImagList = getImages(services[i].id.ToString());
 
+                    for (int j = 0; j < services[i].ImagList.Count(); j++)
+                    {
+                        services[i].ImagList[j].Image = getImagen(services[i].ImagList[j].imageGridFS);
+                    }
+                    using (serviciosCREntities db = new serviciosCREntities())
+                    {
+                        int id = services[i].idCategory;
+                        var v = db.Categorias.Where(a => a.idCategoria == id).FirstOrDefault();
+                        services[i].categoria = v;
+                    }
+                }
             }
+            
 
             return services;
 
@@ -197,9 +205,10 @@ namespace PaquetesTuristicos.Models
         }
 
 
-        public Service getid(ObjectId id)
+        public Service getid(string id)
         {
-            var query = Query.EQ("_id", id);
+            
+            var query = Query.EQ("_id", new ObjectId(id));
             MongoCollection<Service> collection = dataBase.GetCollection<Service>("Services");
 
             Service tempService = collection.FindOne(query);

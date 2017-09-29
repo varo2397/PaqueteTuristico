@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using StackExchange.Redis;
+using MongoDB.Bson;
 
 namespace PaquetesTuristicos.Models
 {
@@ -99,9 +100,9 @@ namespace PaquetesTuristicos.Models
 
                 foreach (var Item in idQtyHash)
                 {
-                    Service service = new Service();
-                    //Item.
-                    //get service details, Item.Name
+                    MongoConnect mongo = new MongoConnect();
+                    
+                    Service service = mongo.getid((Item.Name).ToString());
                     Tuple<Service, int> item = new Tuple<Service, int>(service, Int32.Parse(Item.Value.ToString()));
                     ShoppingCart.Add(item);
                     //System.Diagnostics.Debug.WriteLine(string.Format("key : {0}, value : {1}", Item.Name, Item.Value));
