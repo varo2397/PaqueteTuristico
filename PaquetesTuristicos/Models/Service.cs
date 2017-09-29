@@ -10,7 +10,7 @@ namespace PaquetesTuristicos.Models
     [BsonIgnoreExtraElements]
     public class Service
     {
-        public ObjectId ServiceId { get; set; }
+        public ObjectId id { get; set; }
         public string name { get; set; }
         public string owner { get; set; }
 
@@ -39,8 +39,8 @@ namespace PaquetesTuristicos.Models
         {
 
             MongoConnect mc = new MongoConnect();
-            Service tempService = mc.getServiceId(new ObjectId(id));
-            ServiceId = tempService.ServiceId;
+            Service tempService = mc.getid(new ObjectId(id));
+            //id = tempService.id;
             name = tempService.name;
             owner = tempService.owner;
             ImagList = tempService.ImagList;

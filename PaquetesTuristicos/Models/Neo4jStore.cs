@@ -80,7 +80,7 @@ namespace PaquetesTuristicos.Models
             client.Cypher
                 .Match("(u:Usuario)", "(s:Servicio)")
                 .Where((Usuario u) => u.idUsuario == usuario.idUsuario)
-                .AndWhere((Service s) => s.ServiceId == servicio.ServiceId)
+                .AndWhere((Service s) => s.id == servicio.id)
                 .Create("(u)-[:OPINION {opinion}]->(s)")
                 .WithParam("opinion", actor)
                 .ExecuteWithoutResultsAsync()
@@ -94,7 +94,7 @@ namespace PaquetesTuristicos.Models
             client.Cypher
                 .Match("(c:Categoria)", "(s:Servicio)")
                 .Where((Categoria c) => c.idCategoria == categoria.idCategoria)
-                .AndWhere((Service s) => s.ServiceId == servicio.ServiceId)
+                .AndWhere((Service s) => s.id == servicio.id)
                 .Create("(c)-[:TIPO]->(s)")
                 .ExecuteWithoutResultsAsync()
                 .Wait();

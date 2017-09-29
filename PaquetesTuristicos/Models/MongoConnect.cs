@@ -46,8 +46,8 @@ namespace PaquetesTuristicos.Models
 
                 for (int i = 0; i < services.Count(); i++)
                 {
-                    services[i].fare = getFares(services[i].ServiceId.ToString());
-                    services[i].ImagList = getImages(services[i].ServiceId.ToString());
+                    services[i].fare = getFares(services[i].id.ToString());
+                    services[i].ImagList = getImages(services[i].id.ToString());
                     for (int j = 0; j < services[i].ImagList.Count(); j++)
                     {
                         services[j].ImagList[j].Image = getImagen(services[j].ImagList[j].imageGridFS);
@@ -94,7 +94,7 @@ namespace PaquetesTuristicos.Models
                 var tempImage = new BsonDocument
                 {
                     { "imageGridFS",idImagen},
-                    { "serviceId",idSTring }
+                    { "id",idSTring }
 
                 };
                 addImage(tempImage);
@@ -106,7 +106,7 @@ namespace PaquetesTuristicos.Models
 
                 var tempFare = new BsonDocument
                     {
-                        {"serviceId",idSTring },
+                        {"id",idSTring },
                         {"name",service.fare[i].name},
                         {"description",service.fare[i].description},
                         {"precio",service.fare[i].precio}
@@ -123,7 +123,7 @@ namespace PaquetesTuristicos.Models
         {
 
             MongoCollection<Fare> collection = dataBase.GetCollection<Fare>("Fares");
-            var query = Query.EQ("serviceId", idService);
+            var query = Query.EQ("id", idService);
             List<Fare> fares = collection.Find(query).ToList();
             return fares;
         }
@@ -141,7 +141,7 @@ namespace PaquetesTuristicos.Models
         public List<Imagen> getImages(string idServicio)
         {
             MongoCollection<Imagen> collection = dataBase.GetCollection<Imagen>("Imagenes");
-            var query = Query.EQ("serviceId", idServicio);
+            var query = Query.EQ("id", idServicio);
             List<Imagen> images = collection.Find(query).ToList();
             return images;
         }
@@ -156,8 +156,8 @@ namespace PaquetesTuristicos.Models
 
             for (int i = 0; i < services.Count(); i++)
             {
-                services[i].fare = getFares(services[i].ServiceId.ToString());
-                services[i].ImagList = getImages(services[i].ServiceId.ToString());
+                services[i].fare = getFares(services[i].id.ToString());
+                services[i].ImagList = getImages(services[i].id.ToString());
 
                 for (int j = 0; j < services[i].ImagList.Count(); j++)
                 {
@@ -180,8 +180,8 @@ namespace PaquetesTuristicos.Models
 
             for (int i = 0; i < services.Count(); i++)
             {
-                services[i].fare = getFares(services[i].ServiceId.ToString());
-                services[i].ImagList = getImages(services[i].ServiceId.ToString());
+                services[i].fare = getFares(services[i].id.ToString());
+                services[i].ImagList = getImages(services[i].id.ToString());
 
                 for (int j = 0; j < services[i].ImagList.Count(); j++)
                 {
@@ -197,15 +197,15 @@ namespace PaquetesTuristicos.Models
         }
 
 
-        public Service getServiceId(ObjectId id)
+        public Service getid(ObjectId id)
         {
             var query = Query.EQ("_id", id);
             MongoCollection<Service> collection = dataBase.GetCollection<Service>("Services");
 
             Service tempService = collection.FindOne(query);
-            tempService.fare = getFares(tempService.ServiceId.ToString());
+            tempService.fare = getFares(tempService.id.ToString());
 
-            tempService.ImagList = getImages(tempService.ServiceId.ToString());
+            tempService.ImagList = getImages(tempService.id.ToString());
 
             for (int i = 0; i < tempService.ImagList.Count(); i++)
             {
@@ -251,6 +251,13 @@ namespace PaquetesTuristicos.Models
 
             return idImagen;
 
+        }
+
+        public void deleteById(string id)
+        {
+            MongoCollection<Service> collection = dataBase.GetCollection<Service>("Services");
+            var query = Query.EQ("_id", new ObjectId(id));
+            collection.Remove(query);
         }
 
     }

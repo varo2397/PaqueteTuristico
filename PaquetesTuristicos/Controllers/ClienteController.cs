@@ -40,6 +40,7 @@ namespace PaquetesTuristicos.Controllers
                             //Conseguir informacion del usuario?
                             //var u2 = db.Regulars.Where(a => a.idUsuario.Equals(u.idUsuario)).FirstOrDefault();
                             Session["USER"] = user;
+                            Session["Username"] = user.correo;
 
                             return RedirectToAction("Ordenes", "Cliente");
                         }else
@@ -59,8 +60,8 @@ namespace PaquetesTuristicos.Controllers
         {
             string buscar = form["buscar"];
             MongoConnect mongo = new MongoConnect();
-            //List<Service> model = mongo.
-            return RedirectToAction("Ordenar", "Cliente");
+            var model = mongo.getService(buscar);
+            return View(model);
         }
 
         public ActionResult Ordenes()

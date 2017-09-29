@@ -1,15 +1,7 @@
-﻿
+﻿@Model List<PaquetesTuristicos.Models.Service>
 @{
-    ViewBag.Title = "Servicios";
+    ViewBag.Title = "BuscarServicios";
 }
-
-<div class="row">
-    <div class="col-md-2 offset-md-6">
-
-        <button type="button" class="btn btn-dark btn-block" onclick="location.href='@Url.Action("AgregarServicio", "Vendedor")'">Agregar Servicio</button>
-        <br>
-    </div>
-</div>
 
 <div class="row">
     <div class="col-md-5">
@@ -28,13 +20,13 @@
                             <li>Dueño : @item.owner</li>
                             <li>Ubicacion: @item.province, @item.canton, @item.district</li>
                         </ul>
-                        @Html.ActionLink("Eliminar", "Eliminar", "Vendedor", new {id = @item.id}, new { @class = "btn btn-dark" })
+                        @Html.ActionLink("Seleccionar", null, null, new { id = @item.id }, new { @class = "btn btn-info" })
                     </div>
                     <br>
                 </div>
             </div>
             <br>
         }
-        
+
     </div>
 </div>
