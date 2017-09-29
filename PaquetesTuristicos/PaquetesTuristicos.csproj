@@ -214,6 +214,8 @@
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\MongoConnect.cs" />
+    <Compile Include="Models\Neo4jStore.cs" />
+    <Compile Include="Models\Opinion.cs" />
     <Compile Include="Models\Orden.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
