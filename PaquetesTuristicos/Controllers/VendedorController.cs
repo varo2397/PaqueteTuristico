@@ -128,15 +128,18 @@ namespace PaquetesTuristicos.Controllers
 
         public ActionResult AgregarServicio()
         {
-            return View();
+            serviciosCREntities db = new serviciosCREntities();
+            var categorias = db.Categorias.ToList();
+            return View(categorias);
         }
 
 
         [HttpPost]
-        public ActionResult AgregarServicio(FormCollection form,List<HttpPostedFileBase> foto, string cantidad)
+        public ActionResult AgregarServicio(FormCollection form,List<HttpPostedFileBase> foto, string cantidad, string categoria)
         {
             Service servicio = new Service();
             
+            //Obtener datos de los inputs
             string nombreServicio = form["nombreServicio"];
             string nombrePropietario = form["nombrePropietario"];
             string provincia = form["provincia"];
@@ -146,8 +149,15 @@ namespace PaquetesTuristicos.Controllers
             string distanciaKM = form["distancia"];
             string latitud = form["latitud"];
             string longuitud = form["longuitud"];
+
+            //Obtener el usuario que tiene sesion iniciada
             Usuario creador = (Usuario)Session["USER"];
+
+            //Cantidad de tarifas que va a tener el servicio
             int cantidadTarifas = Convert.ToInt32(cantidad);
+
+            //Id de la categoria escogida 
+            int idCategoria = Convert.ToInt32(categoria);
 
             servicio.idCreador = creador.correo;
             servicio.name = nombreServicio;
@@ -158,21 +168,10 @@ namespace PaquetesTuristicos.Controllers
             servicio.town = pueblo;
             servicio.KmDistance = distanciaKM;
             servicio.latitude = latitud;
-            servicio.longitude = longuitud;            
-
-            //if(foto != null)
-            //{
-            //    if (foto.ContentLength > 0)
-            //    {
-            //        string _FileName = Path.GetFileName(foto.FileName);
-            //        string _path = Path.Combine(Server.MapPath("~/App_Data/Upload"), _FileName);
-            //        foto.SaveAs(_path);
-            //    }
-            //    ViewBag.Message = "File Uploaded Successfully!!";
-            //}
-
-
-
+            servicio.longitude = longuitud;
+            servicio.idCategory = idCategoria;
+                  
+            //direcciones en el servidor de las imagenes 
             List<string> fotos = new List<string>();
             foreach (var file in foto)
             {
@@ -181,7 +180,7 @@ namespace PaquetesTuristicos.Controllers
                 fotos.Add(direccion);
             }
             
-
+            //datos de las tarifas 
             List<Fare> tarifas = new List<Fare>();
             for (int i = 0; i < cantidadTarifas; i++)
             {
@@ -201,18 +200,13 @@ namespace PaquetesTuristicos.Controllers
             MongoConnect nombre = new MongoConnect();
             nombre.addService(servicio,fotos);
 
-
+            //eliminar fotos del servidor
             System.IO.DirectoryInfo di = new DirectoryInfo(Server.MapPath("~/App_Data/Upload/"));
 
             foreach (FileInfo file in di.GetFiles())
             {
                 file.Delete();
-            }
-
-          
-
-
-
+            }   
             return RedirectToAction("Servicios", "Vendedor");
         }
 

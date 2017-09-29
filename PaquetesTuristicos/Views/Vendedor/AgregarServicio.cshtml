@@ -98,6 +98,21 @@
                 </div>
 
                 <div class="form-group">
+                    <div class="form-group">
+                        <select class="form-control" name="categoria" required>
+                            @foreach (var item in Model)
+                            {
+                                if (@item.activo)
+                                {
+                                    <option value="@item.idCategoria">@item.categoria1</option>
+                                }
+
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <label>Fotografias del servicio</label>
                 </div>
                 <div class="form-group">
