@@ -40,7 +40,6 @@ namespace PaquetesTuristicos.Controllers
                             //Conseguir informacion del usuario?
                             //var u2 = db.Regulars.Where(a => a.idUsuario.Equals(u.idUsuario)).FirstOrDefault();
                             Session["USER"] = user;
-                            Session["Username"] = user.correo;
 
                             return RedirectToAction("Ordenes", "Cliente");
                         }else

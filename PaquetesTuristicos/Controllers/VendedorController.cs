@@ -44,7 +44,6 @@ namespace PaquetesTuristicos.Controllers
                             user.correo = u.correo;
                             
                             Session["USER"] = user;
-                            Session["Username"] = user.correo;
                             ViewBag.email = email;
 
                             return RedirectToAction("Servicios", "Vendedor");

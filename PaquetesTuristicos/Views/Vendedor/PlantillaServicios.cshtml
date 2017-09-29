@@ -1,7 +1,7 @@
 ﻿
 @{
     ViewBag.Title = "PlantillaServicios";
-    string nombreUsuario = (string)Session["Username"];
+    string nombreUsuario = ((PaquetesTuristicos.Models.Usuario)Session["USER"]).correo;
 }
 <!DOCTYPE html>
 <html lang="en">
