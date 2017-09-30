@@ -95,14 +95,9 @@
                         </select>
 
                         <br>
-                        <div id="tarifas"></div>
-                        <h4>Descripcion tarifa nombre</h4>
-                        <p id="descripcion">Texto</p>
-                        <br>
-                        <h4>Precio de la tarifa</h4>
-                        <p id="precio"></p>
+                        <div id="tarifas"></div>                        
                     </div>
-                    <button class="btn btn-info">Agregar al carrito</button>
+                    @Html.ActionLink("Agregar al carrito", "AgregarItemAlCarrito", "Cliente", new { id = Model.id }, new { @class = "btn btn-info" })
                 </div>
                 <br>
             </div>

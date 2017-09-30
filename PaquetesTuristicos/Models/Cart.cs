@@ -31,18 +31,18 @@ namespace PaquetesTuristicos.Models
             }
         }
 
-        public void addToCart(int productId, int qty)
+        public void addToCart(int productId)
         {
             var redis = RedisStore.RedisCache;
             if (redis.HashExists(HashKey, productId))
             {
-                redis.HashIncrement(HashKey, productId, qty);
+                redis.HashIncrement(HashKey, productId, 1);
             }
             else
             {
                 HashEntry[] cartHash =
                 {
-                new HashEntry(productId, qty)
+                new HashEntry(productId, 1)
                 };
                 redis.HashSet(HashKey, cartHash);
             }

@@ -155,11 +155,12 @@ namespace PaquetesTuristicos.Controllers
             cart.loadCartItems();
             return View(cart.ShoppingCart);
         }
-        public ActionResult AgregarItemAlCarrito(int id, int qty)
+        public ActionResult AgregarItemAlCarrito()
         {
+            Service ser = (Service)Session["Servicio"];
             Usuario user = (Usuario)Session["USER"];
             Cart cart = new Cart(user.idUsuario);
-            cart.addToCart(id, qty);
+            cart.addToCart(Convert.ToInt32(ser.id));
             ViewBag.Error = "Servicio agregado";
             return RedirectToAction("Carrito", "Cliente");
         }
@@ -305,6 +306,17 @@ namespace PaquetesTuristicos.Controllers
         {
             string html = "";
             Service ser = (Service)Session["Servicio"];
+            int indice = 0;
+            for(int i = 0; i < ser.fare.Count();i++)
+            {
+                if(ser.fare[i].name.Equals(tipo))
+                {
+                    indice = i;
+                }
+            }
+            html += "<h4>Descripcion tarifa nombre</h4>" +
+                    "<p id = descripcion >" + ser.fare[indice].description + "</p> <br>" +
+                    "<h4> Precio de la tarifa </h4> <p>"+ ser.fare[indice].precio + "</ p > ";
             return html;
         }
 
