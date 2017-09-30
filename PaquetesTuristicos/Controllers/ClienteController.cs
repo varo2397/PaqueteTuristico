@@ -36,9 +36,6 @@ namespace PaquetesTuristicos.Controllers
                             Usuario user = new Usuario();
                             user.idUsuario = u.idUsuario;
                             user.correo = u.correo;
-
-                            //Conseguir informacion del usuario?
-                            //var u2 = db.Regulars.Where(a => a.idUsuario.Equals(u.idUsuario)).FirstOrDefault();
                             Session["USER"] = user;
 
                             return RedirectToAction("Ordenes", "Cliente");
@@ -72,9 +69,6 @@ namespace PaquetesTuristicos.Controllers
             {
                 using (serviciosCREntities db = new serviciosCREntities())
                 {
-                    //var o = db.Ordens.Where(a => a.idCliente.Equals(user.idUsuario)).FirstOrDefault();
-
-                    // Saca la lista de ordenes
                     listaSqlOrden = db.Ordens.Where(a => a.idCliente.Equals(user.idUsuario)).ToList();
                     
                     if (listaSqlOrden != null)
@@ -192,10 +186,9 @@ namespace PaquetesTuristicos.Controllers
             Cart cart = new Cart(user.idUsuario);
             Orden orden = new Orden();
             
-            if (true)
+            cart.loadCartItems();
+            if (cart.ShoppingCart.Count() > 0)
             {
-                cart.loadCartItems();
-
                 orden.pagada = true;
                 orden.idCliente = user.idUsuario;
                 orden.fechaHora = DateTime.Now;
