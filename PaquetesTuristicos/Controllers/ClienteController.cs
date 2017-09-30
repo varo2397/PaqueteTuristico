@@ -192,7 +192,7 @@ namespace PaquetesTuristicos.Controllers
             Cart cart = new Cart(user.idUsuario);
             Orden orden = new Orden();
             
-            if (cart.getCartSize() > 0)
+            if (true)
             {
                 cart.loadCartItems();
 
@@ -207,8 +207,6 @@ namespace PaquetesTuristicos.Controllers
                     {
                         db.Ordens.Add(orden);
                         db.SaveChanges();
-                        var o = db.Ordens.Where(a => a.fechaHora == orden.fechaHora).FirstOrDefault();
-                        orden.idOrden = o.idOrden;
 
                         foreach(Tuple<Service, Fare> e in cart.ShoppingCart)
                         {
@@ -234,7 +232,7 @@ namespace PaquetesTuristicos.Controllers
             {
                 ViewBag.Error = "No hay servicios en el carrito";
             }
-            return PartialView();
+            return View();
         }
 
         public ActionResult Registrarse()

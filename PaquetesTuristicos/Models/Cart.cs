@@ -111,15 +111,16 @@ namespace PaquetesTuristicos.Models
         public int getCartSize()
         {
             var redis = RedisStore.RedisCache;
-            if (Exists())
-            {
-                var len = redis.Execute("HLEN " + HashKey);
-                return Int32.Parse(len.ToString());
-            }
-            else
-            {
-                return -1;  // cart does not exist
-            }
+            //if (Exists())
+            //{
+            //    var len = redis.Execute("HLEN " + HashKey);
+            //    return Int32.Parse(len.ToString());
+            //}
+            //else
+            //{
+            //    return -1;  // cart does not exist
+            //}
+            return Convert.ToInt32(redis.ListLength(HashKey));
         }
 
         public void loadCartItems()
