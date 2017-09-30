@@ -15,7 +15,7 @@ namespace PaquetesTuristicos.Models
             JsonContractResolver = new CamelCasePropertyNamesContractResolver()
         };
 
-        public void AgregarUsuario(Usuario usuario)
+        public void agregarUsuario(Usuario usuario)
         {
             client.Connect();
 
@@ -28,7 +28,7 @@ namespace PaquetesTuristicos.Models
                 .Wait();
         }
 
-        public void AgregarServicio(Service servicio)
+        public void agregarServicio(Service servicio)
         {
             client.Connect();
 
@@ -41,7 +41,7 @@ namespace PaquetesTuristicos.Models
                 .Wait();
         }
 
-        public void AgregarCategoria(Categoria categoria)
+        public void agregarCategoria(Categoria categoria)
         {
             client.Connect();
 
@@ -54,7 +54,7 @@ namespace PaquetesTuristicos.Models
                 .Wait();
         }
 
-        public void Usuario_x_Categoria(Usuario usuario, Categoria categoria)
+        public void usuario_x_Categoria(Usuario usuario, Categoria categoria)
         {
             client.Connect();
 
@@ -67,27 +67,23 @@ namespace PaquetesTuristicos.Models
                 .Wait();
         }
 
-        public void Usuario_x_Servicio(Usuario usuario, Service servicio, int calif, string coment)
+        public void usuario_x_Servicio(Calificacion calificacion)
         {
             client.Connect();
 
-            var actor = new Opinion
-            {
-                calificacion = calif,
-                comentario = coment
-            };
+            var node = calificacion;
 
             client.Cypher
                 .Match("(u:Usuario)", "(s:Servicio)")
-                .Where((Usuario u) => u.idUsuario == usuario.idUsuario)
-                .AndWhere((Service s) => s.id == servicio.id)
-                .Create("(u)-[:OPINION {opinion}]->(s)")
-                .WithParam("opinion", actor)
+                .Where((Usuario u) => u.idUsuario == calificacion.idUsuario)
+                .AndWhere((Service s) => Int32.Parse(s.id.ToString()) == calificacion.idServicio)
+                .Create("(u)-[:CALIFICACION {calificacion}]->(s)")
+                .WithParam("calificacion", node)
                 .ExecuteWithoutResultsAsync()
                 .Wait();
         }
 
-        public void Categoria_x_Servicio(Categoria categoria, Service servicio)
+        public void categoria_x_Servicio(Categoria categoria, Service servicio)
         {
             client.Connect();
 
@@ -100,7 +96,7 @@ namespace PaquetesTuristicos.Models
                 .Wait();
         }
 
-        public int Likes_x_Categorias(Categoria categoria)
+        public int likes_x_Categorias(Categoria categoria)
         {
             client.Connect();
 
@@ -113,13 +109,47 @@ namespace PaquetesTuristicos.Models
                 })
                 .Results;
 
-            int cantidadLikes = query.Count();
-
-            return cantidadLikes;
+            return query.Count();
         }
 
-        public void Opiniones(int servicio)
+        public List<Calificacion> calificaciones(Service servicio)
         {
+            client.Connect();
+
+            List<Calificacion> query = client.Cypher
+                .OptionalMatch("(u:Usuario)-[c:CALIFICACION]->(s:Servicio)")
+                .Where((Service s) => s.id == servicio.id)
+                .Return(c => c.As<Calificacion>())
+                .Results
+                .ToList();
+
+            return query;
+
+            //Optional Match(u:Usuario)-[o: OPINION]->(s: Servicio)
+            //Where s.serviceId = 1
+            //Return o
+        }
+
+        public List<Service> preferencias(Usuario usuario)
+        {
+            client.Connect();
+
+            List<Service> query = client.Cypher
+                .Match("(u: Usuario) -[o: OPINION]->(s: Servicio)")
+                .Where((Usuario u) => u.idUsuario == usuario.idUsuario)
+                .OptionalMatch("(u) -[:LIKE]->(c: Categoria) -[:TIPO]->(s)")
+                .Return(s => s.As<Service>())
+                .OrderByDescending("o.calificacion")
+                .Results
+                .ToList();
+
+            return query;
+
+            //Match(u: Usuario) -[o: OPINION]->(s: Servicio)
+            //Where u.idUsuario = 2
+            //Match(u) -[:LIKE]->(c: Categoria) -[:TIPO]->(s)
+            //Return s
+            //Order by(o.calificacion) Desc
         }
     }
 }
