@@ -158,18 +158,21 @@ namespace PaquetesTuristicos.Controllers
         public ActionResult AgregarItemAlCarrito()
         {
             Service ser = (Service)Session["Servicio"];
+            //recibe una lista de tarifas
+            //Fare fare = ser.fare;
             Usuario user = (Usuario)Session["USER"];
             Cart cart = new Cart(user.idUsuario);
-            cart.addToCart(Convert.ToInt32(ser.id));
+            //cart.addToCart(Convert.ToInt32(ser.id), (ser.fare));
             ViewBag.Error = "Servicio agregado";
             return RedirectToAction("Carrito", "Cliente");
         }
 
-        public ActionResult BorrarItemDelCarrito(int id)
+        public ActionResult BorrarItemDelCarrito()
         {
+            Service ser = (Service)Session["Servicio"];
             Usuario user = (Usuario)Session["USER"];
             Cart cart = new Cart(user.idUsuario);
-            cart.remove(id);
+            //cart.remove(Convert.ToInt32(ser.id));
             ViewBag.Error = "Servicio eliminado";
             return RedirectToAction("Carrito", "Cliente");
         }
@@ -199,10 +202,10 @@ namespace PaquetesTuristicos.Controllers
                         var o = db.Ordens.Where(a => a.fechaHora == orden.fechaHora).FirstOrDefault();
                         orden.idOrden = o.idOrden;
 
-                        foreach(Tuple<Service, int> e in cart.ShoppingCart)
+                        foreach(Tuple<Service, Fare> e in cart.ShoppingCart)
                         {
                             ServiciosPorOrden spo = new ServiciosPorOrden();
-                            spo.cantidad = e.Item2;
+                            spo.cantidad = e.Item2.qty;
                             spo.idOrden = orden.idOrden;
                             spo.idServicio = Convert.ToInt32(e.Item1.id);
                             orden.ServiciosPorOrdens.Add(spo);

@@ -10,11 +10,13 @@ namespace PaquetesTuristicos.Models
     public class Cart
     {
         public String HashKey { get; set; }
-        public List<Tuple<Service, int>> ShoppingCart { get; set; }
+        public String FareKey { get; set; }
+        public List<Tuple<Service, Fare>> ShoppingCart { get; set; }
 
         public Cart(int idUser)
         {
             this.HashKey = "cart:" + idUser.ToString();
+            this.FareKey = "fare:" + idUser.ToString();
         }
 
         private Boolean Exists()
@@ -31,35 +33,60 @@ namespace PaquetesTuristicos.Models
             }
         }
 
-        public void addToCart(int productId)
+        public void addToCart(int productId, string fareName)
         {
             var redis = RedisStore.RedisCache;
+            FareKey += productId.ToString();
             if (redis.HashExists(HashKey, productId))
             {
-                redis.HashIncrement(HashKey, productId, 1);
+                if (redis.HashExists(FareKey, fareName))
+                {
+                    redis.HashIncrement(FareKey, fareName);
+                }else
+                {
+                    HashEntry[] FareHash =
+                    {
+                    new HashEntry(fareName, 1)
+                    };
+                    redis.HashSet(FareKey, FareHash);
+                }
             }
             else
             {
                 HashEntry[] cartHash =
                 {
-                new HashEntry(productId, 1)
+                new HashEntry(productId, FareKey)
                 };
                 redis.HashSet(HashKey, cartHash);
+
+                HashEntry[] FareHash =
+                {
+                new HashEntry(fareName, 1)
+                };
+                redis.HashSet(FareKey, FareHash);
             }
         }
 
-        public void remove(int productId)
+        public void remove(int productId, string fare)
         {
             var redis = RedisStore.RedisCache;
+            FareKey += productId.ToString();
             if (redis.HashExists(HashKey, productId))
             {
+                redis.HashDelete(FareKey, fare);
                 redis.HashDelete(HashKey, productId);
             }
         }
         
         public void clearCart()
         {
+            ShoppingCart.Clear();
             var redis = RedisStore.RedisCache;
+            var itemHash = redis.HashGetAll(HashKey);
+            foreach (var Item in itemHash)
+            {
+                redis.KeyDelete((Item.Value).ToString(), CommandFlags.FireAndForget);
+            }
             redis.KeyDelete(HashKey, CommandFlags.FireAndForget);
         }
 
@@ -93,18 +120,35 @@ namespace PaquetesTuristicos.Models
 
         public void loadCartItems()
         {
+            ShoppingCart.Clear();
             var redis = RedisStore.RedisCache;
+            MongoConnect mongo = new MongoConnect();
             if (Exists())
             {
-                var idQtyHash = redis.HashGetAll(HashKey);
+                var itemHash = redis.HashGetAll(HashKey);
 
-                foreach (var Item in idQtyHash)
+                foreach (var Item in itemHash)
                 {
-                    MongoConnect mongo = new MongoConnect();
-                    
+                    //FareKey += (Item.Name).ToString();
+                    var fareHash = redis.HashGetAll((Item.Value).ToString());
+
                     Service service = mongo.getid((Item.Name).ToString());
-                    Tuple<Service, int> item = new Tuple<Service, int>(service, Int32.Parse(Item.Value.ToString()));
-                    ShoppingCart.Add(item);
+
+                    foreach (var Fare in fareHash)
+                    {
+                        Fare fare = new Fare();
+                        foreach (var f in service.fare)
+                        {
+                            if (Fare.Name == f.name)
+                            {
+                                fare = f;
+                            }
+                            
+                        }
+                        fare.qty = Convert.ToInt32((Fare.Value).ToString());
+                        Tuple<Service, Fare> item = new Tuple<Service, Fare>(service, fare);
+                        ShoppingCart.Add(item);
+                    }
                     //System.Diagnostics.Debug.WriteLine(string.Format("key : {0}, value : {1}", Item.Name, Item.Value));
                 }
             }
