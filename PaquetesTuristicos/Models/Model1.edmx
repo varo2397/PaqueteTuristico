@@ -55,8 +55,9 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="idOrden" Type="int" Nullable="false" />
-          <Property Name="idServicio" Type="int" Nullable="false" />
+          <Property Name="idServicio" Type="nvarchar(max)" Nullable="false" />
           <Property Name="cantidad" Type="int" Nullable="false" />
+          <Property Name="idTarifa" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="Usuario">
           <Key>
@@ -64,7 +65,7 @@
           </Key>
           <Property Name="idUsuario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="correo" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="contrasena" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="contrasena" Type="varchar" MaxLength="65" Nullable="false" />
           <Property Name="idRolUsuario" Type="int" Nullable="false" />
         </EntityType>
         <Association Name="FK__Calificac__idUsu__1FCDBCEB">
@@ -103,7 +104,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Servicios__idOrd__1BFD2C07">
+        <Association Name="FK__Servicios__idOrd__36B12243">
           <End Role="Orden" Type="Self.Orden" Multiplicity="1" />
           <End Role="ServiciosPorOrden" Type="Self.ServiciosPorOrden" Multiplicity="*" />
           <ReferentialConstraint>
@@ -147,7 +148,7 @@
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="Regular" EntitySet="Regular" />
           </AssociationSet>
-          <AssociationSet Name="FK__Servicios__idOrd__1BFD2C07" Association="Self.FK__Servicios__idOrd__1BFD2C07">
+          <AssociationSet Name="FK__Servicios__idOrd__36B12243" Association="Self.FK__Servicios__idOrd__36B12243">
             <End Role="Orden" EntitySet="Orden" />
             <End Role="ServiciosPorOrden" EntitySet="ServiciosPorOrden" />
           </AssociationSet>
@@ -190,7 +191,7 @@
           <Property Name="pagada" Type="Boolean" Nullable="false" />
           <Property Name="fechaHora" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="Usuario" Relationship="Self.FK__Orden__idCliente__1920BF5C" FromRole="Orden" ToRole="Usuario" />
-          <NavigationProperty Name="ServiciosPorOrdens" Relationship="Self.FK__Servicios__idOrd__1BFD2C07" FromRole="Orden" ToRole="ServiciosPorOrden" />
+          <NavigationProperty Name="ServiciosPorOrdens" Relationship="Self.FK__Servicios__idOrd__36B12243" FromRole="Orden" ToRole="ServiciosPorOrden" />
         </EntityType>
         <EntityType Name="Regular">
           <Key>
@@ -216,9 +217,10 @@
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="idOrden" Type="Int32" Nullable="false" />
-          <Property Name="idServicio" Type="Int32" Nullable="false" />
+          <Property Name="idServicio" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="cantidad" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Orden" Relationship="Self.FK__Servicios__idOrd__1BFD2C07" FromRole="ServiciosPorOrden" ToRole="Orden" />
+          <Property Name="idTarifa" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Orden" Relationship="Self.FK__Servicios__idOrd__36B12243" FromRole="ServiciosPorOrden" ToRole="Orden" />
         </EntityType>
         <EntityType Name="Usuario">
           <Key>
@@ -226,7 +228,7 @@
           </Key>
           <Property Name="idUsuario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="correo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="contrasena" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="contrasena" Type="String" MaxLength="65" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="idRolUsuario" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Calificacions" Relationship="Self.FK__Calificac__idUsu__1FCDBCEB" FromRole="Usuario" ToRole="Calificacion" />
           <NavigationProperty Name="Ordens" Relationship="Self.FK__Orden__idCliente__1920BF5C" FromRole="Usuario" ToRole="Orden" />
@@ -257,7 +259,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Servicios__idOrd__1BFD2C07">
+        <Association Name="FK__Servicios__idOrd__36B12243">
           <End Role="Orden" Type="Self.Orden" Multiplicity="1" />
           <End Role="ServiciosPorOrden" Type="Self.ServiciosPorOrden" Multiplicity="*" />
           <ReferentialConstraint>
@@ -309,7 +311,7 @@
             <End Role="Usuario" EntitySet="Usuarios" />
             <End Role="Orden" EntitySet="Ordens" />
           </AssociationSet>
-          <AssociationSet Name="FK__Servicios__idOrd__1BFD2C07" Association="Self.FK__Servicios__idOrd__1BFD2C07">
+          <AssociationSet Name="FK__Servicios__idOrd__36B12243" Association="Self.FK__Servicios__idOrd__36B12243">
             <End Role="Orden" EntitySet="Ordens" />
             <End Role="ServiciosPorOrden" EntitySet="ServiciosPorOrdens" />
           </AssociationSet>
@@ -384,6 +386,7 @@
                 <ScalarProperty Name="idOrden" ColumnName="idOrden" />
                 <ScalarProperty Name="idServicio" ColumnName="idServicio" />
                 <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+                <ScalarProperty Name="idTarifa" ColumnName="idTarifa" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

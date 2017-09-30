@@ -155,7 +155,7 @@ namespace PaquetesTuristicos.Controllers
             cart.loadCartItems();
             return View(cart.ShoppingCart);
         }
-        public ActionResult AgregarItemAlCarrito()
+        public ActionResult AgregarItemAlCarrito(string tipo)
         {
             Service ser = (Service)Session["Servicio"];
             Usuario user = (Usuario)Session["USER"];
@@ -204,7 +204,7 @@ namespace PaquetesTuristicos.Controllers
                             ServiciosPorOrden spo = new ServiciosPorOrden();
                             spo.cantidad = e.Item2;
                             spo.idOrden = orden.idOrden;
-                            spo.idServicio = Convert.ToInt32(e.Item1.id);
+                            //spo.idServicio = Convert.ToInt32(e.Item1.id);
                             orden.ServiciosPorOrdens.Add(spo);
                         }
 

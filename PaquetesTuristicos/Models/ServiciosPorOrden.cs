@@ -16,8 +16,9 @@ namespace PaquetesTuristicos.Models
     {
         public int id { get; set; }
         public int idOrden { get; set; }
-        public int idServicio { get; set; }
+        public string idServicio { get; set; }
         public int cantidad { get; set; }
+        public string idTarifa { get; set; }
     
         public virtual Orden Orden { get; set; }
     }

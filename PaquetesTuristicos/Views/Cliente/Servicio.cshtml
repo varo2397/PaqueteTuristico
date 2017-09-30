@@ -84,20 +84,24 @@
                         <li>Ubicacion: @Model.province, @Model.canton, @Model.district </li>
                         <li>Categoria : @Model.categoria.categoria1</li>
                     </ul>
-                    <div>
-                        Tarifas :
-                        <select id="tipo" class="form-control col-md-3" name="tipo" required>
-                            <option value="None">Seleccione</option>
-                            @foreach (var item in Model.fare)
-                            {
-                                <option value="@item.name">@item.name</option>
-                            }
-                        </select>
+                    <form method="post" action="~/Cliente/AgregarItemAlCarrito">
+                        <div>
 
-                        <br>
-                        <div id="tarifas"></div>                        
-                    </div>
-                    @Html.ActionLink("Agregar al carrito", "AgregarItemAlCarrito", "Cliente", new { id = Model.id }, new { @class = "btn btn-info" })
+                            Tarifas :
+                            <select id="tipo" class="form-control col-md-3" name="tipo" required>
+                                <option value="None">Seleccione</option>
+                                @foreach (var item in Model.fare)
+                                {
+                                    <option value="@item.name">@item.name</option>
+                                }
+                            </select>
+
+                            <br>
+                            <div id="tarifas"></div>
+                        </div>
+                        <input type="submit" class="btn btn-info">
+                    </form>
+                    
                 </div>
                 <br>
             </div>
