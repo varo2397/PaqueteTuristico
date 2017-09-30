@@ -6,20 +6,25 @@
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script>
      $(document).ready(function () {
-            $('#cantidad').change( function () {
-                $.ajax({
-                    type: "POST",
-                    url: "@Url.Action("CantidadTarifas","Vendedor")",
-                    data: { cantidad: $("#cantidad").val() },//Tipo
+         $('#cantidad').change(function () {
+             var cantidad = $("#cantidad").val()
+             if (cantidad != "None") {
+                 $.ajax({
+                     type: "POST",
+                     url: "@Url.Action("CantidadTarifas","Vendedor")",
+                     data: { cantidad: $("#cantidad").val() },//Tipo
 
-                    success: function (resultado) {
-                        $("#cantidadTarifasH").html(resultado)
-                    },
-                    error: function () {
-                        alert("Error");
-                    }
+                     success: function (resultado) {
+                         $("#cantidadTarifasH").html(resultado)
+                     },
+                     error: function () {
+                         alert("Error");
+                     }
 
-                });
+                 });
+             } else {
+                 $("#cantidadTarifasH").html("");
+             }
             });
         });
 </script>
@@ -125,6 +130,7 @@
                 <div class="form-group">
                     <div class="form-group">
                         <select id="cantidad" class="form-control" name="cantidad" required>
+                            <option value="None">Seleccione</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>

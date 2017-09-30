@@ -193,7 +193,13 @@ namespace PaquetesTuristicos.Models
 
                 for (int j = 0; j < services[i].ImagList.Count(); j++)
                 {
-                    services[j].ImagList[j].Image = getImagen(services[j].ImagList[j].imageGridFS);
+                    services[i].ImagList[j].Image = getImagen(services[i].ImagList[j].imageGridFS);
+                }
+                using (serviciosCREntities db = new serviciosCREntities())
+                {
+                    int id = services[i].idCategory;
+                    var v = db.Categorias.Where(a => a.idCategoria == id).FirstOrDefault();
+                    services[i].categoria = v;
                 }
 
             }
@@ -219,6 +225,13 @@ namespace PaquetesTuristicos.Models
             for (int i = 0; i < tempService.ImagList.Count(); i++)
             {
                 tempService.ImagList[i].Image = getImagen(tempService.ImagList[i].imageGridFS);
+            }
+
+            using (serviciosCREntities db = new serviciosCREntities())
+            {
+                int idC = tempService.idCategory;
+                var v = db.Categorias.Where(a => a.idCategoria == idC).FirstOrDefault();
+                tempService.categoria = v;
             }
 
             return tempService;

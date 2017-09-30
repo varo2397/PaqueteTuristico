@@ -260,6 +260,14 @@ namespace PaquetesTuristicos.Controllers
             return PartialView(form);
         }
 
+        public ActionResult Servicio(string id)
+        {
+            MongoConnect mongo = new MongoConnect();
+            Service model = mongo.getid(id);
+            Session["Servicio"] = model;
+            return View(model);
+        }
+
         [NonAction]
         public bool emailExist(string email)
         {
@@ -268,6 +276,13 @@ namespace PaquetesTuristicos.Controllers
                 var v = db.Usuarios.Where(a => a.correo == email).FirstOrDefault();
                 return v != null;
             }
+        }
+
+        public string EscogerTarifa(string tipo)
+        {
+            string html = "";
+            Service ser = (Service)Session["Servicio"];
+            return html;
         }
 
         public ActionResult CerrarSesion()

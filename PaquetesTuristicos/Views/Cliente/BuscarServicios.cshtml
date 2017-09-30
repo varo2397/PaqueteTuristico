@@ -1,4 +1,4 @@
-﻿@Model List<PaquetesTuristicos.Models.Service>
+﻿
 @{
     ViewBag.Title = "BuscarServicios";
 }
@@ -19,8 +19,9 @@
                         <ul>
                             <li>Dueño : @item.owner</li>
                             <li>Ubicacion: @item.province, @item.canton, @item.district</li>
+                            <li>Categoria : @item.categoria.categoria1</li>
                         </ul>
-                        @Html.ActionLink("Seleccionar", null, null, new { id = @item.id }, new { @class = "btn btn-info" })
+                        @Html.ActionLink("Seleccionar", "Servicio", "Cliente", new { id = @item.id }, new { @class = "btn btn-info" })
                     </div>
                     <br>
                 </div>
