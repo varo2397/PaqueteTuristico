@@ -13,7 +13,7 @@ namespace PaquetesTuristicos.Models
         public ObjectId imagId { get; set; }
         public string imageGridFS { get; set; }
         public string serviceId { get; set; }
-        public byte[] Image { get; set; }
+        public string Image { get; set; }
 
 
     }

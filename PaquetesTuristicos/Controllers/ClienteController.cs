@@ -59,7 +59,7 @@ namespace PaquetesTuristicos.Controllers
         {
             string buscar = form["buscar"];
             MongoConnect mongo = new MongoConnect();
-            var model = mongo.getService(buscar);
+            var model = mongo.getServiceByName(buscar);
             return View(model);
         }
 

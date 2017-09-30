@@ -50,7 +50,7 @@ namespace PaquetesTuristicos.Models
                     services[i].ImagList = getImages(services[i].id.ToString());
                     for (int j = 0; j < services[i].ImagList.Count(); j++)
                     {
-                        services[j].ImagList[j].Image = getImagen(services[j].ImagList[j].imageGridFS);
+                        services[i].ImagList[j].Image = getImagen(services[i].ImagList[j].imageGridFS);
                     }
 
                 }
@@ -75,6 +75,7 @@ namespace PaquetesTuristicos.Models
                     {"province" , service.province},
                     {"canton" , service.canton},
                     {"district" , service.district},
+                    {"disponible",service.disponible },
                     {"town",service.town},
                     {"KmDistance",service.KmDistance},
                     {"latitude",service.latitude},
@@ -153,7 +154,7 @@ namespace PaquetesTuristicos.Models
             var query = Query.EQ("idCreador", idCreador);
 
             List<Service> services = collection.Find(query).ToList();
-            if(services.Count() > 0)
+            if (services.Count() > 0)
             {
                 for (int i = 0; i < services.Count(); i++)
                 {
@@ -172,18 +173,20 @@ namespace PaquetesTuristicos.Models
                     }
                 }
             }
-            
+
 
             return services;
 
 
         }
 
-        public List<Service> getService(string nombre)
+        public List<Service> getServiceByName(string nombre)
         {
 
             MongoCollection<Service> collection = dataBase.GetCollection<Service>("Services");
-            var query = Query.EQ("name", nombre);
+
+            var query = Query.Matches("name",".*" + nombre +".*");
+
             List<Service> services = collection.Find(query).ToList();
 
             for (int i = 0; i < services.Count(); i++)
@@ -213,7 +216,7 @@ namespace PaquetesTuristicos.Models
 
         public Service getid(string id)
         {
-            
+
             var query = Query.EQ("_id", new ObjectId(id));
             MongoCollection<Service> collection = dataBase.GetCollection<Service>("Services");
 
@@ -237,12 +240,12 @@ namespace PaquetesTuristicos.Models
             return tempService;
         }
 
-        public byte[] getImagen(string idImagen)
+        public string getImagen(string idImagen)
         {
 
             var fileID = new ObjectId(idImagen);
             var file = dataBase.GridFS.FindOneById(fileID);
-            byte[] temp;
+            string temp;
 
             using (var fs = file.OpenRead())
             {
@@ -250,7 +253,7 @@ namespace PaquetesTuristicos.Models
                 var bytes = new byte[fs.Length];
                 fs.Read(bytes, 0, (int)fs.Length);
                 var stream = new MemoryStream(bytes);
-                temp = bytes;
+                temp = "data:Image/png;base64," + Convert.ToBase64String(bytes); ;
                 //imagen = "data:Image/png;base64," + Convert.ToBase64String(bytes);
             }
 
@@ -275,12 +278,18 @@ namespace PaquetesTuristicos.Models
 
         }
 
-        public void deleteById(string id)
+        public void updateById(string id)
         {
-            MongoCollection<Service> collection = dataBase.GetCollection<Service>("Services");
+
+            var coleccion = dataBase.GetCollection<Service>("Services");
             var query = Query.EQ("_id", new ObjectId(id));
-            collection.Remove(query);
+            var update = Update.Set("disponible", "false");
+            coleccion.Update(query, update);
+
+
         }
+
+
 
     }
 }

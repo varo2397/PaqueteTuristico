@@ -22,7 +22,7 @@ namespace PaquetesTuristicos.Controllers
         public ActionResult Eliminar(string id)
         {
             MongoConnect mongo = new MongoConnect();
-            mongo.deleteById(id);
+            mongo.updateById(id);
             return RedirectToAction("Servicios", "Vendedor");
         }
         [HttpPost]

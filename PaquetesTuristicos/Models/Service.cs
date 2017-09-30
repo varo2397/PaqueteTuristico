@@ -23,6 +23,9 @@ namespace PaquetesTuristicos.Models
 
         public List<Imagen> ImagList { get; set; }
 
+
+        public bool disponible { get; set; }
+
         public string town { get; set; }
         public string KmDistance { get; set; }
         public string latitude { get; set; }
