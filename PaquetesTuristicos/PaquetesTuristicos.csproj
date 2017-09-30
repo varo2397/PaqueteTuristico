@@ -220,6 +220,7 @@
     <Compile Include="Models\Orden.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Order.cs" />
     <Compile Include="Models\RedisStore.cs" />
     <Compile Include="Models\Regular.cs">
       <DependentUpon>Model1.tt</DependentUpon>
