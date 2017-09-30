@@ -120,8 +120,8 @@ namespace PaquetesTuristicos.Models
 
                 foreach (var Item in itemHash)
                 {
-                    FareKey = FareKey + ":" + Item.Value;
-                    var fareHash = redis.HashGetAll(FareKey);
+                    //FareKey = FareKey + ":" + Item.Value;
+                    var fareHash = redis.HashGetAll(Item.Value.ToString());
 
                     Service service = mongo.getid((Item.Name).ToString());
 

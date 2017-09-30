@@ -10,7 +10,7 @@ namespace PaquetesTuristicos.Models
     [BsonIgnoreExtraElements]
     public class Fare
     {
-        public ObjectId fareId { get; set; }
+        public ObjectId id { get; set; }
         public string serviceId { get; set; }
         public string name { get; set; }
         public string description { get; set; }

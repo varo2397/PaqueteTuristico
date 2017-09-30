@@ -98,9 +98,11 @@ namespace PaquetesTuristicos.Controllers
                                 Fare fare = new Fare();
                                 foreach (var f in service.fare)
                                 {
-                                    if (sopList[j].idTarifa.Equals(f.fareId))
+                                    if ((sopList[j].idTarifa.ToString()).Equals(f.id.ToString()))
                                     {
                                         fare = f;
+                                        fare.serviceId = sopList[j].idServicio;
+                                        fare.qty = sopList[j].cantidad;
                                     }
 
                                 }
@@ -207,7 +209,7 @@ namespace PaquetesTuristicos.Controllers
                             spo.cantidad = e.Item2.qty;
                             spo.idOrden = orden.idOrden;
                             spo.idServicio = e.Item1.id.ToString();
-                            spo.idTarifa = e.Item2.fareId.ToString();
+                            spo.idTarifa = e.Item2.id.ToString();
                             orden.ServiciosPorOrdens.Add(spo);
                         }
 
