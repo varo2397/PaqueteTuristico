@@ -11,6 +11,6 @@ namespace PaquetesTuristicos.Models
         public int idCliente { get; set; }
         public bool pagada { get; set; }
         public System.DateTime fechaHora { get; set; }
-        public List<Tuple<Service, int>> orderList { get; set; }
+        public List<Tuple<Service, Fare>> orderList { get; set; }
     }
 }

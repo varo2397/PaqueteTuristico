@@ -37,7 +37,7 @@ namespace PaquetesTuristicos.Controllers
                     var u = db.Usuarios.Where(a => a.correo.Equals(email)).FirstOrDefault();
                     if ((u != null) && (u.idRolUsuario == 2))   // existe el usuario y es tipo vendedor
                     {
-                        if (string.Compare(Crypto.Hash(pass).Substring(0, 50), u.contrasena) == 0)
+                        if (string.Compare(Crypto.Hash(pass), u.contrasena) == 0)
                         {
                             Usuario user = new Usuario();
                             user.idUsuario = u.idUsuario;
@@ -89,7 +89,7 @@ namespace PaquetesTuristicos.Controllers
                 user.correo = email;
                 user.contrasena = Crypto.Hash(pass);
 
-                user.contrasena = user.contrasena.Substring(0, 50);
+                user.contrasena = user.contrasena;
 
                 user.idRolUsuario = 2;          // 2 = vendedor
 

@@ -31,7 +31,7 @@ namespace PaquetesTuristicos.Controllers
                     var u = db.Usuarios.Where(a => a.correo.Equals(email)).FirstOrDefault();
                     if ((u != null) && (u.idRolUsuario == 3))   // existe el usuario y es tipo regular
                     {
-                        if (string.Compare(Crypto.Hash(pass).Substring(0, 50), u.contrasena) == 0)
+                        if (string.Compare(Crypto.Hash(pass), u.contrasena) == 0)
                         {
                             Usuario user = new Usuario();
                             user.idUsuario = u.idUsuario;
@@ -100,7 +100,17 @@ namespace PaquetesTuristicos.Controllers
                             {
                                 MongoConnect mongo = new MongoConnect();
                                 Service service = mongo.getid((sopList[j].idServicio).ToString());
-                                Tuple<Service, int> item = new Tuple<Service, int>(service, sopList[j].cantidad);
+
+                                Fare fare = new Fare();
+                                foreach (var f in service.fare)
+                                {
+                                    if (sopList[j].idTarifa.Equals(f.fareId))
+                                    {
+                                        fare = f;
+                                    }
+
+                                }
+                                Tuple<Service, Fare> item = new Tuple<Service, Fare>(service, fare);
                                 listaOrden[i].orderList.Add(item);
                             }
                             
@@ -158,8 +168,6 @@ namespace PaquetesTuristicos.Controllers
         public ActionResult AgregarItemAlCarrito(string tipo)
         {
             Service ser = (Service)Session["Servicio"];
-            //recibe una lista de tarifas
-            //Fare fare = ser.fare;
             Usuario user = (Usuario)Session["USER"];
             Cart cart = new Cart(user.idUsuario);
             cart.addToCart(ser.id.ToString(),tipo);
@@ -207,7 +215,8 @@ namespace PaquetesTuristicos.Controllers
                             ServiciosPorOrden spo = new ServiciosPorOrden();
                             spo.cantidad = e.Item2.qty;
                             spo.idOrden = orden.idOrden;
-                            //spo.idServicio = Convert.ToInt32(e.Item1.id);
+                            spo.idServicio = e.Item1.id.ToString();
+                            spo.idTarifa = e.Item2.fareId.ToString();
                             orden.ServiciosPorOrdens.Add(spo);
                         }
 
@@ -251,7 +260,7 @@ namespace PaquetesTuristicos.Controllers
                 user.correo = email;
                 user.contrasena = Crypto.Hash(pass);
 
-                user.contrasena = user.contrasena.Substring(0, 50);
+                user.contrasena = user.contrasena;
 
                 user.idRolUsuario = 3;          // 3 = regular
 

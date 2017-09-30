@@ -74,7 +74,11 @@ namespace PaquetesTuristicos.Models
             if (redis.HashExists(HashKey, productId))
             {
                 redis.HashDelete(FareKey, fare);
-                redis.HashDelete(HashKey, productId);
+                if (redis.ListLength(FareKey) == 0)
+                {
+                    redis.HashDelete(HashKey, productId);
+                }
+                
             }
         }
         
@@ -120,10 +124,7 @@ namespace PaquetesTuristicos.Models
 
         public void loadCartItems()
         {
-            if(ShoppingCart != null)
-            {
-                ShoppingCart.Clear();
-            }
+            ShoppingCart.Clear();
             
             var redis = RedisStore.RedisCache;
             MongoConnect mongo = new MongoConnect();
