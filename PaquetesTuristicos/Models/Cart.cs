@@ -11,7 +11,7 @@ namespace PaquetesTuristicos.Models
     {
         public String HashKey { get; set; }
         public String FareKey { get; set; }
-        public List<Tuple<Service, Fare>> ShoppingCart { get; set; }
+        public List<Tuple<Service, Fare>> ShoppingCart = new List<Tuple<Service, Fare>>();
 
         public Cart(int idUser)
         {
@@ -33,10 +33,10 @@ namespace PaquetesTuristicos.Models
             }
         }
 
-        public void addToCart(int productId, string fareName)
+        public void addToCart(string productId, string fareName)
         {
             var redis = RedisStore.RedisCache;
-            FareKey += productId.ToString();
+            FareKey += productId;
             if (redis.HashExists(HashKey, productId))
             {
                 if (redis.HashExists(FareKey, fareName))
@@ -67,10 +67,10 @@ namespace PaquetesTuristicos.Models
             }
         }
 
-        public void remove(int productId, string fare)
+        public void remove(string productId, string fare)
         {
             var redis = RedisStore.RedisCache;
-            FareKey += productId.ToString();
+            FareKey += productId;
             if (redis.HashExists(HashKey, productId))
             {
                 redis.HashDelete(FareKey, fare);
@@ -90,7 +90,7 @@ namespace PaquetesTuristicos.Models
             redis.KeyDelete(HashKey, CommandFlags.FireAndForget);
         }
 
-        public void changeQty(int productId, int qty)
+        public void changeQty(string productId, int qty)
         {
             var redis = RedisStore.RedisCache;
             if (redis.HashExists(HashKey, productId))
@@ -120,7 +120,11 @@ namespace PaquetesTuristicos.Models
 
         public void loadCartItems()
         {
-            ShoppingCart.Clear();
+            if(ShoppingCart != null)
+            {
+                ShoppingCart.Clear();
+            }
+            
             var redis = RedisStore.RedisCache;
             MongoConnect mongo = new MongoConnect();
             if (Exists())

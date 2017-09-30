@@ -162,17 +162,17 @@ namespace PaquetesTuristicos.Controllers
             //Fare fare = ser.fare;
             Usuario user = (Usuario)Session["USER"];
             Cart cart = new Cart(user.idUsuario);
-            //cart.addToCart(Convert.ToInt32(ser.id), (ser.fare));
+            cart.addToCart(ser.id.ToString(),tipo);
             ViewBag.Error = "Servicio agregado";
             return RedirectToAction("Carrito", "Cliente");
         }
 
-        public ActionResult BorrarItemDelCarrito()
+        public ActionResult BorrarItemDelCarrito(string id, string id1)
         {
             Service ser = (Service)Session["Servicio"];
             Usuario user = (Usuario)Session["USER"];
             Cart cart = new Cart(user.idUsuario);
-            //cart.remove(Convert.ToInt32(ser.id));
+            cart.remove(id,id1);
             ViewBag.Error = "Servicio eliminado";
             return RedirectToAction("Carrito", "Cliente");
         }

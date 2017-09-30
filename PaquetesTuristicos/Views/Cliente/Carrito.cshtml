@@ -5,3 +5,35 @@
 
 <h2>Carrito</h2>
 
+<div class="row">
+    <div class="col-md-5">
+        @foreach (var item in Model)
+        {
+            <div class="card">
+                <div class="card-header">
+                    @item.Item1.name
+                </div>
+                <div class="card-block">
+                    <br>
+                    <div class="col-md-10">
+
+                        <h6 class="card-title">Caracteristicas</h6>
+                        <ul>
+                            <li>Dueño : @item.Item1.name</li>
+                            <li>Ubicacion: @item.Item1.province, @item.Item1.canton, @item.Item1.district</li>
+                            <li>Categoria : @item.Item1.categoria.categoria1</li>
+                            <li>Nombre tarifa : @item.Item2.name</li>
+                            <li>Precio : @item.Item2.precio</li>
+                            <li>Cantidad : @item.Item2.qty</li>
+                        </ul>
+                        @Html.ActionLink("Eliminar del carrito", "BorrarItemDelCarrito", "Cliente", new { id = @item.Item1.id , id1 = @item.Item2.name}, new { @class = "btn btn-info" })
+                    </div>
+                    <br>
+                </div>
+            </div>
+            <br>
+        }
+
+    </div>
+</div>
+
