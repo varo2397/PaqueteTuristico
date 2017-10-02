@@ -14,6 +14,7 @@ namespace PaquetesTuristicos.Controllers
 {
     public class ClienteController : Controller
     {
+        Neo4jStore neo = new Neo4jStore();
         public ActionResult InicioSesion()
         {
             return PartialView();
@@ -130,7 +131,7 @@ namespace PaquetesTuristicos.Controllers
         }
 
         [HttpPost]
-        public ActionResult Calificar(FormCollection form)
+        public ActionResult CalificarServicio(FormCollection form)
         {
             Usuario user = (Usuario)Session["USER"];
             Calificacion calificacion = new Calificacion();
@@ -146,6 +147,7 @@ namespace PaquetesTuristicos.Controllers
             {
                 using (serviciosCREntities db = new serviciosCREntities())
                 {
+                    neo.usuario_x_Servicio(calificacion);
                     db.Calificacions.Add(calificacion);
                     db.SaveChanges();
                     ViewBag.Error = "Servicio calificado!";
@@ -273,6 +275,7 @@ namespace PaquetesTuristicos.Controllers
                     {
                         using (serviciosCREntities db = new serviciosCREntities())
                         {
+                            neo.agregarUsuario(user);
                             db.Usuarios.Add(user);
                             db.SaveChanges();
                             var v = db.Usuarios.Where(a => a.correo == user.correo).FirstOrDefault();
@@ -327,6 +330,13 @@ namespace PaquetesTuristicos.Controllers
                     "<h4> Precio de la tarifa </h4> <p>"+ ser.fare[indice].precio + "</ p > ";
             return html;
         }    
+
+        public ActionResult Categorias()
+        {
+            serviciosCREntities db = new serviciosCREntities();
+            var categorias = db.Categorias.ToList();
+            return View(categorias);
+        }
 
         public ActionResult CerrarSesion()
         {

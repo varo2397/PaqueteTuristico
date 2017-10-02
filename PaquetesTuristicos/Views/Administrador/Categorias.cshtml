@@ -1,0 +1,34 @@
+﻿@model IEnumerable<PaquetesTuristicos.Models.Categoria>
+
+<h2>Categorias</h2>
+
+<p>
+    @Html.ActionLink("Crear categoria", "CrearCategoria" , "Administrador", null, new { @class = "btn btn-danger"  } )
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.categoria1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.activo)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.categoria1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.activo)
+            </td>
+            <td>
+                @Html.ActionLink("Editar", "EditarCategoria", "Administrador", new { id = item.idCategoria }, new { @class = "btn btn-danger" }) 
+            </td>
+        </tr>
+    }
+
+</table>

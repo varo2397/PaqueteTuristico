@@ -14,6 +14,8 @@ namespace PaquetesTuristicos.Controllers
 {
     public class VendedorController : Controller
     {
+        Neo4jStore neo = new Neo4jStore();
+
         public ActionResult InicioSesion()
         {
             return PartialView();
@@ -198,7 +200,8 @@ namespace PaquetesTuristicos.Controllers
             }
 
             servicio.fare = tarifas;
-
+            neo.agregarServicio(servicio);
+            
             MongoConnect nombre = new MongoConnect();
             nombre.addService(servicio,fotos);
 

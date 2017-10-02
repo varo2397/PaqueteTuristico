@@ -17,6 +17,7 @@ namespace PaquetesTuristicos.Models
 
         public void agregarUsuario(Usuario usuario)
         {
+           
             client.Connect();
 
             var node = usuario;
@@ -43,6 +44,7 @@ namespace PaquetesTuristicos.Models
 
         public void agregarCategoria(Categoria categoria)
         {
+            //falta conectar
             client.Connect();
 
             var node = categoria;
@@ -56,6 +58,7 @@ namespace PaquetesTuristicos.Models
 
         public void usuario_x_Categoria(Usuario usuario, Categoria categoria)
         {
+            //falta conectar
             client.Connect();
 
             client.Cypher
@@ -76,7 +79,7 @@ namespace PaquetesTuristicos.Models
             client.Cypher
                 .Match("(u:Usuario)", "(s:Servicio)")
                 .Where((Usuario u) => u.idUsuario == calificacion.idUsuario)
-                //.AndWhere((Service s) => Int32.Parse(s.id.ToString()) == calificacion.idServicio)
+                .AndWhere((Service s) => s.id.ToString().Equals(calificacion.idServicio))
                 .Create("(u)-[:CALIFICACION {calificacion}]->(s)")
                 .WithParam("calificacion", node)
                 .ExecuteWithoutResultsAsync()
@@ -85,6 +88,7 @@ namespace PaquetesTuristicos.Models
 
         public void categoria_x_Servicio(Categoria categoria, Service servicio)
         {
+            //falta conectar
             client.Connect();
 
             client.Cypher
@@ -98,6 +102,7 @@ namespace PaquetesTuristicos.Models
 
         public int likes_x_Categorias(Categoria categoria)
         {
+            //falta conectar
             client.Connect();
 
             var query = client.Cypher
@@ -114,6 +119,7 @@ namespace PaquetesTuristicos.Models
 
         public List<Calificacion> calificaciones(Service servicio)
         {
+            //falta conectar
             client.Connect();
 
             List<Calificacion> query = client.Cypher
@@ -132,6 +138,7 @@ namespace PaquetesTuristicos.Models
 
         public List<Service> preferencias(Usuario usuario)
         {
+            //falta conectar
             client.Connect();
 
             List<Service> query = client.Cypher

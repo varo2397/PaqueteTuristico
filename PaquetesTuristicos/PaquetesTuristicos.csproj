@@ -181,6 +181,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AdministradorController.cs" />
     <Compile Include="Controllers\CategoriasController.cs" />
     <Compile Include="Controllers\ClienteController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -379,7 +380,7 @@
     <Content Include="Views\Usuarios\Index.cshtml" />
     <Content Include="Views\Cliente\InicioSesion.cshtml" />
     <Content Include="Views\Cliente\Ordenes.cshtml" />
-    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Administrador\_ViewStart.cshtml" />
     <Content Include="Views\Cliente\PlantillaCliente.cshtml" />
     <Content Include="Views\Cliente\Registrarse.cshtml" />
     <Content Include="Views\Cliente\Carrito.cshtml" />
@@ -391,6 +392,15 @@
     <Content Include="Views\Cliente\BuscarServicios.cshtml" />
     <Content Include="Views\Cliente\Servicio.cshtml" />
     <Content Include="Views\Cliente\CalificarServicio.cshtml" />
+    <Content Include="Views\Cliente\Recomendaciones.cshtml" />
+    <Content Include="Views\Cliente\Categorias.cshtml" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Administrador\InicioSesion.cshtml" />
+    <Content Include="Views\Administrador\PlantillaAdministrador.cshtml" />
+    <Content Include="Views\Administrador\Registrarse.cshtml" />
+    <Content Include="Views\Administrador\Categorias.cshtml" />
+    <Content Include="Views\Administrador\CrearCategoria.cshtml" />
+    <Content Include="Views\Administrador\EditarCategoria.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Upload\" />

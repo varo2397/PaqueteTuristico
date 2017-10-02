@@ -3,6 +3,11 @@
     ViewBag.Title = "InicioSesion";
 }
 
+
+@{
+    ViewBag.Title = "InicioSesion";
+}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -28,16 +33,16 @@
 
 </head>
 
-<body class="bg-info">
+<body class="bg-danger">
 
     <div class="container">
 
         <div class="card card-login mx-auto mt-5">
             <div class="card-header">
-                Inicio de sesion 
+                Inicio de sesion
             </div>
             <div class="card-body">
-                <form method="post" action="~/Cliente/InicioSesion">
+                <form method="post" action="~/Administrador/InicioSesion">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Direccion correo electronico</label>
                         <input class="form-control" id="exampleInputEmail1" name="correoElectronico" aria-describedby="emailHelp" placeholder="Correo electronico">
@@ -62,9 +67,9 @@
                         </div>
                     }
                     @* Para cuando se tenga el login funcionando *@
-                    <button type="submit" class="btn btn-info btn-block">Iniciar Sesion</button>
-                    @*<button type="button" class="btn btn-info btn-block" onclick="location.href='@Url.Action("Ordenes", "Cliente")'">Iniciar Sesion</button>*@
-                    <button type="button" class="btn btn-info btn-block" onclick="location.href='@Url.Action("Registrarse", "Cliente")'">Registrarse</button>
+                    <button type="submit" class="btn btn-danger btn-block">Iniciar Sesion</button>
+                    @*<button type="button" class="btn btn-danger btn-block" onclick="location.href='@Url.Action("Ordenes", "Cliente")'">Iniciar Sesion</button>*@
+                    <button type="button" class="btn btn-danger btn-block" onclick="location.href='@Url.Action("Registrarse", "Administrador")'">Registrarse</button>
                 </form>
 
             </div>
@@ -79,3 +84,5 @@
 </body>
 
 </html>
+
+

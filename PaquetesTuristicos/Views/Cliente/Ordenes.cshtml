@@ -29,7 +29,7 @@
                                 <li>Precio : @order.Item2.precio</li>
                                 <li>Cantidad : @order.Item2.qty</li>
                             </ul>
-                            @Html.ActionLink("Eliminar del carrito", "CalificarServicio", "Cliente", new { id = @order.Item1.id }, new { @class = "btn btn-info" })
+                            @Html.ActionLink("Calificar", "CalificarServicio", "Cliente", new { id = @order.Item1.id }, new { @class = "btn btn-info" })
                         </div>
                         <br>
                     </div>
