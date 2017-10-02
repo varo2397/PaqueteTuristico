@@ -15,7 +15,7 @@ namespace PaquetesTuristicos.Controllers
     public class AdministradorController : Controller
     {
         private serviciosCREntities db = new serviciosCREntities();
-   
+        Neo4jStore neo = new Neo4jStore();
         public ActionResult InicioSesion()
         {
             return PartialView();
@@ -120,6 +120,7 @@ namespace PaquetesTuristicos.Controllers
             {
                 db.Categorias.Add(categoria);
                 db.SaveChanges();
+                neo.agregarCategoria(categoria);
                 return RedirectToAction("Categorias","Administrador");
             }
 

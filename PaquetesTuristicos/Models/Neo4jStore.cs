@@ -17,7 +17,7 @@ namespace PaquetesTuristicos.Models
 
         public void agregarUsuario(Usuario usuario)
         {
-           
+
             client.Connect();
 
             var node = usuario;
@@ -50,21 +50,21 @@ namespace PaquetesTuristicos.Models
             var node = categoria;
 
             client.Cypher
-                .Create("(s:Servicio {nuevoServicio})")
-                .WithParam("nuevoServicio", node)
+                .Create("(c:Categoria {nuevaCategoria})")
+                .WithParam("nuevaCategoria", node)
                 .ExecuteWithoutResultsAsync()
                 .Wait();
         }
 
-        public void usuario_x_Categoria(Usuario usuario, Categoria categoria)
+        public void usuario_x_Categoria(Usuario usuario, int categoria)
         {
             //falta conectar
             client.Connect();
 
             client.Cypher
                 .Match("(u:Usuario)", "(c:Categoria)")
-                .Where((Usuario u) => u.idUsuario == usuario.idUsuario)
-                .AndWhere((Categoria c) => c.idCategoria == categoria.idCategoria)
+                .Where((Usuario u) => u.correo == usuario.correo)
+                .AndWhere((Categoria c) => c.idCategoria == categoria)
                 .Create("(u)-[:LIKE]->(c)")
                 .ExecuteWithoutResultsAsync()
                 .Wait();
@@ -73,13 +73,15 @@ namespace PaquetesTuristicos.Models
         public void usuario_x_Servicio(Calificacion calificacion)
         {
             client.Connect();
+            serviciosCREntities db = new serviciosCREntities();
+            Usuario usuario = db.Usuarios.Where(a => a.idUsuario == calificacion.idUsuario).FirstOrDefault();
 
             var node = calificacion;
 
             client.Cypher
                 .Match("(u:Usuario)", "(s:Servicio)")
-                .Where((Usuario u) => u.idUsuario == calificacion.idUsuario)
-                .AndWhere((Service s) => s.id.ToString().Equals(calificacion.idServicio))
+                .Where((Usuario u) => u.correo == usuario.correo)
+                .AndWhere((Service s) => s.id.ToString() == calificacion.idServicio)
                 .Create("(u)-[:CALIFICACION {calificacion}]->(s)")
                 .WithParam("calificacion", node)
                 .ExecuteWithoutResultsAsync()
@@ -117,6 +119,31 @@ namespace PaquetesTuristicos.Models
             return query.Count();
         }
 
+        public List<string> usuario_x_Like(Usuario usuario)
+        {
+            //falta conectar
+            client.Connect();
+
+            List<Categoria> query = client.Cypher
+                .OptionalMatch("(u:Usuario)-[l:LIKE]->(c:Categoria)")
+                .Where((Usuario u) => u.correo == usuario.correo)
+                .Return(c => c.As<Categoria>())
+                .Results
+                .ToList();
+
+            List<string> nombres = new List<string>();
+
+            if (nombres.Count() != 0)
+            {
+                foreach (var c in query)
+                {
+                    nombres.Add(c.categoria1);
+                }
+            }
+
+            return nombres;
+        }
+
         public List<Calificacion> calificaciones(Service servicio)
         {
             //falta conectar
@@ -143,7 +170,7 @@ namespace PaquetesTuristicos.Models
 
             List<Service> query = client.Cypher
                 .Match("(u: Usuario) -[o: OPINION]->(s: Servicio)")
-                .Where((Usuario u) => u.idUsuario == usuario.idUsuario)
+                .Where((Usuario u) => u.correo == usuario.correo)
                 .OptionalMatch("(u) -[:LIKE]->(c: Categoria) -[:TIPO]->(s)")
                 .Return(s => s.As<Service>())
                 .OrderByDescending("o.calificacion")

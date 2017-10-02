@@ -9,6 +9,7 @@ using System.Collections;
 using System.Web.Security;
 using System.Web.Helpers;
 using System.Globalization;
+using System.Collections.Generic;
 
 namespace PaquetesTuristicos.Controllers
 {
@@ -40,11 +41,13 @@ namespace PaquetesTuristicos.Controllers
                             Session["USER"] = user;
 
                             return RedirectToAction("Ordenes", "Cliente");
-                        }else
+                        }
+                        else
                         {
                             ViewBag.Error = "Contraseña incorrecta";
                         }
-                    }else
+                    }
+                    else
                     {
                         ViewBag.Error = "Este correo no esta registrado en nuestro sistema.";
                     }
@@ -71,7 +74,7 @@ namespace PaquetesTuristicos.Controllers
                 using (serviciosCREntities db = new serviciosCREntities())
                 {
                     listaSqlOrden = db.Ordens.Where(a => a.idCliente.Equals(user.idUsuario)).ToList();
-                    
+
                     if (listaSqlOrden != null)
                     {
                         // Llenar lista de Order
@@ -110,9 +113,10 @@ namespace PaquetesTuristicos.Controllers
                                 Tuple<Service, Fare> item = new Tuple<Service, Fare>(service, fare);
                                 listaOrden[i].orderList.Add(item);
                             }
-                            
+
                         }
-                    } else
+                    }
+                    else
                     {
                         listaOrden = null;
                         ViewBag.Error = "Usted no tiene ninguna orden registrada";
@@ -123,7 +127,7 @@ namespace PaquetesTuristicos.Controllers
             return View(listaOrden);
         }
 
-        
+
         public ActionResult CalificarServicio(string id)
         {
             Session["IDServicio"] = id;
@@ -135,7 +139,7 @@ namespace PaquetesTuristicos.Controllers
         {
             Usuario user = (Usuario)Session["USER"];
             Calificacion calificacion = new Calificacion();
-            
+
 
             calificacion.comentario = form["comentario"];
             calificacion.calificacion1 = Convert.ToDecimal(form["calificacion"], CultureInfo.InvariantCulture);
@@ -158,7 +162,7 @@ namespace PaquetesTuristicos.Controllers
             }
             return View(form);
         }
-        
+
         public ActionResult Carrito()
         {
             Usuario user = (Usuario)Session["USER"];
@@ -171,7 +175,7 @@ namespace PaquetesTuristicos.Controllers
             Service ser = (Service)Session["Servicio"];
             Usuario user = (Usuario)Session["USER"];
             Cart cart = new Cart(user.idUsuario);
-            cart.addToCart(ser.id.ToString(),tipo);
+            cart.addToCart(ser.id.ToString(), tipo);
             ViewBag.Error = "Servicio agregado";
             return RedirectToAction("Carrito", "Cliente");
         }
@@ -181,7 +185,7 @@ namespace PaquetesTuristicos.Controllers
             Service ser = (Service)Session["Servicio"];
             Usuario user = (Usuario)Session["USER"];
             Cart cart = new Cart(user.idUsuario);
-            cart.remove(id,id1);
+            cart.remove(id, id1);
             ViewBag.Error = "Servicio eliminado";
             return RedirectToAction("Carrito", "Cliente");
         }
@@ -192,7 +196,7 @@ namespace PaquetesTuristicos.Controllers
             Usuario user = (Usuario)Session["USER"];
             Cart cart = new Cart(user.idUsuario);
             Orden orden = new Orden();
-            
+
             cart.loadCartItems();
             if (cart.ShoppingCart.Count() > 0)
             {
@@ -202,13 +206,13 @@ namespace PaquetesTuristicos.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    
+
                     using (serviciosCREntities db = new serviciosCREntities())
                     {
                         db.Ordens.Add(orden);
                         db.SaveChanges();
 
-                        foreach(Tuple<Service, Fare> e in cart.ShoppingCart)
+                        foreach (Tuple<Service, Fare> e in cart.ShoppingCart)
                         {
                             ServiciosPorOrden spo = new ServiciosPorOrden();
                             spo.cantidad = e.Item2.qty;
@@ -218,7 +222,7 @@ namespace PaquetesTuristicos.Controllers
                             orden.ServiciosPorOrdens.Add(spo);
                         }
 
-                        foreach(ServiciosPorOrden spo in orden.ServiciosPorOrdens)
+                        foreach (ServiciosPorOrden spo in orden.ServiciosPorOrdens)
                         {
                             db.ServiciosPorOrdens.Add(spo);
                         }
@@ -228,7 +232,8 @@ namespace PaquetesTuristicos.Controllers
                         return RedirectToAction("Ordenes", "Cliente");
                     }
                 }
-            }else
+            }
+            else
             {
                 ViewBag.Error = "No hay servicios en el carrito";
             }
@@ -265,17 +270,18 @@ namespace PaquetesTuristicos.Controllers
                 regular.primerNombre = name;
                 regular.apellidos = lastName;
                 regular.cuentaBancaria = Convert.ToDecimal(bankAccount);
+                neo.agregarUsuario(user);
 
                 if (ModelState.IsValid)
                 {
                     if (emailExist(email))
                     {
                         ViewBag.Error = "El correo ya esta registrado en el sistema.";
-                    }else
+                    }
+                    else
                     {
                         using (serviciosCREntities db = new serviciosCREntities())
                         {
-                            neo.agregarUsuario(user);
                             db.Usuarios.Add(user);
                             db.SaveChanges();
                             var v = db.Usuarios.Where(a => a.correo == user.correo).FirstOrDefault();
@@ -283,8 +289,10 @@ namespace PaquetesTuristicos.Controllers
                             db.Regulars.Add(regular);
                             db.SaveChanges();
                             ViewBag.Error = "Usuario creado correctamente";
+                            
                             return RedirectToAction("InicioSesion", "Cliente");
                         }
+                        
                     }
                 }
             }
@@ -318,24 +326,39 @@ namespace PaquetesTuristicos.Controllers
             string html = "";
             Service ser = (Service)Session["Servicio"];
             int indice = 0;
-            for(int i = 0; i < ser.fare.Count();i++)
+            for (int i = 0; i < ser.fare.Count(); i++)
             {
-                if(ser.fare[i].name.Equals(tipo))
+                if (ser.fare[i].name.Equals(tipo))
                 {
                     indice = i;
                 }
             }
             html += "<h4>Descripcion tarifa nombre</h4>" +
                     "<p id = descripcion >" + ser.fare[indice].description + "</p> <br>" +
-                    "<h4> Precio de la tarifa </h4> <p>"+ ser.fare[indice].precio + "</ p > ";
+                    "<h4> Precio de la tarifa </h4> <p>" + ser.fare[indice].precio + "</ p > ";
             return html;
-        }    
+        }
 
         public ActionResult Categorias()
         {
             serviciosCREntities db = new serviciosCREntities();
-            var categorias = db.Categorias.ToList();
-            return View(categorias);
+
+            List<Categoria> categorias = db.Categorias.ToList();
+            Usuario user = (Usuario)Session["USER"];
+            List<string> likes = neo.usuario_x_Like(user);
+
+            Tuple<List<Categoria>, List<string>> categoriasLikes = new Tuple<List<Categoria>, List<string>>(categorias, likes);
+            List<Tuple<List<Categoria>, List<string>>> lista = new List<Tuple<List<Categoria>, List<string>>>();
+            lista.Add(categoriasLikes);
+            return View(lista);
+        }
+
+        public ActionResult Like(int id)
+        {
+            Usuario user = (Usuario)Session["USER"];
+            neo.usuario_x_Categoria(user, id);
+
+            return RedirectToAction("Categorias", "Cliente");
         }
 
         public ActionResult CerrarSesion()
