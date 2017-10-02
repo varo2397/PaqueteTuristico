@@ -4,15 +4,15 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="serviciosCRModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="serviciosCRModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Calificacion">
           <Key>
             <PropertyRef Name="idCalificacion" />
           </Key>
           <Property Name="idCalificacion" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="comentario" Type="varchar" MaxLength="500" />
+          <Property Name="comentario" Type="varchar" MaxLength="500" Nullable="false" />
           <Property Name="calificacion" Type="numeric" Precision="1" Scale="0" Nullable="false" />
-          <Property Name="idServicio" Type="int" Nullable="false" />
+          <Property Name="idServicio" Type="nvarchar(max)" Nullable="false" />
           <Property Name="idUsuario" Type="int" Nullable="false" />
           <Property Name="fechaHora" Type="date" Nullable="false" />
         </EntityType>
@@ -68,7 +68,7 @@
           <Property Name="contrasena" Type="varchar" MaxLength="65" Nullable="false" />
           <Property Name="idRolUsuario" Type="int" Nullable="false" />
         </EntityType>
-        <Association Name="FK__Calificac__idUsu__1FCDBCEB">
+        <Association Name="FK__Calificac__idUsu__49C3F6B7">
           <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
           <End Role="Calificacion" Type="Self.Calificacion" Multiplicity="*" />
           <ReferentialConstraint>
@@ -136,7 +136,7 @@
           <EntitySet Name="rolUsuario" EntityType="Self.rolUsuario" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ServiciosPorOrden" EntityType="Self.ServiciosPorOrden" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__Calificac__idUsu__1FCDBCEB" Association="Self.FK__Calificac__idUsu__1FCDBCEB">
+          <AssociationSet Name="FK__Calificac__idUsu__49C3F6B7" Association="Self.FK__Calificac__idUsu__49C3F6B7">
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="Calificacion" EntitySet="Calificacion" />
           </AssociationSet>
@@ -157,7 +157,8 @@
             <End Role="Usuario" EntitySet="Usuario" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="serviciosCRModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -166,12 +167,12 @@
             <PropertyRef Name="idCalificacion" />
           </Key>
           <Property Name="idCalificacion" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="comentario" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="comentario" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="calificacion1" Type="Decimal" Precision="1" Scale="0" Nullable="false" />
-          <Property Name="idServicio" Type="Int32" Nullable="false" />
+          <Property Name="idServicio" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="idUsuario" Type="Int32" Nullable="false" />
           <Property Name="fechaHora" Type="DateTime" Nullable="false" Precision="0" />
-          <NavigationProperty Name="Usuario" Relationship="Self.FK__Calificac__idUsu__1FCDBCEB" FromRole="Calificacion" ToRole="Usuario" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK__Calificac__idUsu__49C3F6B7" FromRole="Calificacion" ToRole="Usuario" />
         </EntityType>
         <EntityType Name="Categoria">
           <Key>
@@ -229,12 +230,12 @@
           <Property Name="correo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="contrasena" Type="String" MaxLength="65" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="idRolUsuario" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Calificacions" Relationship="Self.FK__Calificac__idUsu__1FCDBCEB" FromRole="Usuario" ToRole="Calificacion" />
+          <NavigationProperty Name="Calificacions" Relationship="Self.FK__Calificac__idUsu__49C3F6B7" FromRole="Usuario" ToRole="Calificacion" />
           <NavigationProperty Name="Ordens" Relationship="Self.FK__Orden__idCliente__1920BF5C" FromRole="Usuario" ToRole="Orden" />
           <NavigationProperty Name="Regular" Relationship="Self.FK__Regular__idUsuar__164452B1" FromRole="Usuario" ToRole="Regular" />
           <NavigationProperty Name="rolUsuario" Relationship="Self.FK__Usuario__idRolUs__1367E606" FromRole="Usuario" ToRole="rolUsuario" />
         </EntityType>
-        <Association Name="FK__Calificac__idUsu__1FCDBCEB">
+        <Association Name="FK__Calificac__idUsu__49C3F6B7">
           <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
           <End Role="Calificacion" Type="Self.Calificacion" Multiplicity="*" />
           <ReferentialConstraint>
@@ -302,7 +303,7 @@
           <EntitySet Name="rolUsuarios" EntityType="Self.rolUsuario" />
           <EntitySet Name="ServiciosPorOrdens" EntityType="Self.ServiciosPorOrden" />
           <EntitySet Name="Usuarios" EntityType="Self.Usuario" />
-          <AssociationSet Name="FK__Calificac__idUsu__1FCDBCEB" Association="Self.FK__Calificac__idUsu__1FCDBCEB">
+          <AssociationSet Name="FK__Calificac__idUsu__49C3F6B7" Association="Self.FK__Calificac__idUsu__49C3F6B7">
             <End Role="Usuario" EntitySet="Usuarios" />
             <End Role="Calificacion" EntitySet="Calificacions" />
           </AssociationSet>

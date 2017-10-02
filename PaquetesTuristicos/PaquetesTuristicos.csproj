@@ -390,6 +390,7 @@
     <Content Include="Views\Categorias\Index.cshtml" />
     <Content Include="Views\Cliente\BuscarServicios.cshtml" />
     <Content Include="Views\Cliente\Servicio.cshtml" />
+    <Content Include="Views\Cliente\CalificarServicio.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Upload\" />

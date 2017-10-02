@@ -123,13 +123,14 @@ namespace PaquetesTuristicos.Controllers
         }
 
         
-        public ActionResult Calificar(int id)
+        public ActionResult CalificarServicio(string id)
         {
+            Session["IDServicio"] = id;
             return View();
         }
 
         [HttpPost]
-        public ActionResult Calificar(int id, FormCollection form)
+        public ActionResult Calificar(FormCollection form)
         {
             Usuario user = (Usuario)Session["USER"];
             Calificacion calificacion = new Calificacion();
@@ -138,7 +139,7 @@ namespace PaquetesTuristicos.Controllers
             calificacion.comentario = form["comentario"];
             calificacion.calificacion1 = Convert.ToDecimal(form["calificacion"], CultureInfo.InvariantCulture);
             calificacion.fechaHora = DateTime.Now;
-            calificacion.idServicio = id;
+            calificacion.idServicio = (string)Session["IDServicio"];
             calificacion.idUsuario = user.idUsuario;
 
             if (ModelState.IsValid)
@@ -148,10 +149,12 @@ namespace PaquetesTuristicos.Controllers
                     db.Calificacions.Add(calificacion);
                     db.SaveChanges();
                     ViewBag.Error = "Servicio calificado!";
+                    Session["IDServicio"] = null;
                     return RedirectToAction("Ordenes", "Cliente");
+
                 }
             }
-            return PartialView(form);
+            return View(form);
         }
         
         public ActionResult Carrito()
@@ -323,7 +326,7 @@ namespace PaquetesTuristicos.Controllers
                     "<p id = descripcion >" + ser.fare[indice].description + "</p> <br>" +
                     "<h4> Precio de la tarifa </h4> <p>"+ ser.fare[indice].precio + "</ p > ";
             return html;
-        }
+        }    
 
         public ActionResult CerrarSesion()
         {

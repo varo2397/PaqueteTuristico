@@ -17,7 +17,7 @@ namespace PaquetesTuristicos.Models
         public int idCalificacion { get; set; }
         public string comentario { get; set; }
         public decimal calificacion1 { get; set; }
-        public int idServicio { get; set; }
+        public string idServicio { get; set; }
         public int idUsuario { get; set; }
         public System.DateTime fechaHora { get; set; }
     

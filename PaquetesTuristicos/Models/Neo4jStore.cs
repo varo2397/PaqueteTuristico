@@ -76,7 +76,7 @@ namespace PaquetesTuristicos.Models
             client.Cypher
                 .Match("(u:Usuario)", "(s:Servicio)")
                 .Where((Usuario u) => u.idUsuario == calificacion.idUsuario)
-                .AndWhere((Service s) => Int32.Parse(s.id.ToString()) == calificacion.idServicio)
+                //.AndWhere((Service s) => Int32.Parse(s.id.ToString()) == calificacion.idServicio)
                 .Create("(u)-[:CALIFICACION {calificacion}]->(s)")
                 .WithParam("calificacion", node)
                 .ExecuteWithoutResultsAsync()
