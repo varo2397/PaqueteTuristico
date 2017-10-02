@@ -7,26 +7,30 @@
     <div class="col-md-5">
         @foreach (var item in Model)
         {
-            <div class="card">
-                <div class="card-header">
-                    @item.name
-                </div>
-                <div class="card-block">
-                    <br>
-                    <div class="col-md-10">
-
-                        <h6 class="card-title">Caracteristicas</h6>
-                        <ul>
-                            <li>Dueño : @item.owner</li>
-                            <li>Ubicacion: @item.province, @item.canton, @item.district</li>
-                            <li>Categoria : @item.categoria.categoria1</li>
-                        </ul>
-                        @Html.ActionLink("Seleccionar", "Servicio", "Cliente", new { id = @item.id }, new { @class = "btn btn-info" })
+            if (item.disponible)
+            {
+                <div class="card">
+                    <div class="card-header">
+                        @item.name
                     </div>
-                    <br>
+                    <div class="card-block">
+                        <br>
+                        <div class="col-md-10">
+
+                            <h6 class="card-title">Caracteristicas</h6>
+                            <ul>
+                                <li>Dueño : @item.owner</li>
+                                <li>Ubicacion: @item.province, @item.canton, @item.district</li>
+                                <li>Categoria : @item.categoria.categoria1</li>
+                            </ul>
+                            @Html.ActionLink("Seleccionar", "Servicio", "Cliente", new { id = @item.id }, new { @class = "btn btn-info" })
+                        </div>
+                        <br>
+                    </div>
                 </div>
-            </div>
-            <br>
+                <br>
+            }
+
         }
 
     </div>

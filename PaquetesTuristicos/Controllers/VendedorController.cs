@@ -21,7 +21,7 @@ namespace PaquetesTuristicos.Controllers
             return PartialView();
         }
 
-        public ActionResult Eliminar(string id)
+        public ActionResult Actualizar(string id)
         {
             MongoConnect mongo = new MongoConnect();
             mongo.updateById(id);
@@ -200,7 +200,7 @@ namespace PaquetesTuristicos.Controllers
             }
 
             servicio.fare = tarifas;
-            neo.agregarServicio(servicio);
+            //neo.agregarServicio(servicio);
             
             MongoConnect nombre = new MongoConnect();
             nombre.addService(servicio,fotos);
@@ -245,7 +245,7 @@ namespace PaquetesTuristicos.Controllers
                         "<div class=\"form-group\"><label>Nombre tarifa " + (i + 1) + "</label></div>" +
                         "<div class=\"form-group\"><input type = \"text\" class=\"form-control\" name=\"tarifaNombre" + (i + 1) + "\" required></div>" +
                         "<div class=\"form-group\"><label>Precio de la tarifa " + (i + 1) + "</label></div>" +
-                        "<div class=\"form-group\"><input type = \"number\" class=\"form-control\" min=\"1\" max =\"10000\" name\"=tarifaPrecio" + (i + 1) + "\" required ></div>" +
+                        "<div class=\"form-group\"><input type = \"number\" class=\"form-control\" min=\"1\" max =\"10000\" name=\"tarifaPrecio" + (i + 1) + "\" required ></div>" +
                         "<div class=\"form-group\"><label>Descripcion de la tarifa " + (i + 1) + "</label></div>" +
                         "<div class=\"form-group\"><textarea class=\"form-control\" name=\"tarifaDescripcion" + (i+1) + "\" ></textarea>";
                     htmltarifas += tarifa;

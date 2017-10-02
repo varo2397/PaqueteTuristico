@@ -43,7 +43,7 @@ namespace PaquetesTuristicos.Models
 
             MongoConnect mc = new MongoConnect();
             Service tempService = mc.getid(id);
-            //id = tempService.id;
+            this.id = tempService.id;
             name = tempService.name;
             owner = tempService.owner;
             ImagList = tempService.ImagList;

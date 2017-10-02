@@ -281,9 +281,16 @@ namespace PaquetesTuristicos.Models
         public void updateById(string id)
         {
 
+            string estado;
+
             var coleccion = dataBase.GetCollection<Service>("Services");
             var query = Query.EQ("_id", new ObjectId(id));
-            var update = Update.Set("disponible", "false");
+
+            Service tempService = coleccion.FindOne(query);
+
+            if (tempService.disponible == false) estado = "true"; else estado = "false";
+
+            var update = Update.Set("disponible", estado);
             coleccion.Update(query, update);
 
 
