@@ -185,7 +185,7 @@ namespace PaquetesTuristicos.Models
 
             MongoCollection<Service> collection = dataBase.GetCollection<Service>("Services");
 
-            var query = Query.Matches("name",".*" + nombre +".*");
+            var query = Query.Matches("name", ".*" + nombre + ".*");
 
             List<Service> services = collection.Find(query).ToList();
 
@@ -296,7 +296,19 @@ namespace PaquetesTuristicos.Models
 
         }
 
+        public List<Service> getServicesById(List<String> ids)
+        {
 
+            List<Service> tempList = new List<Service>();
+
+            for (int i = 0; i < ids.Count(); i++)
+            {
+                tempList.Add(getid(ids[i]));
+            }
+
+            return tempList;
+
+        }
 
     }
 }
