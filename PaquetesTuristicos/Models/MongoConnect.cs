@@ -64,7 +64,63 @@ namespace PaquetesTuristicos.Models
         }
 
 
-        public void addService(Service service, List<string> rutaImags)
+        //public void addService(Service service, List<string> rutaImags)
+        //{
+
+        //    var tempService = new BsonDocument
+        //        {
+        //            {"name",service.name },
+        //            {"owner" , service.owner},
+        //            {"idCreador" , service.idCreador},
+        //            {"province" , service.province},
+        //            {"canton" , service.canton},
+        //            {"district" , service.district},
+        //            {"disponible",service.disponible },
+        //            {"town",service.town},
+        //            {"KmDistance",service.KmDistance},
+        //            {"latitude",service.latitude},
+        //            {"longitude",service.longitude},
+        //            {"idCategory" , service.idCategory}
+        //        };
+
+        //    dataBase.GetCollection<Service>("Services").Insert(tempService);
+
+        //    string idSTring = tempService["_id"].ToString();
+
+        //    for (int i = 0; i < rutaImags.Count(); i++)
+        //    {
+
+        //        string idImagen = saveImagen(rutaImags[i]);
+
+        //        var tempImage = new BsonDocument
+        //        {
+        //            { "imageGridFS",idImagen},
+        //            { "id",idSTring }
+
+        //        };
+        //        addImage(tempImage);
+
+        //    }
+
+        //    for (int i = 0; i < service.fare.Count(); i++)
+        //    {
+
+        //        var tempFare = new BsonDocument
+        //            {
+        //                {"id",idSTring },
+        //                {"name",service.fare[i].name},
+        //                {"description",service.fare[i].description},
+        //                {"precio",service.fare[i].precio}
+
+        //            };
+
+        //        addFare(tempFare);
+        //    }
+
+
+        //}
+
+        public Service addServiceReturn(Service service, List<string> rutaImags)
         {
 
             var tempService = new BsonDocument
@@ -117,6 +173,7 @@ namespace PaquetesTuristicos.Models
                 addFare(tempFare);
             }
 
+            return getid(idSTring);
 
         }
 
@@ -185,7 +242,7 @@ namespace PaquetesTuristicos.Models
 
             MongoCollection<Service> collection = dataBase.GetCollection<Service>("Services");
 
-            var query = Query.Matches("name",".*" + nombre +".*");
+            var query = Query.Matches("name", ".*" + nombre + ".*");
 
             List<Service> services = collection.Find(query).ToList();
 

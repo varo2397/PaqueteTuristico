@@ -200,10 +200,13 @@ namespace PaquetesTuristicos.Controllers
             }
 
             servicio.fare = tarifas;
-            //neo.agregarServicio(servicio);
+            
             
             MongoConnect nombre = new MongoConnect();
-            nombre.addService(servicio,fotos);
+            Service servicioID = new Service();
+
+            servicioID = nombre.addServiceReturn(servicio,fotos);
+            neo.agregarServicio(servicioID);
 
             //eliminar fotos del servidor
             System.IO.DirectoryInfo di = new DirectoryInfo(Server.MapPath("~/App_Data/Upload/"));

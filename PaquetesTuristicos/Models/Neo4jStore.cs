@@ -33,7 +33,7 @@ namespace PaquetesTuristicos.Models
         {
             client.Connect();
 
-            var node = servicio;
+            var node = servicio.id;
 
             client.Cypher
                 .Create("(s:Servicio {nuevoServicio})")
