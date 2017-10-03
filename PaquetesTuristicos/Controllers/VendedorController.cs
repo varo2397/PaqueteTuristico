@@ -207,6 +207,7 @@ namespace PaquetesTuristicos.Controllers
 
             servicioID = nombre.addServiceReturn(servicio,fotos);
             neo.agregarServicio(servicioID);
+            neo.categoria_x_Servicio(idCategoria,servicioID);
 
             //eliminar fotos del servidor
             System.IO.DirectoryInfo di = new DirectoryInfo(Server.MapPath("~/App_Data/Upload/"));

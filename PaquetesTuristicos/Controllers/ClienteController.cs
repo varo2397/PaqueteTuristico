@@ -10,6 +10,8 @@ using System.Web.Security;
 using System.Web.Helpers;
 using System.Globalization;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
+using System.Diagnostics;
 
 namespace PaquetesTuristicos.Controllers
 {
@@ -146,12 +148,14 @@ namespace PaquetesTuristicos.Controllers
             calificacion.fechaHora = DateTime.Now;
             calificacion.idServicio = (string)Session["IDServicio"];
             calificacion.idUsuario = user.idUsuario;
+            calificacion.Usuario = user;
+            user.contrasena = "";
 
+            neo.usuario_x_Servicio(calificacion);
             if (ModelState.IsValid)
             {
                 using (serviciosCREntities db = new serviciosCREntities())
                 {
-                    neo.usuario_x_Servicio(calificacion);
                     db.Calificacions.Add(calificacion);
                     db.SaveChanges();
                     ViewBag.Error = "Servicio calificado!";
@@ -160,7 +164,9 @@ namespace PaquetesTuristicos.Controllers
 
                 }
             }
+
             return View(form);
+
         }
 
         public ActionResult Carrito()
@@ -308,7 +314,13 @@ namespace PaquetesTuristicos.Controllers
             MongoConnect mongo = new MongoConnect();
             Service model = mongo.getid(id);
             Session["Servicio"] = model;
-            return View(model);
+            List<Calificacion> califaciones = neo.calificaciones(model);
+            Tuple<Service, List<Calificacion>> servicioCalificacion= new Tuple<Service, List<Calificacion>>(model, califaciones);
+
+            List<Tuple<Service, List<Calificacion>>> informacion = new List<Tuple<Service, List<Calificacion>>>();
+            informacion.Add(servicioCalificacion);
+
+            return View(informacion);
         }
 
         [NonAction]

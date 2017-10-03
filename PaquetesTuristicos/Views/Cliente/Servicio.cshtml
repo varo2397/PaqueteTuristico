@@ -37,22 +37,26 @@
         <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
 
             <div class="carousel-inner" role="listbox">
-                @foreach (var item in Model.ImagList)
+                @foreach (var informacion in Model)
                 {
-                    if (contador == 0)
+                    foreach (var item in informacion.Item1.ImagList)
                     {
-                        <div class="carousel-item active">
-                            <img class="d-block img-fluid" src="@item.Image">
-                        </div>
+                        if (contador == 0)
+                        {
+                            <div class="carousel-item active">
+                                <img class="d-block img-fluid" src="@item.Image">
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="carousel-item ">
+                                <img class="d-block img-fluid" src="@item.Image">
+                            </div>
+                        }
+                        contador++;
                     }
-                    else
-                    {
-                        <div class="carousel-item ">
-                            <img class="d-block img-fluid" src="@item.Image">
-                        </div>
-                    }
-                    contador++;
                 }
+
 
 
             </div>
@@ -82,47 +86,71 @@
 
 <div class="row tab-content">
     <div class="col-md-12 tab-pane" id="informacion">
-        <div class="card">
-            <div class="card-header">
-                @Model.name
-            </div>
-            <div class="card-block">
-                <br>
-                <div class="offset-md-4 col-md-10">
+        @foreach (var servicio in Model)
+        {
 
-                    <h4 class="card-title">Caracteristicas</h4>
-                    <ul>
-                        <li>Dueño : @Model.owner </li>
-                        <li>Ubicacion: @Model.province, @Model.canton, @Model.district </li>
-                        <li>Categoria : @Model.categoria.categoria1</li>
-                    </ul>
-                    <form method="post" action="~/Cliente/AgregarItemAlCarrito">
-                        <div>
-
-                            Tarifas :
-                            <select id="tipo" class="form-control col-md-3" name="tipo" required>
-                                <option value="None">Seleccione</option>
-                                @foreach (var item in Model.fare)
-                                {
-                                    <option value="@item.name">@item.name</option>
-                                }
-                            </select>
-
-                            <br>
-                            <div id="tarifas"></div>
-                        </div>
-                        <input type="submit" class="btn btn-info">
-                    </form>
-
+            <div class="card">
+                <div class="card-header">
+                    @servicio.Item1.name
                 </div>
-                <br>
+                <div class="card-block">
+                    <br>
+                    <div class="offset-md-4 col-md-10">
+
+                        <h4 class="card-title">Caracteristicas</h4>
+                        <ul>
+                            <li>Dueño : @servicio.Item1.owner </li>
+                            <li>Ubicacion: @servicio.Item1.province, @servicio.Item1.canton, @servicio.Item1.district </li>
+                            <li>Categoria : @servicio.Item1.categoria.categoria1</li>
+                        </ul>
+                        <form method="post" action="~/Cliente/AgregarItemAlCarrito">
+                            <div>
+
+                                Tarifas :
+                                <select id="tipo" class="form-control col-md-3" name="tipo" required>
+                                    <option value="None">Seleccione</option>
+                                    @foreach (var tarifas in servicio.Item1.fare)
+                                    {
+                                        <option value="@tarifas.name">@tarifas.name</option>
+                                    }
+                                </select>
+
+                                <br>
+                                <div id="tarifas"></div>
+                            </div>
+                            <input type="submit" class="btn btn-info">
+                        </form>
+
+                    </div>
+                    <br>
+                </div>
             </div>
-        </div>
-        <br>
+                <br>
+
+        }
+
+
 
     </div>
-    <div class="tab-pane" id="mapa">Hola</div>
-    <div class="tab-pane" id="calificaciones">Hola</div>
+    <div class="tab-pane" id="mapa"></div>
+    <div class="tab-pane" id="calificaciones">
+        @foreach (var calificaciones in Model)
+        {
+            if (calificaciones.Item2[0] != null)
+            {
+                foreach (var item in calificaciones.Item2)
+                {
+                    foreach (var cal in item)
+                    {
+                        @cal.comentario
+                        <br />
+                        @cal.calificacion1
+                    }
+                }
+            }
+
+        }
+    </div>
 </div>
 
 

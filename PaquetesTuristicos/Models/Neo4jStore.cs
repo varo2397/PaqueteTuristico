@@ -5,6 +5,7 @@ using System.Web;
 using Neo4jClient;
 using Newtonsoft.Json.Serialization;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace PaquetesTuristicos.Models
 {
@@ -36,15 +37,14 @@ namespace PaquetesTuristicos.Models
             var node = servicio.id.ToString();
 
             client.Cypher
-                .Create("(s:Servicio {nuevoServicio})")
-                .WithParam("nuevoServicio", node)
+                .Create("(s:Servicio {id:{nuevoServicio}})")
+                .WithParams(new { nuevoServicio = node })
                 .ExecuteWithoutResultsAsync()
                 .Wait();
         }
 
         public void agregarCategoria(Categoria categoria)
         {
-            //falta conectar
             client.Connect();
 
             var node = categoria;
@@ -58,7 +58,6 @@ namespace PaquetesTuristicos.Models
 
         public void usuario_x_Categoria(Usuario usuario, int categoria)
         {
-            //falta conectar
             client.Connect();
 
             client.Cypher
@@ -73,14 +72,14 @@ namespace PaquetesTuristicos.Models
         public void usuario_x_Servicio(Calificacion calificacion)
         {
             client.Connect();
-            serviciosCREntities db = new serviciosCREntities();
-            Usuario usuario = db.Usuarios.Where(a => a.idUsuario == calificacion.idUsuario).FirstOrDefault();
+            //serviciosCREntities db = new serviciosCREntities();
+            //Usuario usuario = db.Usuarios.Where(a => a.idUsuario == calificacion.idUsuario).FirstOrDefault();
 
             var node = calificacion;
 
             client.Cypher
                 .Match("(u:Usuario)", "(s:Servicio)")
-                .Where((Usuario u) => u.correo == usuario.correo)
+                .Where((Usuario u) => u.correo == calificacion.Usuario.correo)
                 .AndWhere((Service s) => s.id.ToString() == calificacion.idServicio)
                 .Create("(u)-[:CALIFICACION {calificacion}]->(s)")
                 .WithParam("calificacion", node)
@@ -88,40 +87,38 @@ namespace PaquetesTuristicos.Models
                 .Wait();
         }
 
-        public void categoria_x_Servicio(Categoria categoria, Service servicio)
+        public void categoria_x_Servicio(int categoria, Service servicio)
         {
-            //falta conectar
             client.Connect();
 
             client.Cypher
                 .Match("(c:Categoria)", "(s:Servicio)")
-                .Where((Categoria c) => c.idCategoria == categoria.idCategoria)
+                .Where((Categoria c) => c.idCategoria == categoria)
                 .AndWhere((Service s) => s.id.ToString() == servicio.id.ToString())
                 .Create("(c)-[:TIPO]->(s)")
                 .ExecuteWithoutResultsAsync()
                 .Wait();
         }
 
-        public int likes_x_Categorias(Categoria categoria)
-        {
-            //falta conectar
-            client.Connect();
+        //public int likes_x_Categorias(Categoria categoria)
+        //{
+        //    //falta conectar
+        //    client.Connect();
 
-            var query = client.Cypher
-                .OptionalMatch("(u:Usuario)-[l:LIKE]->(c:Categoria)")
-                .Where((Categoria c) => c.idCategoria == categoria.idCategoria)
-                .Return(c => new
-                {
-                    Nodes = c.As<Usuario>()
-                })
-                .Results;
+        //    var query = client.Cypher
+        //        .OptionalMatch("(u:Usuario)-[l:LIKE]->(c:Categoria)")
+        //        .Where((Categoria c) => c.idCategoria == categoria.idCategoria)
+        //        .Return(c => new
+        //        {
+        //            Nodes = c.As<Usuario>()
+        //        })
+        //        .Results;
 
-            return query.Count();
-        }
+        //    return query.Count();
+        //}
 
         public List<string> usuario_x_Like(Usuario usuario)
         {
-            //falta conectar
             client.Connect();
 
             List<Categoria> query = client.Cypher
@@ -146,15 +143,16 @@ namespace PaquetesTuristicos.Models
 
         public List<Calificacion> calificaciones(Service servicio)
         {
-            //falta conectar
             client.Connect();
-
+            var nodo = servicio.id.ToString();
             List<Calificacion> query = client.Cypher
                 .OptionalMatch("(u:Usuario)-[c:CALIFICACION]->(s:Servicio)")
-                .Where((Service s) => s.id == servicio.id)
+                .Where((Service s) => s.id.ToString() == nodo)
                 .Return(c => c.As<Calificacion>())
                 .Results
                 .ToList();
+
+            
 
             return query;
 
