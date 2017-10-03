@@ -9,6 +9,13 @@ using System.Collections.Generic;
 
 namespace PaquetesTuristicos.Models
 {
+    public class Opinion
+    {
+        public int calificacion { get; set; }
+        public string comentario { get; set; }
+        public string fecha { get; set; }
+    }
+
     public class Neo4jStore
     {
         private GraphClient client = new GraphClient(new Uri("http://localhost:7474/db/data/"), "neo4j", "mirainikki")
@@ -75,6 +82,11 @@ namespace PaquetesTuristicos.Models
             //serviciosCREntities db = new serviciosCREntities();
             //Usuario usuario = db.Usuarios.Where(a => a.idUsuario == calificacion.idUsuario).FirstOrDefault();
 
+            Opinion opinion = new Opinion();
+
+            opinion.calificacion = (int)calificacion.calificacion1;
+            opinion.comentario = calificacion.comentario;
+            opinion.fecha = calificacion.fechaHora.ToString();
             var node = calificacion;
 
             client.Cypher
@@ -82,7 +94,7 @@ namespace PaquetesTuristicos.Models
                 .Where((Usuario u) => u.correo == calificacion.Usuario.correo)
                 .AndWhere((Service s) => s.id.ToString() == calificacion.idServicio)
                 .Create("(u)-[:CALIFICACION {calificacion}]->(s)")
-                .WithParam("calificacion", node)
+                .WithParam("calificacion", opinion)
                 .ExecuteWithoutResultsAsync()
                 .Wait();
         }
@@ -144,15 +156,13 @@ namespace PaquetesTuristicos.Models
         public List<Calificacion> calificaciones(Service servicio)
         {
             client.Connect();
-            var nodo = servicio.id.ToString();
+
             List<Calificacion> query = client.Cypher
                 .OptionalMatch("(u:Usuario)-[c:CALIFICACION]->(s:Servicio)")
-                .Where((Service s) => s.id.ToString() == nodo)
+                .Where((Service s) => s.id.ToString() == servicio.ToString())
                 .Return(c => c.As<Calificacion>())
                 .Results
                 .ToList();
-
-            
 
             return query;
 

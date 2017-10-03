@@ -94,7 +94,7 @@ namespace PaquetesTuristicos.Controllers
                         int i, j;
                         for (i = 0; i < listaOrden.Count(); ++i)
                         {
-                            idOrden = listaOrden[0].idOrden;
+                            idOrden = listaOrden[i].idOrden;
                             sopList = db.ServiciosPorOrdens.Where(a => a.idOrden.Equals(idOrden)).ToList();
                             for (j = 0; j < sopList.Count(); ++j)
                             {
