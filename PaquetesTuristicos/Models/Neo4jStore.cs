@@ -33,11 +33,11 @@ namespace PaquetesTuristicos.Models
         {
             client.Connect();
 
-            var node = servicio.id;
+            var node = servicio.id.ToString();
 
             client.Cypher
                 .Create("(s:Servicio {nuevoServicio})")
-                .WithParam("nuevoServicio", servicio)
+                .WithParam("nuevoServicio", node)
                 .ExecuteWithoutResultsAsync()
                 .Wait();
         }
@@ -96,7 +96,7 @@ namespace PaquetesTuristicos.Models
             client.Cypher
                 .Match("(c:Categoria)", "(s:Servicio)")
                 .Where((Categoria c) => c.idCategoria == categoria.idCategoria)
-                .AndWhere((Service s) => s.id == servicio.id)
+                .AndWhere((Service s) => s.id.ToString() == servicio.id.ToString())
                 .Create("(c)-[:TIPO]->(s)")
                 .ExecuteWithoutResultsAsync()
                 .Wait();
@@ -168,16 +168,18 @@ namespace PaquetesTuristicos.Models
             //falta conectar
             client.Connect();
 
-            List<Service> query = client.Cypher
+            List<string> query = client.Cypher
                 .Match("(u: Usuario) -[o: OPINION]->(s: Servicio)")
                 .Where((Usuario u) => u.correo == usuario.correo)
-                .OptionalMatch("(u) -[:LIKE]->(c: Categoria) -[:TIPO]->(s)")
-                .Return(s => s.As<Service>())
+                .OptionalMatch("(u)-[:LIKE]->(c:Categoria)-[:TIPO]->(s)")
+                .Return(s => s.As<string>())
                 .OrderByDescending("o.calificacion")
                 .Results
                 .ToList();
 
-            return query;
+            MongoConnect mongo = new MongoConnect();
+
+            return mongo.getServicesById(query);
 
             //Match(u: Usuario) -[o: OPINION]->(s: Servicio)
             //Where u.idUsuario = 2
