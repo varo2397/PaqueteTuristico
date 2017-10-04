@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace PaquetesTuristicos.Models
 {
-    
+
 
     public class Neo4jStore
     {
@@ -164,6 +164,16 @@ namespace PaquetesTuristicos.Models
             //Optional Match(u:Usuario)-[o: OPINION]->(s: Servicio)
             //Where s.serviceId = 1
             //Return o
+        }
+
+        public void quitarLike(Categoria categoria)
+        {
+            //falta conectar
+            client.Cypher
+                .OptionalMatch("(u:Usuario)<-[l:LIKE]-(c:Categoria)")
+                .Where((Categoria c) => c.idCategoria == categoria.idCategoria)
+                .Delete("l")
+                .ExecuteWithoutResults();
         }
 
         public List<Service> preferencias(Usuario usuario)
