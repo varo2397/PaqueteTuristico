@@ -119,7 +119,7 @@
                                 <br>
                                 <div id="tarifas"></div>
                             </div>
-                            <input type="submit" class="btn btn-info">
+                            <input type="submit" class="btn btn-info" value="Agregar al carrito">
                         </form>
 
                     </div>
@@ -136,10 +136,10 @@
     <div class="tab-pane" id="mapa"></div>
     <div class="tab-pane col-md-12" id="calificaciones">
         
-            <table class="table">
+            <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th class="text-info ">Fecha</th>
+                        <th class="text-info text-center">Fecha</th>
                         <th class="text-info ">Calificacion</th>
                         <th class="text-info ">Comentario</th>
                     </tr>
@@ -151,8 +151,8 @@
                         {
                             foreach (var item in calificaciones.Item2)
                             {
-                                <tr>
-                                    <td>@item.fecha</td>
+                                <tr >
+                                    <td class="text-center">@item.fecha</td>
                                     <td>@item.calificacion/5</td>
                                     <td><p>@item.comentario</p></td>
 

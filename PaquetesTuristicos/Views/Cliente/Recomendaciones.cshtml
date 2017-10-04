@@ -5,3 +5,39 @@
 
 <h2>Recomendaciones</h2>
 
+<div class="row">
+    <div class="col-md-6">
+        @foreach (var item in Model)
+        {
+            foreach (var order in item.orderList)
+            {
+                <div class="card">
+                    <div class="card-header">
+                        @order.Item1.name
+                    </div>
+                    <div class="card-block">
+                        <br>
+                        <div class="col-md-10">
+
+                            <h6 class="card-title">Caracteristicas</h6>
+                            <ul>
+                                <li>Fehca de compra : @item.fechaHora</li>
+                                <li>Dueño : @order.Item1.name</li>
+                                <li>Ubicacion: @order.Item1.province, @order.Item1.canton, @order.Item1.district</li>
+                                <li>Categoria : @order.Item1.categoria.categoria1</li>
+                                <li>Nombre tarifa : @order.Item2.name</li>
+                                <li>Precio : @order.Item2.precio</li>
+                                <li>Cantidad : @order.Item2.qty</li>
+                            </ul>
+                            @Html.ActionLink("Seleccionar", "Servicio", "Cliente", new { id = @order.Item1.id }, new { @class = "btn btn-info" })
+                        </div>
+                        <br>
+                    </div>
+                </div>
+                <br>
+            }
+
+        }
+
+    </div>
+</div>
