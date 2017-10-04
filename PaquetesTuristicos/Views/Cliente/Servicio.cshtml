@@ -31,6 +31,7 @@
         });
 </script>
 
+
 <div class="row">
     <div class="offset-lg-4 col-lg-4 ">
 
@@ -39,18 +40,18 @@
             <div class="carousel-inner" role="listbox">
                 @foreach (var informacion in Model)
                 {
-                    foreach (var item in informacion.Item1.ImagList)
+                    foreach (var listaImagenes in informacion.Item1.ImagList)
                     {
                         if (contador == 0)
                         {
                             <div class="carousel-item active">
-                                <img class="d-block img-fluid" src="@item.Image">
+                                <img class="d-block img-fluid" src="@listaImagenes.Image">
                             </div>
                         }
                         else
                         {
                             <div class="carousel-item ">
-                                <img class="d-block img-fluid" src="@item.Image">
+                                <img class="d-block img-fluid" src="@listaImagenes.Image">
                             </div>
                         }
                         contador++;
@@ -125,7 +126,7 @@
                     <br>
                 </div>
             </div>
-                <br>
+            <br>
 
         }
 
@@ -133,23 +134,38 @@
 
     </div>
     <div class="tab-pane" id="mapa"></div>
-    <div class="tab-pane" id="calificaciones">
-        @foreach (var calificaciones in Model)
-        {
-            if (calificaciones.Item2[0] != null)
-            {
-                foreach (var item in calificaciones.Item2)
-                {
-                    foreach (var cal in item)
+    <div class="tab-pane col-md-12" id="calificaciones">
+        
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="text-info ">Fecha</th>
+                        <th class="text-info ">Calificacion</th>
+                        <th class="text-info ">Comentario</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var calificaciones in Model)
                     {
-                        @cal.comentario
-                        <br />
-                        @cal.calificacion1
-                    }
-                }
-            }
+                        if (calificaciones.Item2[0] != null)
+                        {
+                            foreach (var item in calificaciones.Item2)
+                            {
+                                <tr>
+                                    <td>@item.fecha</td>
+                                    <td>@item.calificacion/5</td>
+                                    <td><p>@item.comentario</p></td>
 
-        }
+                                </tr>
+                            }
+                        }
+
+                    }
+
+
+                </tbody>
+            </table>
+   
     </div>
 </div>
 

@@ -9,12 +9,7 @@ using System.Collections.Generic;
 
 namespace PaquetesTuristicos.Models
 {
-    public class Opinion
-    {
-        public int calificacion { get; set; }
-        public string comentario { get; set; }
-        public string fecha { get; set; }
-    }
+    
 
     public class Neo4jStore
     {
@@ -153,14 +148,14 @@ namespace PaquetesTuristicos.Models
             return nombres;
         }
 
-        public List<Calificacion> calificaciones(Service servicio)
+        public List<Opinion> calificaciones(Service servicio)
         {
             client.Connect();
 
-            List<Calificacion> query = client.Cypher
+            List<Opinion> query = client.Cypher
                 .OptionalMatch("(u:Usuario)-[c:CALIFICACION]->(s:Servicio)")
-                .Where((Service s) => s.id.ToString() == servicio.ToString())
-                .Return(c => c.As<Calificacion>())
+                .Where((Service s) => s.id.ToString() == servicio.id.ToString())
+                .Return(c => c.As<Opinion>())
                 .Results
                 .ToList();
 

@@ -312,12 +312,14 @@ namespace PaquetesTuristicos.Controllers
         public ActionResult Servicio(string id)
         {
             MongoConnect mongo = new MongoConnect();
-            Service model = mongo.getid(id);
-            Session["Servicio"] = model;
-            List<Calificacion> califaciones = neo.calificaciones(model);
-            Tuple<Service, List<Calificacion>> servicioCalificacion= new Tuple<Service, List<Calificacion>>(model, califaciones);
+            Service model = mongo.getid(id); //se obtiene el servicio que se selecciono
+            Session["Servicio"] = model; 
 
-            List<Tuple<Service, List<Calificacion>>> informacion = new List<Tuple<Service, List<Calificacion>>>();
+            List<Opinion> califaciones = neo.calificaciones(model); //se obtienen los comentarios y calificaciones asociadas a un servicio
+
+            Tuple<Service, List<Opinion>> servicioCalificacion= new Tuple<Service, List<Opinion>>(model, califaciones); //tupla que se va a mandar a la vista con toda la informacion
+
+            List<Tuple<Service, List<Opinion>>> informacion = new List<Tuple<Service, List<Opinion>>>(); //se mete la tupla en una lista para que se puede iterar sobre la tupla en la lista
             informacion.Add(servicioCalificacion);
 
             return View(informacion);
@@ -355,11 +357,12 @@ namespace PaquetesTuristicos.Controllers
         {
             serviciosCREntities db = new serviciosCREntities();
 
-            List<Categoria> categorias = db.Categorias.ToList();
-            Usuario user = (Usuario)Session["USER"];
-            List<string> likes = neo.usuario_x_Like(user);
+            List<Categoria> categorias = db.Categorias.ToList(); //consulta de sql server para traer todas las categorias
+            Usuario user = (Usuario)Session["USER"]; //usuario que tiene sesion iniciada
+            List<string> likes = neo.usuario_x_Like(user); //lista de categorias a las cual el usuario les ha dado like
 
-            Tuple<List<Categoria>, List<string>> categoriasLikes = new Tuple<List<Categoria>, List<string>>(categorias, likes);
+            Tuple<List<Categoria>, List<string>> categoriasLikes = new Tuple<List<Categoria>, List<string>>(categorias, likes); //tupla para mandar toda la informacion
+
             List<Tuple<List<Categoria>, List<string>>> lista = new List<Tuple<List<Categoria>, List<string>>>();
             lista.Add(categoriasLikes);
             return View(lista);
