@@ -150,8 +150,11 @@ namespace PaquetesTuristicos.Controllers
             calificacion.idUsuario = user.idUsuario;
             calificacion.Usuario = user;
             user.contrasena = "";
+            
 
             neo.usuario_x_Servicio(calificacion);
+
+            calificacion.Usuario = null;
             if (ModelState.IsValid)
             {
                 using (serviciosCREntities db = new serviciosCREntities())
@@ -375,6 +378,22 @@ namespace PaquetesTuristicos.Controllers
 
             return RedirectToAction("Categorias", "Cliente");
         }
+
+        public ActionResult QuitarLike(int id)
+        {
+            Usuario user = (Usuario)Session["USER"];
+            neo.quitarLike(user.correo, id);
+
+            return RedirectToAction("Categorias", "Cliente");
+        }
+
+        public ActionResult Recomendaciones()
+        {
+            Usuario user = (Usuario)Session["USER"];
+            List<Service> servicios = neo.preferencias(user);
+            return View(servicios);
+        }
+
 
         public ActionResult CerrarSesion()
         {

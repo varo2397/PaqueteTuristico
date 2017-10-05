@@ -28,6 +28,54 @@
             });
         });
 </script>
+<script>
+    function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 7,
+            center: { lat: 9.9719671, lng: -84.056396 }
+        });
+
+        var markers = [];
+
+        map.addListener('click', function (e) {
+            //setMapOnAll(null);
+            placeMarkerAndPanTo(e.latLng, map);
+        });
+
+
+        function placeMarkerAndPanTo(latLng, map) {
+            for (var i = 0; i < markers.length; i++) {
+                markers[i].setMap(null);
+            }
+
+            markers = [];
+
+            var marker = new google.maps.Marker({
+                position: latLng,
+                map: map,
+                draggable: true,
+                title: "Inicio"
+            });
+            map.panTo(latLng);
+            markers.push(marker);
+
+        }
+
+    }
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBEtlwTKIO24VtkrrYai0IHvQIOQv8bZ3k&callback=initMap">
+</script>
+
+<style>
+    #map {
+        height: 400px;
+        width: 100%;
+    }
+</style>
+
+
+
 
 
 <div class="container-fluid">
@@ -36,7 +84,7 @@
             <h1>Agregar Servicio</h1>
         </div>
 
-        <form class="col-md-3" method="post" action="~/Vendedor/AgregarServicio" enctype="multipart/form-data">
+        <form class="col-md-8" method="post" action="~/Vendedor/AgregarServicio" enctype="multipart/form-data">
 
             <div>
                 <div class="form-group">
@@ -66,7 +114,7 @@
                 <div class="form-group">
                     <input type="text" name="canton" class="form-control" required>
                 </div>
-                
+
                 <div class="form-group">
                     <label>Distrito</label>
                 </div>
@@ -141,6 +189,10 @@
 
 
                 <div id="cantidadTarifasH"></div>
+                @*<div id="map"></div>*@
+
+
+
 
 
                 <div class="form-group">

@@ -135,10 +135,13 @@ namespace PaquetesTuristicos.Models
                 .Results
                 .ToList();
 
+            Categoria prueba = query[0];
+
             List<string> nombres = new List<string>();
 
-            if (nombres.Count() != 0)
+            if (query.Count() != 0 && !(prueba == null))
             {
+                
                 foreach (var c in query)
                 {
                     nombres.Add(c.categoria1);
@@ -166,14 +169,16 @@ namespace PaquetesTuristicos.Models
             //Return o
         }
 
-        public void quitarLike(Categoria categoria)
+        public void quitarLike(string correo, int categoria)
         {
-            //falta conectar
+            client.Connect();
             client.Cypher
-                .OptionalMatch("(u:Usuario)<-[l:LIKE]-(c:Categoria)")
-                .Where((Categoria c) => c.idCategoria == categoria.idCategoria)
+                .OptionalMatch("(u:Usuario)-[l]->(c:Categoria)")
+                .Where((Categoria c) => c.idCategoria == categoria)
+                .AndWhere((Usuario u) => u.correo == correo)
                 .Delete("l")
-                .ExecuteWithoutResults();
+                .ExecuteWithoutResultsAsync()
+                .Wait();
         }
 
         public List<Service> preferencias(Usuario usuario)

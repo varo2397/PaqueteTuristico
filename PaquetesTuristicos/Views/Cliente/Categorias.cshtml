@@ -1,8 +1,23 @@
 ﻿
 @{
     ViewBag.Title = "Categorias";
-
+    
 }
+
+@*@functions
+{
+    public bool verificarValor(List<Pstring> lista, PaquetesTuristicos.Models.Categoria valor)
+    {
+        foreach(var item in lista)
+        {
+            if(item.categoria1.Equals(valor.categoria1))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+}*@
 
 <h2>Categorias</h2>
 
@@ -10,7 +25,7 @@
     <div class="col-md-4 offset-md-6">
         @foreach (var lists in Model)
         {
-            foreach (var item in lists.Item1)
+            foreach (PaquetesTuristicos.Models.Categoria item in lists.Item1)
             {
                 if (item.activo)
                 {
@@ -22,13 +37,13 @@
                         </div>
                         <hr class="my-0">
                         <div class="card-body py-2 small">
-                            @if (lists.Item2 != null && lists.Item2.Contains(item.categoria1))
+                            @if (lists.Item2 != null  && !lists.Item2.Contains(item.categoria1))
                             {
                             @Html.ActionLink("Me gusta", "Like", "Cliente", new { id = @item.idCategoria }, new { @class = "btn btn-info" })
                             }
                             else
                             {
-                            @Html.ActionLink("No me gusta", "Like", "Cliente", new { id = @item.idCategoria }, new { @class = "btn btn-info" })
+                            @Html.ActionLink("No me gusta", "QuitarLike", "Cliente", new { id = @item.idCategoria }, new { @class = "btn btn-info" })
                             }
 
                         </div>
