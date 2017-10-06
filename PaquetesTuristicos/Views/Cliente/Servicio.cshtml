@@ -2,6 +2,8 @@
 @{
     ViewBag.Title = "Servicio";
     int contador = 0;
+    float latitud =float.Parse(((PaquetesTuristicos.Models.Service)Session["Servicio"]).latitude);
+    float longuitud = float.Parse(((PaquetesTuristicos.Models.Service)Session["Servicio"]).longitude);
 }
 
 <script src="~/Scripts/jquery-1.10.2.js"></script>
@@ -30,83 +32,8 @@
             });
         });
 </script>
-<script type="text/javascript">
-    var map;
-    var myCenter = new google.maps.LatLng(53, -1.33);
 
-    function initialize() {
 
-        var mapProp = {
-            center: myCenter,
-            zoom: 14,
-            draggable: false,
-            scrollwheel: false,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-
-        map = new google.maps.Map(document.getElementById("map-canvas"), mapProp);
-    }
-
-    $("#mapa").on('shown.bs.tab', function () {
-
-        /* Trigger map resize event */
-        google.maps.event.trigger(map, 'resize');
-    });
-
-    initialize();
-</script>
-
-<script>
-    function initMap() {
-        var directionsService = new google.maps.DirectionsService;
-        var directionsDisplay = new google.maps.DirectionsRenderer;
-
-        var uluru = { lat: 10.00, lng: -84.000 };
-        var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 4,
-          center: uluru
-        });
-        var marker = new google.maps.Marker({
-          position: uluru,
-          map: map
-        });
-
-        var directionsDisplay;
-         var directionsService = new google.maps.DirectionsService();
-         var map;
-         var haight = new google.maps.LatLng(37.7699298, -122.4469157);
-         var oceanBeach = new google.maps.LatLng(37.7683909618184, -122.51089453697205);
-
-         
-             directionsDisplay = new google.maps.DirectionsRenderer();
-             var mapOptions = {
-                 zoom: 14,
-                 center: haight
-             }
-             map = new google.maps.Map(document.getElementById('map'), mapOptions);
-             directionsDisplay.setMap(map);
-         
-
-         
-             var start = new google.maps.LatLng(37.7699298, -122.4469157);
-             var end = new google.maps.LatLng(37.7683909618184, -122.51089453697205);
-             var request = {
-                 origin: start,
-                 destination: end,
-                 travelMode: 'DRIVING'
-             };
-             directionsService.route(request, function (result, status) {
-                 if (status == 'OK') {
-                     directionsDisplay.setDirections(result);
-                 }
-             });
-         
-    }
-    
-</script>
-<script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBEtlwTKIO24VtkrrYai0IHvQIOQv8bZ3k&callback=initMap">
-</script>
 
 <style>
     #map {
@@ -114,10 +41,6 @@
         width: 100%;
     }
 </style>
-
-
-
-
 
 <div class="row">
     <div class="col-md-12 ">
@@ -256,10 +179,48 @@
 
     </div>
     <div class="col-md-4">
-        <div id="map">
-
-        </div>
-
+        @latitud
     </div>
 </div>
+<div id="map"></div>
+
 <br>
+
+<script>
+    function initMap() {
+
+        var directionsDisplay;
+        var directionsService = new google.maps.DirectionsService();
+        var map;
+        var haight = new google.maps.LatLng(37.7699298, -122.4469157);
+        var oceanBeach = new google.maps.LatLng(37.7683909618184, -122.51089453697205);
+
+
+        directionsDisplay = new google.maps.DirectionsRenderer();
+        var mapOptions = {
+            zoom: 14,
+            center: haight
+        }
+        map = new google.maps.Map(document.getElementById('map'), mapOptions);
+        directionsDisplay.setMap(map);
+
+
+
+        var start = new google.maps.LatLng(37.7699298, -122.4469157);
+        var end = new google.maps.LatLng(@latitud, -122.51089453697205);
+        var request = {
+            origin: start,
+            destination: end,
+            travelMode: 'DRIVING'
+        };
+        directionsService.route(request, function (result, status) {
+            if (status == 'OK') {
+                directionsDisplay.setDirections(result);
+            }
+        });
+    }
+
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBEtlwTKIO24VtkrrYai0IHvQIOQv8bZ3k&callback=initMap">
+</script>

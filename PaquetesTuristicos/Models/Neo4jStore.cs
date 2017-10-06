@@ -9,7 +9,10 @@ using System.Collections.Generic;
 
 namespace PaquetesTuristicos.Models
 {
-
+    class algo
+    {
+        public string id { get; set; }
+    }
 
     public class Neo4jStore
     {
@@ -183,21 +186,19 @@ namespace PaquetesTuristicos.Models
 
         public List<Service> preferencias(Usuario usuario)
         {
-            //falta conectar
+         
             client.Connect();
-
-            List<string> query = client.Cypher
-                .Match("(u: Usuario) -[o: OPINION]->(s: Servicio)")
+            List<string> servicios = new List<string>();
+            List<algo> query = client.Cypher
+                .Match("(u:Usuario)-[:Like]->(c:Categoria)-[:Tipo]->(s:Servicio)")
                 .Where((Usuario u) => u.correo == usuario.correo)
-                .OptionalMatch("(u)-[:LIKE]->(c:Categoria)-[:TIPO]->(s)")
-                .Return(s => s.As<string>())
-                .OrderByDescending("o.calificacion")
+                .Return(s => s.As<algo>())
                 .Results
                 .ToList();
 
             MongoConnect mongo = new MongoConnect();
 
-            return mongo.getServicesById(query);
+            return mongo.getServicesById(servicios);
 
             //Match(u: Usuario) -[o: OPINION]->(s: Servicio)
             //Where u.idUsuario = 2
