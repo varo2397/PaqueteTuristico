@@ -150,7 +150,6 @@ namespace PaquetesTuristicos.Controllers
             string canton = form["canton"];
             string distrito = form["distrito"];
             string pueblo = form["pueblo"];
-            string distanciaKM = form["distancia"];
             string latitud = form["latitud"];
             string longuitud = form["longuitud"];
 
@@ -170,9 +169,9 @@ namespace PaquetesTuristicos.Controllers
             servicio.canton = canton;
             servicio.district = distrito;
             servicio.town = pueblo;
-            servicio.KmDistance = distanciaKM;
-            servicio.latitude = latitud;
-            servicio.longitude = longuitud;
+            servicio.KmDistance = "";
+            servicio.latitude = latitud.ToString();
+            servicio.longitude = longuitud.ToString();
             servicio.idCategory = idCategoria;
                   
             //direcciones en el servidor de las imagenes 

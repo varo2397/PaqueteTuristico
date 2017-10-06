@@ -28,6 +28,7 @@
             });
         });
 </script>
+
 <script>
     function initMap() {
         var map = new google.maps.Map(document.getElementById('map'), {
@@ -38,12 +39,15 @@
         var markers = [];
 
         map.addListener('click', function (e) {
-            //setMapOnAll(null);
+            document.getElementById("latitud").value = e.latLng.lat();
+            document.getElementById("longuitud").value = e.latLng.lng();
             placeMarkerAndPanTo(e.latLng, map);
         });
 
 
         function placeMarkerAndPanTo(latLng, map) {
+            //document.getElementById("latitud").value = "25";
+            //document.getElementById("longuitud").value = "10";
             for (var i = 0; i < markers.length; i++) {
                 markers[i].setMap(null);
             }
@@ -129,32 +133,36 @@
                     <input type="text" name="pueblo" class="form-control" required>
                 </div>
 
-                <div class="form-group">
+                @*<div class="form-group">
                     <label>Distancia en kilometros</label>
                 </div>
                 <div class="form-group">
                     <input type="number" name="distancia" class="form-control" required>
-                </div>
+                </div>*@
 
                 <div class="form-group">
                     <label>Latitud</label>
                 </div>
                 <div class="form-group">
-                    <input type="number" name="latitud" class="form-control" required>
+                    <input type="number" id="latitud" name="latitud" class="form-control" step="0.0000000000000001" required>
                 </div>
 
                 <div class="form-group">
                     <label>Longitud</label>
                 </div>
                 <div class="form-group">
-                    <input type="number" name="longuitud" class="form-control" required>
+                    <input type="number" id="longuitud" name="longuitud" class="form-control" step="0.0000000000000001" required>
                 </div>
 
+           
+
                 <div class="form-group">
+                    <label>Categoria</label>
                     <div class="form-group">
-                        <select class="form-control" name="categoria" required>
+                        <select class="form-control" name="categoria" id="categoria" required>
+                            <option value="null">Seleccione</option>
                             @foreach (var item in Model)
-                            {
+                            {                            
                                 if (@item.activo)
                                 {
                                     <option value="@item.idCategoria">@item.categoria1</option>
@@ -189,10 +197,16 @@
 
 
                 <div id="cantidadTarifasH"></div>
-                @*<div id="map"></div>*@
+                <div id="map"></div>
 
 
-
+                <div style="display:none" >
+                    @*<label  id="latitud">10</label>
+                    <label id="longuitud">10</label>*@
+                    @*<input type="text" id="latitud"  name="latitud"value="10" />
+                    <input type="text" id="longuitud" name="longuitud" value="10" />*@
+                </div>
+                <br />
 
 
                 <div class="form-group">
@@ -200,7 +214,7 @@
                 </div>
             </div>
         </form>
-
+        
     </div>
 
 

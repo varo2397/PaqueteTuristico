@@ -5,7 +5,6 @@ using System.Web;
 using Neo4jClient;
 using Newtonsoft.Json.Serialization;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 
 namespace PaquetesTuristicos.Models
 {
@@ -139,12 +138,11 @@ namespace PaquetesTuristicos.Models
                 .Return(c => c.As<Categoria>())
                 .Results
                 .ToList();
-
-            Categoria prueba = query[0];
+            
 
             List<string> nombres = new List<string>();
 
-            if (query.Count() != 0 && !(prueba == null))
+            if (query.Count() != 0 && !(query[0] == null))
             {
                 
                 foreach (var c in query)

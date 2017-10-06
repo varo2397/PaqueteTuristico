@@ -9,7 +9,6 @@ using System.Collections;
 using System.Web.Security;
 using System.Web.Helpers;
 using System.Globalization;
-using System.Collections.Generic;
 using System.Data.Entity.Validation;
 using System.Diagnostics;
 
@@ -393,7 +392,6 @@ namespace PaquetesTuristicos.Controllers
             List<Service> servicios = neo.preferencias(user);
             return View(servicios);
         }
-
 
         public ActionResult CerrarSesion()
         {
