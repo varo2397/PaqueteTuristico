@@ -12,11 +12,7 @@ namespace PaquetesTuristicos.Models
 
     public class Neo4jStore
     {
-        class Algo
-        {
-            public string id { get; set; }
-        }
-
+        //Conecta a la base de datos de Neo4j
         private GraphClient client = new GraphClient(new Uri("http://localhost:7474/db/data/"), "neo4j", "mirainikki")
         {
             JsonContractResolver = new CamelCasePropertyNamesContractResolver()
@@ -24,7 +20,7 @@ namespace PaquetesTuristicos.Models
 
         public void agregarUsuario(Usuario usuario)
         {
-
+            //Agrega usuarios a la BD
             client.Connect();
 
             var node = usuario;
@@ -38,6 +34,7 @@ namespace PaquetesTuristicos.Models
 
         public void agregarServicio(Service servicio)
         {
+            //Agrega servicios a la BD
             client.Connect();
 
             var node = servicio.id.ToString();
@@ -51,6 +48,7 @@ namespace PaquetesTuristicos.Models
 
         public void agregarCategoria(Categoria categoria)
         {
+            //Agrega categorías a la BD
             client.Connect();
 
             var node = categoria;
@@ -64,6 +62,7 @@ namespace PaquetesTuristicos.Models
 
         public void usuario_x_Categoria(Usuario usuario, int categoria)
         {
+            //Un usuario da like a una categoría
             client.Connect();
 
             client.Cypher
@@ -77,9 +76,8 @@ namespace PaquetesTuristicos.Models
 
         public void usuario_x_Servicio(Calificacion calificacion)
         {
+            //Un usuario da una calificación a un servicio
             client.Connect();
-            //serviciosCREntities db = new serviciosCREntities();
-            //Usuario usuario = db.Usuarios.Where(a => a.idUsuario == calificacion.idUsuario).FirstOrDefault();
 
             Opinion opinion = new Opinion();
 
@@ -100,6 +98,7 @@ namespace PaquetesTuristicos.Models
 
         public void categoria_x_Servicio(int categoria, Service servicio)
         {
+            //Una categoría se conecta a un servicio
             client.Connect();
 
             client.Cypher
@@ -111,25 +110,9 @@ namespace PaquetesTuristicos.Models
                 .Wait();
         }
 
-        //public int likes_x_Categorias(Categoria categoria)
-        //{
-        //    //falta conectar
-        //    client.Connect();
-
-        //    var query = client.Cypher
-        //        .OptionalMatch("(u:Usuario)-[l:LIKE]->(c:Categoria)")
-        //        .Where((Categoria c) => c.idCategoria == categoria.idCategoria)
-        //        .Return(c => new
-        //        {
-        //            Nodes = c.As<Usuario>()
-        //        })
-        //        .Results;
-
-        //    return query.Count();
-        //}
-
         public List<string> usuario_x_Like(Usuario usuario)
         {
+            //Retorna las categorias a las que un usuario le ha dado like
             client.Connect();
 
             List<Categoria> query = client.Cypher
@@ -137,8 +120,7 @@ namespace PaquetesTuristicos.Models
                 .Where((Usuario u) => u.correo == usuario.correo)
                 .Return(c => c.As<Categoria>())
                 .Results
-                .ToList();
-            
+                .ToList();    
 
             List<string> nombres = new List<string>();
 
@@ -156,6 +138,7 @@ namespace PaquetesTuristicos.Models
 
         public List<Opinion> calificaciones(Service servicio)
         {
+            //Retorna las calificaciones que los usuarios han hecho sobre un servicio
             client.Connect();
 
             List<Opinion> query = client.Cypher
@@ -166,14 +149,11 @@ namespace PaquetesTuristicos.Models
                 .ToList();
 
             return query;
-
-            //Optional Match(u:Usuario)-[o: OPINION]->(s: Servicio)
-            //Where s.serviceId = 1
-            //Return o
         }
 
         public void quitarLike(string correo, int categoria)
         {
+            //Quita el like de un usuario de una categoría
             client.Connect();
             client.Cypher
                 .OptionalMatch("(u:Usuario)-[l]->(c:Categoria)")
@@ -186,13 +166,13 @@ namespace PaquetesTuristicos.Models
 
         public List<Service> preferencias(Usuario usuario)
         {
-            //falta conectar
+            //Retorna los servicios los servicios conectados a las categorias que el usuario ha dado like
             client.Connect();
 
-            List<Algo> query = client.Cypher
+            List<Nombre> query = client.Cypher
                 .Match("(u:Usuario)-[:LIKE]->(c:Categoria)-[:TIPO]->(s:Servicio)")
                 .Where((Usuario u) => u.correo == usuario.correo)
-                .Return(s => s.As<Algo>())
+                .Return(s => s.As<Nombre>())
                 .Results
                 .ToList();
             
@@ -200,7 +180,6 @@ namespace PaquetesTuristicos.Models
 
             if (query.Count() != 0 && !(query[0] == null))
             {
-
                 foreach (var a in query)
                 {
                     nombres.Add(a.id);
@@ -210,12 +189,6 @@ namespace PaquetesTuristicos.Models
             MongoConnect mongo = new MongoConnect();
 
             return mongo.getServicesById(nombres);
-
-            //Match(u: Usuario) -[o: OPINION]->(s: Servicio)
-            //Where u.idUsuario = 2
-            //Match(u) -[:LIKE]->(c: Categoria) -[:TIPO]->(s)
-            //Return s
-            //Order by(o.calificacion) Desc
         }
     }
 }
