@@ -9,11 +9,10 @@
     <div class="col-md-6">
         @foreach (var item in Model)
         {
-            foreach (var order in item.orderList)
-            {
+            
                 <div class="card">
                     <div class="card-header">
-                        @order.Item1.name
+                        @item.name
                     </div>
                     <div class="card-block">
                         <br>
@@ -21,21 +20,16 @@
 
                             <h6 class="card-title">Caracteristicas</h6>
                             <ul>
-                                <li>Fehca de compra : @item.fechaHora</li>
-                                <li>Dueño : @order.Item1.name</li>
-                                <li>Ubicacion: @order.Item1.province, @order.Item1.canton, @order.Item1.district</li>
-                                <li>Categoria : @order.Item1.categoria.categoria1</li>
-                                <li>Nombre tarifa : @order.Item2.name</li>
-                                <li>Precio : @order.Item2.precio</li>
-                                <li>Cantidad : @order.Item2.qty</li>
+                                <li>Dueño : @item.name</li>
+                                <li>Ubicacion: @item.province, @item.canton, @item.district</li>
+                                <li>Categoria : @item.categoria.categoria1</li>
                             </ul>
-                            @Html.ActionLink("Seleccionar", "Servicio", "Cliente", new { id = @order.Item1.id }, new { @class = "btn btn-info" })
+                            @Html.ActionLink("Seleccionar", "Servicio", "Cliente", new { id = @item .id }, new { @class = "btn btn-info" })
                         </div>
                         <br>
                     </div>
                 </div>
                 <br>
-            }
 
         }
 
