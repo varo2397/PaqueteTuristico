@@ -9,13 +9,15 @@ using System.Collections.Generic;
 
 namespace PaquetesTuristicos.Models
 {
-    class algo
-    {
-        public string id { get; set; }
-    }
+
 
     public class Neo4jStore
     {
+        class Algo
+        {
+            public string id { get; set; }
+        }
+
         private GraphClient client = new GraphClient(new Uri("http://localhost:7474/db/data/"), "neo4j", "mirainikki")
         {
             JsonContractResolver = new CamelCasePropertyNamesContractResolver()
@@ -186,19 +188,31 @@ namespace PaquetesTuristicos.Models
 
         public List<Service> preferencias(Usuario usuario)
         {
-         
+            //falta conectar
             client.Connect();
-            List<string> servicios = new List<string>();
-            List<algo> query = client.Cypher
-                .Match("(u:Usuario)-[:Like]->(c:Categoria)-[:Tipo]->(s:Servicio)")
+
+            List<Algo> query = client.Cypher
+                .Match("(u:Usuario)-[:LIKE]->(c:Categoria)-[:TIPO]->(s:Servicio)")
                 .Where((Usuario u) => u.correo == usuario.correo)
-                .Return(s => s.As<algo>())
+                .Return(s => s.As<Algo>())
                 .Results
                 .ToList();
 
+            Algo prueba = query[0];
+            List<string> nombres = new List<string>();
+
+            if (query.Count() != 0 && !(prueba == null))
+            {
+
+                foreach (var a in query)
+                {
+                    nombres.Add(a.id);
+                }
+            }
+
             MongoConnect mongo = new MongoConnect();
 
-            return mongo.getServicesById(servicios);
+            return mongo.getServicesById(nombres);
 
             //Match(u: Usuario) -[o: OPINION]->(s: Servicio)
             //Where u.idUsuario = 2
