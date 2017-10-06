@@ -195,11 +195,10 @@ namespace PaquetesTuristicos.Models
                 .Return(s => s.As<Algo>())
                 .Results
                 .ToList();
-
-            Algo prueba = query[0];
+            
             List<string> nombres = new List<string>();
 
-            if (query.Count() != 0 && !(prueba == null))
+            if (query.Count() != 0 && !(query[0] == null))
             {
 
                 foreach (var a in query)
