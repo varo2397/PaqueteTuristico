@@ -182,7 +182,6 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AdministradorController.cs" />
-    <Compile Include="Controllers\CategoriasController.cs" />
     <Compile Include="Controllers\ClienteController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UsuariosController.cs" />
@@ -371,7 +370,6 @@
     <Content Include="Views\Cliente\_ViewStart.cshtml" />
     <Content Include="Views\Vendedor\AgregarServicio.cshtml" />
     <Content Include="Views\Vendedor\InicioSesion.cshtml" />
-    <Content Include="Views\Vendedor\Login.cshtml" />
     <Content Include="Views\Vendedor\PlantillaServicios.cshtml" />
     <Content Include="Views\Vendedor\Registrarse.cshtml" />
     <Content Include="Views\Vendedor\Servicios.cshtml" />
@@ -386,11 +384,6 @@
     <Content Include="Views\Cliente\PlantillaCliente.cshtml" />
     <Content Include="Views\Cliente\Registrarse.cshtml" />
     <Content Include="Views\Cliente\Carrito.cshtml" />
-    <Content Include="Views\Categorias\Create.cshtml" />
-    <Content Include="Views\Categorias\Delete.cshtml" />
-    <Content Include="Views\Categorias\Details.cshtml" />
-    <Content Include="Views\Categorias\Edit.cshtml" />
-    <Content Include="Views\Categorias\Index.cshtml" />
     <Content Include="Views\Cliente\BuscarServicios.cshtml" />
     <Content Include="Views\Cliente\Servicio.cshtml" />
     <Content Include="Views\Cliente\CalificarServicio.cshtml" />
