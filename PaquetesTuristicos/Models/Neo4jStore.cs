@@ -190,5 +190,18 @@ namespace PaquetesTuristicos.Models
 
             return mongo.getServicesById(nombres);
         }
+
+        public void editarCategoria(Categoria categoria)
+        {
+            //Edita una categoría
+            client.Connect();
+
+            client.Cypher
+                .Match("(c:Categoria)")
+                .Where((Categoria c) => c.idCategoria == categoria.idCategoria)
+                .Set("c.categoria1 = {nombre}")
+                .WithParam("nombre", categoria.categoria1)
+                .ExecuteWithoutResults();
+        }
     }
 }
