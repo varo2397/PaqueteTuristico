@@ -9,7 +9,8 @@
     <div class="col-md-6">
         @foreach (var item in Model)
         {
-            
+            if (item.disponible)
+            {
                 <div class="card">
                     <div class="card-header">
                         @item.name
@@ -24,12 +25,13 @@
                                 <li>Ubicacion: @item.province, @item.canton, @item.district</li>
                                 <li>Categoria : @item.categoria.categoria1</li>
                             </ul>
-                            @Html.ActionLink("Seleccionar", "Servicio", "Cliente", new { id = @item .id }, new { @class = "btn btn-info" })
+                            @Html.ActionLink("Seleccionar", "Servicio", "Cliente", new { id = @item.id }, new { @class = "btn btn-info" })
                         </div>
                         <br>
                     </div>
                 </div>
                 <br>
+            }
 
         }
 

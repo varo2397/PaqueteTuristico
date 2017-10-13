@@ -140,6 +140,7 @@ namespace PaquetesTuristicos.Controllers
         [HttpPost]
         public ActionResult EditarCategoria([Bind(Include = "idCategoria,categoria1,activo")] Categoria categoria)
         {
+            neo.editarCategoria(categoria);
             if (ModelState.IsValid)
             {
                 db.Entry(categoria).State = EntityState.Modified;
